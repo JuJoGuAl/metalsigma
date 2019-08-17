@@ -1,0 +1,213 @@
+<!-- START BLOCK : module -->
+<script>
+  var ini_dia = '{inicio}', fin_dia = '{fin}', pasado = {pasado}, today = '{hoy}';
+</script>
+<div class="page-breadcrumb bg-white">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-xs-12 align-self-center">
+            <h5 class="font-medium text-uppercase mb-0">{menu_name}</h5>
+        </div>
+        <div class="col-lg-9 col-md-8 col-xs-12 align-self-center">
+            <nav aria-label="breadcrumb" class="mt-2 float-md-right float-left">
+                <ol class="breadcrumb mb-0 justify-content-end p-0 bg-white">
+                    <li class="breadcrumb-item"><a class="menu" href="javascript:void(0)" data-menu="{mod}" data-mod="{submod}" data-acc="MODULO">{menu_pri}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{menu_sec}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="page-content container-fluid">
+  <div class="row">
+    <div class="col-md-6 col-lg-4">
+        <div class="card material-card">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase">CLIENTES CON ODS</h5>
+                <div class="d-flex align-items-center mb-2 mt-4">
+                    <h2 class="mb-0 display-5"><i class="icon-people text-info"></i></h2>
+                    <div class="ml-auto">
+                        <h2 class="mb-0 display-6"><span class="font-normal">{clientes}</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card material-card">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase">ODS CREADAS</h5>
+                <div class="d-flex align-items-center mb-2 mt-4">
+                    <h2 class="mb-0 display-5"><i class="icon-note text-primary"></i></h2>
+                    <div class="ml-auto">
+                        <h2 class="mb-0 display-6"><span class="font-normal">{ods}</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card material-card">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase">ODS PLANIFICADAS</h5>
+                <div class="d-flex align-items-center mb-2 mt-4">
+                    <h2 class="mb-0 display-5"><i class="icon-calender text-success"></i></h2>
+                    <div class="ml-auto">
+                        <h2 class="mb-0 display-6"><span class="font-normal">{plan}</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div id="calendar-events" style="height: 700px; position: relative;">
+                <!-- START BLOCK : ods -->
+                <div class="calendar-events mb-3" data-class="bg-{color}" data-ods-full="{ods_full}" data-rut="{code}" data-cliente="{data}" data-inicio="{llegada}" data-fin="{retiro}" data-ht="{horas}" data-hr="{restante}" data-trab="{trabs}" data-cliente="{codigo_cliente}" data-codigo="{codigo}" data-lugar="{lugar}" data-vehiculo="{transporte}"><i class="fa fa-circle text-{color} mr-2"></i>ODS {ods_full}: {maquina} {marca} {modelo} de <strong>{data}</strong> ({restante} / {horas})</div>
+                <!-- END BLOCK : ods -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9"><div id="calendar"></div></div>
+  </div>
+</div>
+<script>
+  var ini_,fin_,date_,dia_;
+  var events_ = new Array();
+  events_ = [
+  <!-- START BLOCK : events -->
+  {
+    {id},
+    {title},
+    {ods},
+    {status},
+    {transporte},
+    {start},
+    {end},
+    <!-- START BLOCK : trabs -->
+    {trabajador},
+    {cargo},
+    <!-- END BLOCK : trabs -->
+    {color}
+    },
+  <!-- END BLOCK : events -->
+  ];
+  !function($) {
+    "use strict";
+
+    var CalendarApp = function() {
+      this.$calendar = $('#calendar'),
+      this.$event = ('#calendar-events div.calendar-events'),
+      this.$modal = $('#Modal_Event'),
+      this.$calendarObj = null
+    };
+
+    CalendarApp.prototype.onDrop = function (eventObj, date){
+      date_ = moment(date).format('DD-MM-YYYY');
+      let variables = [];
+      variables.push(ini_dia);
+      variables.push(fin_);
+      variables.push(date_);
+      variables.push(eventObj.attr('data-codigo'));
+      GetModule("SERVICIOS","PLAN_ODS","PLAN_ODS_FORM","NONE","NEW",variables);
+    },
+    CalendarApp.prototype.onEventClick =  function (calEvent, jsEvent, view){
+      let dias = moment(calEvent.start, "DD-MM-YYYY").diff(moment(moment(), "DD-MM-YYYY"),"days");
+      if(dias < 0){
+        dialog("NO SE PUEDE EDITAR UNA PLANIFICACION DEL PASADO","ERROR");
+      }else{
+        GetModule("SERVICIOS","PLAN_ODS","PLAN_ODS_FORM","NONE","EDIT",calEvent.id);
+      }
+    },
+    CalendarApp.prototype.onSelect = function (start, end, jsEvent, view){
+      let dias = moment(start, "DD-MM-YYYY").diff(moment(today, "DD-MM-YYYY"),"days");
+      ini_ = moment(start).format('HH:mm');
+      fin_ = moment(end).format('HH:mm');
+      date_ = moment(start).format('DD-MM-YYYY');
+      today_ =moment(today, "DD-MM-YYYY");
+      console.log(date_.diff(today_));
+      dia_ = start.day()
+      if(view.name=="month"){
+        ini_=fin_=0;
+      }
+      let variables = [];
+      variables.push(ini_);
+      variables.push(fin_);
+      variables.push(date_);
+      variables.push(0);
+      GetModule("SERVICIOS","PLAN_ODS","PLAN_ODS_FORM","NONE","NEW",variables);
+      var $this = this;
+      $this.$calendarObj.fullCalendar('unselect');
+    },
+    CalendarApp.prototype.enableDrag = function(){
+      $(this.$event).each(function (){
+        // var eventObject = {
+        //   title: "ODS: #"+jQuery(this).attr("data-ods-full")
+        // };
+        // $(this).data('eventObject', eventObject);
+        $(this).draggable({
+          zIndex: 999,
+          revert: true,
+          revertDuration: 0
+        });
+      });
+    }
+    CalendarApp.prototype.init = function(){
+      this.enableDrag();
+      var $this = this;
+      $this.$calendarObj = $this.$calendar.fullCalendar({
+        slotDuration: '00:15:00',
+        minTime: '08:00:00',
+        maxTime: '19:00:00',
+        defaultView: 'month',
+        handleWindowResize: true,
+        header:{
+          left: 'prev,next today',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay'
+        },
+        events: events_,
+        editable: false,
+        droppable: true,
+        eventLimit: true,
+        selectable: true,
+        eventRender: function(event, element, view){
+          let cuerpo = `<div style="font-size: 12px;">`;
+          if ( typeof event["trabajador_1"] !== 'undefined' ) {
+            cuerpo += `<strong>PRINCIPAL: </strong>`+event.trabajador_1+` (`+event.cargo_1+`)<br>`;
+          }
+          if ( typeof event["trabajador_2"] !== 'undefined' ) {
+            cuerpo += `<strong>AYUDANTE 1: </strong>`+event.trabajador_2+` (`+event.cargo_2+`)<br>`;
+          }
+          cuerpo += `<strong>VEHICULO: </strong>`+event.transporte+`<br>`;
+          cuerpo += `</div>`;
+          element.popover({
+            title: '<div style="font-size: 12px;"><strong>'+event.title+'</strong></div>',
+            content: cuerpo,
+            trigger: 'hover',
+            placement: 'top',
+            container: 'body',
+            html: true
+          });
+        },
+        drop: function(date) { $this.onDrop($(this), date); },
+        select: function (start, end, jsEvent, view) { $this.onSelect(start, end, jsEvent, view); },
+        eventClick: function(calEvent, jsEvent, view) { $this.onEventClick(calEvent, jsEvent, view); }
+      });
+    },
+    $.CalendarApp = new CalendarApp, $.CalendarApp.Constructor = CalendarApp
+  }(window.jQuery),
+  function($){
+    "use strict";
+    $.CalendarApp.init();
+    new PerfectScrollbar('#calendar-events');
+  }(window.jQuery);
+  setTimeout("jQuery('#calendar').fullCalendar('render'); jQuery('#calendar-events').height(jQuery('#calendar .fc-view-container').height()+jQuery('#calendar .fc-header-toolbar').height());",100);
+</script>
+<!-- END BLOCK : module -->
