@@ -11,15 +11,32 @@
 
 > Sistema de Maestranzas (gestiona empresas que aplican servicios a Maquinas de Mineria, construccion en general.
 
-### 🏠 [Homepage](https://metalsigma.cl/)
+### 🏠 [Web](https://metalsigma.cl/)
 
-## Usage
+## Contenido
+
+* Ventas
+* Compras
+* Cotizaciones
+* Inventario
+* Permisologia
+* Planificacion de Actividades
+* Maestras de datos (mantenedores)
+
+## Herramientas
+
+* PHP 7
+* Mysql (5.6)
+* Boostrap
+* jQuery
+
+## Uso
 
 ```sh
-Clonas el proyecto creas la BD y listo!
+Solo se debe Clonar el Sistema y podra ser usado!
 ```
 
-## Author
+## Autor
 
 👤 ** Juan Gutierrez**
 
