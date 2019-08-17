@@ -3,6 +3,7 @@ require_once("class.bd_connect.php");
 class database {
     private $conn;
     private $con_;
+    private $produccion;
     public $table;
     public $fields;
     public $tablekey;
@@ -12,21 +13,16 @@ class database {
         $this->table =$table;
         $this->tablekey =$key;
         /** Por defecto todo valor agregado a la BD es pasado a Mayuscula, sin embargo existen campos donde no se
-        debe aplicar dicha regla, por ejemplo claves.
-        Creo un arreglo con aquellos campos que no convertire a Mayuscula.
+        * debe aplicar dicha regla, por ejemplo claves.
+        * Creo un arreglo con aquellos campos que no convertire a Mayuscula.
         */
         $this->rows_not_upper =array("clave","picture");
         $this->fields =array ();
         $this->con_ = connect();
         if($this->con_["title"]=="SUCCESS"){
             $this->conn=$this->con_["content"];
+            $this->produccion=$this->con_["pro"];
         }
-        /*try {
-            $this->conn = connect();
-        } catch (Exception $e){
-            $response["title"]="ERROR";
-            $response["content"]=strtoupper($e->getMessage());
-        }*/
     }
     /** Obtiene los registros de la tabla segun los campos listados en la Classe
     * @param campos_srt: Si es false obtiene los campos de la classe, de lo contrario toma los campos listados
@@ -37,7 +33,6 @@ class database {
     * @param limit_str: Condiciones de Limites
     */
     public function getRecords($campos_srt=false,$where_str=false, $group_str=false, $order_str=false, $having_str=false,$limit_str=false){
-        $response=array();
         $order =$order_str ? "ORDER BY $order_str" : "ORDER BY $this->tablekey ASC";
         $limit =$limit_str ? "LIMIT $limit_str" : false;
         $campos =$campos_srt ? "$campos_srt" : $this->getAllFields();
@@ -66,8 +61,6 @@ class database {
         $group = $group_str ? "GROUP BY $group_str" : "" ;
         $having = $having_str ? "HAVING $having_str" : "" ;
         $query .= " $group $having $order $limit";
-        //echo $query."<br>";
-        //print_r($values)."<br>";
         return $this->validateOperation($query,$values);        
     }
     /** Obtiene un registro de la BD segun su ID
@@ -84,7 +77,6 @@ class database {
     * @param data: arreglo de datos que se insertaran (deben estar en el mismo orden de los campos declarados)
     */
     public function insertRecord($data){
-        $response=array();
         $campos_insert =$this->getInsertFields();
         $campos_values =$this->getInsertFields(true);
         $query = "INSERT INTO {$this->table} ($campos_insert) VALUES (";
@@ -94,16 +86,14 @@ class database {
         }
         $query = substr($query,0,-2);
         $query .= " )";
-        //echo $query."<br>";
-        //print_r($values)."<br>";
         return $this->validateOperation($query,$values);
     }
+    /* En Prueba
+    */
     public function insertRecords($data){
-        $response=array();
         $campos_insert =$this->getInsertFields();
         $campos_values =$this->getInsertFields(true);
         $leng = $this->count_dimension($data);
-        //$query = "INSERT INTO {$this->table} ($campos_insert) VALUES (";
         $query = "INSERT INTO {$this->table} ($campos_insert) VALUES ";
         if($leng==1){
             $query .= "( ";
@@ -126,9 +116,7 @@ class database {
             $query = substr($query,0,-2);
             $query .= ";";
         }
-        echo $query."<br>";
-        print_r($values)."<br>";
-        //return $this->validateOperation($query,$values);
+        return $this->validateOperation($query,$values);
     }
     /** Inserta registros en la BD, si el KEY existe lo actualiza UPSERT
     * para que funcione como se espere, el ID de la tabla debe especificarse en el INSERT si no no disparara
@@ -136,7 +124,6 @@ class database {
     * @param data: arreglo de datos que se insertaran (deben estar en el mismo orden de los campos declarados)
     */
     public function upsertRecord($data){
-        $response=array();
         $campos =$this->getInsertFields();
         $campos2 =$this->getEditFields(true);
         $query = "INSERT INTO {$this->table} ($campos) VALUES (";
@@ -153,11 +140,10 @@ class database {
             $values[] = (in_array($campos2[$key], $this->rows_not_upper)) ? $value : mb_strtoupper($value, 'UTF-8') ;
         }
         $query = substr($query,0,-2);
-        //echo $query."<br>";
-        //print_r($values)."<br>";
         return $this->validateOperation($query,$values);
     }
-    /** Retorna el ultimo ID insertado (Solo funciona si el ID lo asigna un AutoIncrement)
+    /** Retorna el ultimo ID insertado
+    * (Solo funciona si el ID lo asigna un AutoIncrement)
     */
     public function return_id(){
         return $this->conn->lastInsertId();
@@ -177,7 +163,6 @@ class database {
         }
         $query = substr($query,0,-2);
         if ($where_str) {
-            //print_r($where_str)."<br>";
             if(array_key_exists(0, $where_str)){
                 $query .= " WHERE {$this->tablekey} > ?";
                 $values[]=0;
@@ -199,8 +184,6 @@ class database {
             $query .= " WHERE {$this->tablekey} = ?";
             $values[]=$id;            
         }
-        //echo $query."<br>";
-        //print_r($values)."<br>";
         return $this->validateOperation($query,$values);
     }
     /** Elimina registros de la tabla segun las condiciones del Parametro
@@ -208,9 +191,8 @@ class database {
     */
     public function deleteRecords($where_str=false){
         $query = "DELETE FROM {$this->table}";
-        $values = $values2 = array();
+        $values  = array();
         if ($where_str) {
-            //print_r($where_str)."<br>";
             if(array_key_exists(0, $where_str)){
                 $query .= " WHERE $this->tablekey > ?";
                 $values[]=0;
@@ -227,8 +209,6 @@ class database {
                 }
             }
         }
-        //echo $query."<br>";
-        //print_r($values)."<br>";
         return $this->validateOperation($query,$values);
     }
     /** Elimina un registro de la tabla segun el ID
@@ -237,7 +217,6 @@ class database {
     public function deleteRecord($id){
         $query = "DELETE FROM {$this->table} WHERE {$this->tablekey} = ?";
         $values[]=$id;
-        //echo $query."<br>";
         return $this->validateOperation($query,$values);
     }
     /** Ejecuta directamente una Sentencia
@@ -261,8 +240,9 @@ class database {
                             $response["rows"]=$row_affected;
                             $response["content"]=$result;
                         }else{
+                            $query = $this->produccion ? "" : "QUERY: <strong>".$query."</strong>";
                             $response["title"]="WARNING";
-                            $response["content"]="LA SENTENCIA NO DEVOLVIO NINGUN REGISTRO.  QUERY: <strong>".$query."</strong>";
+                            $response["content"]="LA SENTENCIA NO DEVOLVIO NINGUN REGISTRO. ".$query;
                         }
                     }elseif(preg_match('/^INSERT/', $query)){
                         //Insert consigo el ID insertado, asi mismo como el registro insertado
@@ -273,8 +253,6 @@ class database {
                         $response["content"]=true;
                     }elseif (preg_match('/^UPDATE|DELETE/', $query)) {
                         //Upate o Delete indago si afecto una o mas filas, de ser asi devuelvo el numero de filas afectadas
-                        //$titulo = ($row_affected>0) ? "SUCCESS" : "WARNING" ;
-                        //$contenido = ($row_affected>0) ? true : "NINGUN REGISTRO FUE AFECTADO.  QUERY: <strong>".$query."</strong>" ;
                         $titulo="SUCCESS";
                         $contenido=true;
                         $response["title"]=$titulo;
@@ -284,13 +262,15 @@ class database {
                     }
                 }else{
                     // La sentencia no se Ejectuo
+                    $query = $this->produccion ? "" : "QUERY: <strong>".$query."</strong>";
                     $response["title"]="WARNING";
-                    $response["content"]="LA SENTENCIA NO SE EJECUTO.  QUERY: <strong>".$query."</strong>";
+                    $response["content"]="LA SENTENCIA NO SE EJECUTO. ".$query;
                 }
             } catch (PDOException $e) {
                 //PDO arrojo un error lo capturo y lo envio
+                $query = $this->produccion ? "" : "QUERY: <strong>".$query."</strong>";
                 $response["title"]="ERROR";
-                $response["content"]=$e->getMessage()." QUERY: <strong>".$query."</strong>";
+                $response["content"]=$e->getMessage()." ".$query;
             }
         }else{
             $response["title"]="ERROR";
@@ -326,8 +306,9 @@ class database {
                             $response["rows"]=$row_affected;
                             $response["content"]=$result;
                         }else{
+                            $query = $this->produccion ? "" : "QUERY: <strong>".$query."</strong>";
                             $response["title"]="WARNING";
-                            $response["content"]="LA SENTENCIA NO DEVOLVIO NINGUN REGISTRO.  QUERY: <strong>".$query."</strong>";
+                            $response["content"]="LA SENTENCIA NO DEVOLVIO NINGUN REGISTRO. ".$query;
                         }
                     }elseif(preg_match('/^INSERT/', $query)){
                         //Insert consigo el ID insertado, asi mismo como el registro insertado
@@ -338,8 +319,6 @@ class database {
                         $response["content"]=true;
                     }elseif (preg_match('/^UPDATE|DELETE/', $query)) {
                         //Upate o Delete indago si afecto una o mas filas, de ser asi devuelvo el numero de filas afectadas
-                        //$titulo = ($row_affected>0) ? "SUCCESS" : "WARNING" ;
-                        //$contenido = ($row_affected>0) ? true : "NINGUN REGISTRO FUE AFECTADO.  QUERY: <strong>".$query."</strong>" ;
                         $titulo="SUCCESS";
                         $contenido=true;
                         $response["title"]=$titulo;
@@ -349,13 +328,15 @@ class database {
                     }
                 }else{
                     // La sentencia no se Ejectuo
+                    $query = $this->produccion ? "" : "QUERY: <strong>".$query."</strong>";
                     $response["title"]="WARNING";
-                    $response["content"]="LA SENTENCIA NO SE EJECUTO.  QUERY: <strong>".$query."</strong>";
+                    $response["content"]="LA SENTENCIA NO SE EJECUTO. ".$query;
                 }
             } catch (PDOException $e) {
                 //PDO arrojo un error lo capturo y lo envio
+                $query = $this->produccion ? "" : "QUERY: <strong>".$query."</strong>";
                 $response["title"]="ERROR";
-                $response["content"]=$e->getMessage()." QUERY: <strong>".$query."</strong>";
+                $response["content"]=$e->getMessage()." ".$query;
             }
         }else{
             $response["title"]="ERROR";
