@@ -39,7 +39,6 @@ class database {
         $query = "SELECT $campos FROM {$this->table}";
         $values = $values2 = array();
         if ($where_str) {
-            //print_r($where_str)."<br>";
             if(array_key_exists(0, $where_str)){
                 $query .= " WHERE $this->tablekey > ?";
                 $values[]=0;
