@@ -1,4 +1,4 @@
-<h1 align="center">Metalsigma 👋 <small>Gestión, Planificación, Control</small></h1>
+<h1 align="center">Metalsigma 👋</h1><h3>Gestión, Planificación, Control</h3>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.2-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/JuJoGuAl/metalsigma">
