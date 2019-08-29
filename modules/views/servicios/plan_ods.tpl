@@ -1,7 +1,4 @@
 <!-- START BLOCK : module -->
-<script>
-  var ini_dia = '{inicio}', fin_dia = '{fin}', pasado = {pasado}, today = '{hoy}';
-</script>
 <div class="page-breadcrumb bg-white">
     <div class="row">
         <div class="col-lg-3 col-md-4 col-xs-12 align-self-center">
@@ -59,18 +56,31 @@
             </div>
         </div>
     </div>
+  </div>
+  <div class="row">
     <div class="col-md-3">
       <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-12">
-              <div id="calendar-events" style="height: 700px; position: relative;">
-                <!-- START BLOCK : ods -->
-                <div class="calendar-events mb-3" data-class="bg-{color}" data-ods-full="{ods_full}" data-rut="{code}" data-cliente="{data}" data-inicio="{llegada}" data-fin="{retiro}" data-ht="{horas}" data-hr="{restante}" data-trab="{trabs}" data-cliente="{codigo_cliente}" data-codigo="{codigo}" data-lugar="{lugar}" data-vehiculo="{transporte}"><i class="fa fa-circle text-{color} mr-2"></i>ODS {ods_full}: {maquina} {marca} {modelo} de <strong>{data}</strong> ({restante} / {horas})</div>
-                <!-- END BLOCK : ods -->
+        <div id="calendar-events" class="card-body" style="height: 700px; position: relative; padding: 0.5rem; padding-top: 1.57rem;">
+          <!-- START BLOCK : ods -->
+          <div class="col-md-12 calendar-events" style="padding: 0px 10px;" data-codigo="{codigo}">
+            <div class="card material-card">
+              <div class="card-body" style="padding: 0.7rem;">
+                <h6 class="text-uppercase" style="font-size: 0.8rem;"><i class="fa fa-circle text-{color} mr-2"></i> {ods_full}: <strong>{data}</strong></h6>
+                <p>{maquina} {marca} {modelo}</p>
+                <div class="d-flex align-items-center">
+                  <div class="col-6">
+                      <div class="progress">
+                          <div class="progress-bar bg-primary" role="progressbar" style="width: {avance}%" aria-valuenow="{avance}" aria-valuemin="0" aria-valuemax="{avance}"></div>
+                      </div>
+                  </div>
+                  <div class="ml-auto">
+                    <p class="text-primary mb-0"></i>{restante} / {horas}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <!-- END BLOCK : ods -->
         </div>
       </div>
     </div>
@@ -78,7 +88,7 @@
   </div>
 </div>
 <script>
-  var ini_,fin_,date_,dia_;
+  var ini_,fin_;
   var events_ = new Array();
   events_ = [
   <!-- START BLOCK : events -->
@@ -104,53 +114,49 @@
     var CalendarApp = function() {
       this.$calendar = $('#calendar'),
       this.$event = ('#calendar-events div.calendar-events'),
-      this.$modal = $('#Modal_Event'),
       this.$calendarObj = null
     };
 
     CalendarApp.prototype.onDrop = function (eventObj, date){
-      date_ = moment(date).format('DD-MM-YYYY');
-      let variables = [];
-      variables.push(ini_dia);
-      variables.push(fin_);
-      variables.push(date_);
-      variables.push(eventObj.attr('data-codigo'));
-      GetModule("SERVICIOS","PLAN_ODS","PLAN_ODS_FORM","NONE","NEW",variables);
+      if((moment(date.format("DD-MM-YYYY HH:mm"),"DD-MM-YYYY HH:mm").diff(moment("{fecha_past}","DD-MM-YYYY HH:mm")))>=0){
+        let variables = [];
+        variables.push(moment(date).format('DD-MM-YYYY'));
+        variables.push(0);
+        variables.push(0);
+        variables.push(eventObj.attr('data-codigo'));
+        GetModule("SERVICIOS","PLAN_ODS","PLAN_ODS_FORM","NONE","NEW",variables);
+      }else{
+        dialog("NO SE PUEDEN CREAR PLANIFICACIONES EN EL PASADO!","ERROR");
+      }
     },
     CalendarApp.prototype.onEventClick =  function (calEvent, jsEvent, view){
-      let dias = moment(calEvent.start, "DD-MM-YYYY").diff(moment(moment(), "DD-MM-YYYY"),"days");
-      if(dias < 0){
-        dialog("NO SE PUEDE EDITAR UNA PLANIFICACION DEL PASADO","ERROR");
-      }else{
+      if((moment(calEvent.start.format("DD-MM-YYYY HH:mm"),"DD-MM-YYYY HH:mm").diff(moment("{fecha_past}","DD-MM-YYYY HH:mm")))>=0){
         GetModule("SERVICIOS","PLAN_ODS","PLAN_ODS_FORM","NONE","EDIT",calEvent.id);
+      }else{
+        dialog("NO SE PUEDE EDITAR UNA PLANIFICACION DEL PASADO","ERROR");
       }
     },
     CalendarApp.prototype.onSelect = function (start, end, jsEvent, view){
-      let dias = moment(start, "DD-MM-YYYY").diff(moment(today, "DD-MM-YYYY"),"days");
-      ini_ = moment(start).format('HH:mm');
-      fin_ = moment(end).format('HH:mm');
-      date_ = moment(start).format('DD-MM-YYYY');
-      today_ =moment(today, "DD-MM-YYYY");
-      console.log(date_.diff(today_));
-      dia_ = start.day()
-      if(view.name=="month"){
-        ini_=fin_=0;
+      if((moment(start.format("DD-MM-YYYY HH:mm"),"DD-MM-YYYY HH:mm").diff(moment("{fecha_past}","DD-MM-YYYY HH:mm")))>=0){
+        let variables = [];
+        ini_ = moment(start).format('HH:mm');
+        fin_ = moment(end).format('HH:mm');
+        if(view.name=="month"){
+          ini_=fin_=0;
+        }
+        variables.push(moment(start).format('DD-MM-YYYY'));
+        variables.push(ini_);
+        variables.push(fin_);
+        variables.push(0);
+        GetModule("SERVICIOS","PLAN_ODS","PLAN_ODS_FORM","NONE","NEW",variables);
+      }else{
+        dialog("NO SE PUEDEN CREAR PLANIFICACIONES EN EL PASADO!","ERROR");
       }
-      let variables = [];
-      variables.push(ini_);
-      variables.push(fin_);
-      variables.push(date_);
-      variables.push(0);
-      GetModule("SERVICIOS","PLAN_ODS","PLAN_ODS_FORM","NONE","NEW",variables);
       var $this = this;
       $this.$calendarObj.fullCalendar('unselect');
     },
     CalendarApp.prototype.enableDrag = function(){
       $(this.$event).each(function (){
-        // var eventObject = {
-        //   title: "ODS: #"+jQuery(this).attr("data-ods-full")
-        // };
-        // $(this).data('eventObject', eventObject);
         $(this).draggable({
           zIndex: 999,
           revert: true,
@@ -163,8 +169,8 @@
       var $this = this;
       $this.$calendarObj = $this.$calendar.fullCalendar({
         slotDuration: '00:15:00',
-        minTime: '08:00:00',
-        maxTime: '19:00:00',
+        minTime: '{inicio}',
+        maxTime: '{fin}',
         defaultView: 'month',
         handleWindowResize: true,
         header:{
@@ -172,6 +178,7 @@
           center: 'title',
           right: 'month,agendaWeek,agendaDay'
         },
+        locale: 'es',
         events: events_,
         editable: false,
         droppable: true,

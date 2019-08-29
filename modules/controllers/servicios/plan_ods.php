@@ -32,17 +32,15 @@ if($perm_val["title"]<>"SUCCESS"){
 			$tpl->assign("mod_name","ORDENES DE SERVICIO");
 		}
 
-		$cola=$parametros->list_all();
-		$colacion = $cola["content"][16]["valor"];
-		$inicio = $cola["content"][17]["valor"];
-		$fin = $cola["content"][18]["valor"];
-		$dias_pasado = $cola["content"][20]["valor"];
-		$tpl->assign("colacion",$colacion);
-		$tpl->assign("inicio",$inicio);
-		$tpl->assign("fin",$fin);
-		$tpl->assign("pasado",$dias_pasado);
-		$tpl->assign("hoy",date("d-m-Y"));
-		$tpl->assign("fin_cola",setDate($cola["content"][18]["valor"],"H:i","PT".setDate("00:".$cola["content"][16]["valor"],"i")."M"));
+		$param=$parametros->list_all();
+		$colacion = $param["content"][16]["valor"];
+		$inicio = $param["content"][17]["valor"];
+		$fin = $param["content"][18]["valor"];
+
+		$tpl->assign("inicio",$inicio.":00");
+		$tpl->assign("fin",$fin.":00");
+		$tpl->assign("fecha_past",setDate(date("d-m-Y"),"d-m-Y H:i","-P".$param["content"][20]["valor"]."D"));
+		$tpl->assign("fin_cola",setDate($param["content"][18]["valor"],"H:i","PT".setDate("00:".$param["content"][16]["valor"],"i")."M"));
 
 		$data=$data_class->list_all($array_cot_fac,"DISTINCT((d.code)) AS code");
 		if($data["title"]=="SUCCESS"){
@@ -94,6 +92,7 @@ if($perm_val["title"]<>"SUCCESS"){
 				$tpl->assign("status","status: '".$value["status"]."'");
 				$tpl->assign("transporte","transporte: '".$value["transporte"]."'");
 				$tpl->assign("start","start: '".$value["finicio"]."'");
+				$tpl->assign("end","end: '".$value["ffin"]."'");
 				$tpl->assign("end","end: '".$value["ffin"]."'");
 				$color_plan = (!array_key_exists($value["codigo_ods"], $trab_color)) ? "dark" : $trab_color[$value["codigo_ods"]] ;
 				$tpl->assign("color","className: 'bg-".$color_plan."'");

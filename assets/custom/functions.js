@@ -47,7 +47,6 @@ function SetCalendar(){
         language: 'es',
         autoclose: true,
         todayHighlight: true,
-        // format: "dd/mm/yyyy",
         format: "dd-mm-yyyy"
         };
     jQuery(".dates").datepicker("destroy");

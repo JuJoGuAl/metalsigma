@@ -10,7 +10,15 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 //CLASSE DE PERMISOS (ASI EVITO TENER QUE INVOCARLA EN CADA MODULO)
 include_once("class.permission.php");
+include_once("class.parameter.php");
 $perm = new permisos;
+$parametros = new parametros();
+$par=$parametros->list_all();
+foreach ($par["content"] as $key => $value) {
+	if(!defined($value["parametro"])){
+        define($value["parametro"], $value["valor"]);
+    }
+}
 $selected = 'selected="selected"';
 //BOOLEANS
 $array_bool=array();

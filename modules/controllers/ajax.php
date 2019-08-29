@@ -26,7 +26,6 @@ $equipos = new equipos();
 $proveedores = new proveedores();
 $trabajadores = new trabajadores();
 $inventario = new inventario();
-$parametros = new parametros();
 $admin = new paradm;
 $compras = new compras;
 $cotizaciones = new cotizaciones;
@@ -49,10 +48,6 @@ if (!isset($_SESSION['metalsigma_log'])){
 			foreach ($perm_val["content"][0]["alm"] as $key => $value) {
 				$almacenes[] .= $perm_val["content"][0]["alm"][$key]["calmacen"];
 			}
-		}
-		$par=$parametros->list_all();
-		foreach ($par["content"] as $key => $value) {
-			define($value["parametro"], $value["valor"]);
 		}
 		$accion=(isset($_REQUEST['accion'])?$_REQUEST['accion']:'');
 		switch ($accion){
@@ -927,7 +922,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 			$response["content"]=$content;
 		}else if ($accion=="refresh_rep_trabajos"){
 			$fecha = setDate($_POST["date"],"Y-m-d");
-			$data = $planificaciones->list_ocupa_plan("nt.ctrabajador",$fecha,$fecha,$array_car_emp);
+			$data = $planificaciones->list_ocupa_plan("nt.ctrabajador",$fecha,$fecha);
 			//print_r($data);
 			if($data["title"]=="SUCCESS"){
 				$response["title"]="SUCCESS";

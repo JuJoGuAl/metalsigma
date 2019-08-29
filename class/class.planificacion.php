@@ -34,6 +34,7 @@ class planificaciones{
 			array ('public',	'finicio'),
 			array ('public',	'ffin'),
 			array ('public',	'adi'),
+			array ('public',	'notas'),
 			array ('public_i',	'crea_user'),
 			array ('public_u',	'mod_user')
 		);
@@ -85,6 +86,7 @@ class planificaciones{
 			array ('system',	'eq.cmarca'),
 			array ('system',	'em.marca'),
 			array ('system',	'eq.modelo'),
+			array ('system',	'pc.status AS plan_status'),
 			array ('system',	'((TIMESTAMPDIFF(MINUTE, pc.finicio, pc.ffin))/60) AS duracion'),
 			array ('system',	'DATE_FORMAT(pc.crea_date, "%d/%m/%Y %T") AS crea_date'),
 			array ('system',	'DATE_FORMAT(pc.mod_date, "%d/%m/%Y %T") AS mod_date'),
@@ -141,6 +143,7 @@ class planificaciones{
 			array ('system',	'em.marca'),
 			array ('system',	'eq.modelo'),
 			array ('system',	'nc.cargo'),
+			array ('system',	'pc.status AS plan_status'),
 			array ('system',	'nt.horas AS horas_sem'),
 			array ('system',	'(nt.horas)/5 AS horas_dia')
 		);
@@ -166,6 +169,9 @@ class planificaciones{
 		$data[0]["row"]="pc.status";
 		$data[0]["operator"]="=";
 		$data[0]["value"]=1;
+		/*$data[1]["row"]="cs.status";
+		$data[1]["operator"]="=";
+		$data[1]["value"]="PRO";*/
 		return $this->db2->getRecords(false,$data);
 	}
 	//LISTAR ODS PLANIFICADAS, AGRUPADAS POR ODS

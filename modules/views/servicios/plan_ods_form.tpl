@@ -162,8 +162,8 @@
                 <input type="hidden" id="id" name="id" value="{id}">
                 <!-- START BLOCK : data_save -->
                 <button class="btn btn-outline-secondary waves-effect waves-light" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="SAVE" data-id="{codigo}"><span class="btn-label"><i class="fas fa-save"></i></span> GUARDAR</button>
-                <!-- END BLOCK : data_save -->
                 <button class="btn btn-outline-secondary waves-effect waves-light" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="DEL" data-id="{codigo}"><span class="btn-label"><i class="fas fa-trash-alt"></i></span> ELIMINAR</button>
+                <!-- END BLOCK : data_save -->
                 <button class="btn btn-outline-secondary waves-effect waves-light menu" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="CLOSE" data-id="0"><span class="btn-label"><i class="fas fa-sign-out-alt"></i></span> CERRAR</button>
               </div>
             </div>
@@ -203,20 +203,19 @@
         if(validate("hora_ini")){
           if(validate("hora_fin")){
             if(validate("trab1")){
-              let startTime=moment(jQuery("#hora_ini").val(), "HH:mm"), endTime=moment(jQuery("#hora_fin").val(), "HH:mm"), dias = moment(jQuery("#f_trab").val(), "DD-MM-YYYY").diff(moment(moment(), "DD-MM-YYYY"),"days"), duration = moment.duration(endTime.diff(startTime)), diferencia = parseFloat(duration.asHours());
+              let startTime=moment(jQuery("#hora_ini").val(), "HH:mm"), endTime=moment(jQuery("#hora_fin").val(), "HH:mm");
               if(endTime<startTime){
                 dialog("NO SE PUEDE ASIGNAR UNA HORA FINAL ANTES DE LA INICIAL","ERROR");
               }else{
-                //if(dias < 0){
-                if(1 < 0){
-                  dialog("NO SE PUEDE ASIGNAR UNA PLANIFICACION EN DIAS ANTERIORES","ERROR");
-                }else{
+                if((moment(moment(jQuery("#f_trab").val(), "DD-MM-YYYY").format("DD-MM-YYYY HH:mm"),"DD-MM-YYYY HH:mm").diff(moment("{fecha_past}","DD-MM-YYYY HH:mm")))>=0){
                   let event = function (){ SendForm(mod,submod,ref,subref,"#form_",assoc_id); }
                   if(jQuery("#hr_restant").val()*1 <= 0){
                     dialog("ESTA PLANIFICACION UTILIZARA HORAS <span class='font-weight-bold'>NO COTIZADAS</span>, LO CUAL SE MARCARAN COMO HORAS ADICIONALES.<br><span class='font-weight-bold font-italic'>SI CONTINUA SE GENERARA UN AVISO AL AREA COMERCIAL!</span><br><br>¿DESEA CONTINUAR?","WARNING",event);
                   }else{
                     event();
                   }
+                }else{
+                  dialog("NO PUEDE PLANIFICAR EN LA FECHA INDICADA!","ERROR");
                 }
               }
             }
