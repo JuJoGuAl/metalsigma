@@ -1,11 +1,3 @@
-<?php
-include_once("../../class/class.parameter.php");
-$parametros = new parametros();
-$par=$parametros->list_all();
-foreach ($par["content"] as $key => $value) {
-    define($value["parametro"], $value["valor"]);
-}
-?>
 <page_footer>	
     <table style="width: 100%;">
         <tr>

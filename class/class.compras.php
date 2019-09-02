@@ -36,6 +36,10 @@ class compras{
 	private $db9;
 	public $table9;
 	public $Id9;
+	//ODC_ODS_USADOS
+	private $db10;
+	public $table10;
+	public $Id10;
 	public function __construct(){
 		include_once('class.bd_transsac.php');
 		//COTIZACION_LIST
@@ -257,6 +261,38 @@ class compras{
 			array ('system',	"imd.costot"),
 			array ('system',	"imd.corigen_det"),
 			array ('system',	"imd.corden_det")
+		);
+		//ODC_DET_LIST
+		$this->table10 = "com_odc_det ocd ";
+		$this->table10 .= "INNER JOIN inv_articulos art USING (carticulo) INNER JOIN inv_clasificacion ic USING (cclasificacion)";
+		$this->table10 .= " INNER JOIN com_odc oc USING (corden)";
+		$this->table10 .= "INNER JOIN pro_proveedores pro USING(cproveedor) INNER JOIN data_entes d USING (cdata) ";
+		$this->tId10 = "ocd.corden_det";
+		$this->db10 = new database($this->table10, $this->tId10);
+		$this->db10->fields = array (
+			array ('system',	"LPAD(".$this->tId10."*1,"._PAD_CEROS_.",'0') AS codigo"),
+			array ('system',	"LPAD(ocd.corden*1,"._PAD_CEROS_.",'0') AS origen"),
+			array ('system',	"LPAD(art.carticulo*1,"._PAD_CEROS_.",'0') AS codigo_art"),
+			array ('system',	"LPAD(oc.ods*1,"._PAD_CEROS_.",'0') AS codigo_ods"),
+			array ('system',	"(d.code) AS code"),
+			array ('system',	'd.data'),
+			array ('system',	'oc.status'),
+			array ('system',	'art.codigo2'),
+			array ('system',	'art.articulo'),
+			array ('system',	'art.descripcion'),
+			array ('system',	"ic.clasificacion"),
+			array ('system',	"(ic.articulo) AS tip_clasif"),
+			array ('system',	'art.cant AS cant_inv'),
+			array ('system',	'ocd.cant'),
+			array ('system',	'ocd.costou'),
+			array ('system',	'ocd.imp_p'),
+			array ('system',	'ocd.imp_m'),
+			array ('system',	'ocd.costot'),
+			array ('system',	'ocd.cant_rest'),
+			array ('system',	'ocd.crea_user'),
+			array ('system',	'ocd.mod_user'),
+			array ('system',	'DATE_FORMAT(ocd.crea_date, "%d/%m/%Y %T") AS crea_date'),
+			array ('system',	'DATE_FORMAT(ocd.mod_date, "%d/%m/%Y %T") AS mod_date')
 		);
 	}
 	/** COTIZACIONES */
@@ -610,6 +646,17 @@ class compras{
 		}
 		$resultado=$result;
 		return $resultado;
+	}
+	//OBTENER
+	public function get_art_odc_used($art,$ods){
+		$data = array ();
+		$data[0]["row"]="art.carticulo";
+		$data[0]["operator"]="=";
+		$data[0]["value"]=$art;
+		$data[1]["row"]="oc.ods";
+		$data[1]["operator"]="=";
+		$data[1]["value"]=$ods;
+		return $this->db10->getRecords(false,$data);
 	}
 }
 ?>

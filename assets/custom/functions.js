@@ -1099,13 +1099,43 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                                     <td><input type="text" id="cant[`+count+`]" name="cant[]" class="form-control numeric" maxlength="10" style="width:100px" value=""></td>
                                     <td><input type="text" id="precio[`+count+`]" name="precio[]" class="form-control numeric" maxlength="12" style="width:100px" value=""></td>
                                     <td><input type="text" id="imp[`+count+`]" name="imp[]" class="form-control numeric" maxlength="12" style="width:100px" value="`+data.imp+`" readonly></td>
-                                    <td><input type="text" id="total[`+count+`]" name="total[]" class="form-control" style="width:100px" value="0" disabled></td>
-                                    <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
-                                    </tr>`;
+                                    <td><input type="text" id="total[`+count+`]" name="total[]" class="form-control" style="width:100px" value="0" disabled></td>`;
+                                    btn=`<td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>`;
+                                    if(submod=="CRUD_ODC_ODS"){
+                                        let cots = "";
+                                        if(typeof value.ods_arts !== 'undefined'){
+                                            jQuery.each(value.ods_arts, function(i,v){
+                                                cots += "ODC # "+v.origen+" (<strong>"+v.status+"</strong>) - CANT: "+v.cant+"<br>";
+                                            });
+                                            btn=`<td>
+                                                <button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button>
+                                                <span class="badge badge-pill count badge-info" data-conten="`+cots+`"><i class="fas fa-star"></i></span>
+                                            </td>`;
+                                        }                                        
+                                    }
+                                    tr_det+=btn;
+                                    tr_det+=`</tr>`;
                                 }
                             }
                             jQuery("#"+tbl_det+" tbody").append(tr_det);
+                            if(submod=="CRUD_ODC_ODS"){
+                                if(typeof value.ods_arts !== 'undefined'){
+                                    jQuery("#"+tbl_det+" tbody tr").last().addClass("table-warning");
+                                }
+                            }
                         });
+                        if(submod=="CRUD_ODC_ODS"){
+                            jQuery(".count").each(function(){
+                                jQuery(this).popover({
+                                  title: '<div style="font-size: 12px;"><strong>PROCESADO POR:</strong></div>',
+                                  content: '<div style="font-size: 12px;">'+jQuery(this).attr("data-conten")+'</div>',
+                                  trigger: 'hover',
+                                  placement: 'left',
+                                  container: 'body',
+                                  html: true
+                                });
+                            });
+                        }
                         jQuery(".preloader").fadeOut();
                     }else{
                         jQuery(".preloader").fadeOut();

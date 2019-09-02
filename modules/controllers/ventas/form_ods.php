@@ -6,18 +6,12 @@ if($perm_val["title"]<>"SUCCESS"){
 }else{
 	include_once("./class/class.cotizaciones.php");
 	include_once("./class/class.par_admin.php");
-	include_once("./class/class.parameter.php");
 	include_once("./class/class.clientes.php");
 	$data_class = new cotizaciones;
 	$param = new paradm;
 	$clientes = new clientes;
-	$parametros = new parametros();	
 	$modulo = $perm->get_module($_GET['submod']);
 	if(Evaluate_Mod($modulo)){
-		$par=$parametros->list_all();
-		foreach ($par["content"] as $key => $value) {
-			define($value["parametro"], $value["valor"]);
-		}
 		$tpl->newBlock("module");
 		foreach ($modulo["content"] as $key => $value){
 			//VARIABLES PARA NAVEGAR

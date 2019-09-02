@@ -8,7 +8,6 @@ include_once("../../class/class.equipos.php");
 include_once("../../class/class.proveedores.php");
 include_once("../../class/class.trabajadores.php");
 include_once("../../class/class.inventario.php");
-include_once("../../class/class.parameter.php");
 include_once("../../class/class.par_admin.php");
 include_once("../../class/class.compras.php");
 include_once("../../class/class.cotizaciones.php");
@@ -1008,8 +1007,17 @@ if (!isset($_SESSION['metalsigma_log'])){
 			$data=$cotizaciones->list_art_ods($_POST["code"],$f_alm);
 			if($data["title"]=="SUCCESS"){
 				$response["title"]="SUCCESS";
-				$response["content"]=$data["content"];
 				$response["imp"]=constant("IMPUESTOS");
+				if($_POST['mod']=="CRUD_ODC_ODS"){
+					foreach ($data["content"] as $key => $value) {
+						$art_comp=$compras->get_art_odc_used($value["codigo"],$_POST["code"]);
+						//print_r($art_comp);
+						if($art_comp["title"]=="SUCCESS"){
+							$data["content"][$key]["ods_arts"]=$art_comp["content"];
+						}
+					}
+				}
+				$response["content"]=$data["content"];
 			}
 		}else if($accion=="add_ser_cot"){
 			if(isset($_POST['code'])){
