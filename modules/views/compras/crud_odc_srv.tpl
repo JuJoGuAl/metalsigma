@@ -61,7 +61,7 @@
 <script>
   jQuery("._stats").each(function(){
     jQuery(this).popover({
-      title: '<div style="font-size: 12px;">COTIZACION: <strong>'+jQuery(this).attr("data-title")+'</strong></div>',
+      title: '<div style="font-size: 12px;">COTIZACION COMP: <strong>'+jQuery(this).attr("data-title")+'</strong></div>',
       content: '<div style="font-size: 12px;">'+jQuery(this).attr("data-cuerpo")+'</div>',
       trigger: 'hover',
       placement: 'left',

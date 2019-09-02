@@ -133,6 +133,8 @@ class compras{
 		$this->table5 .= " LEFT JOIN adm_usuarios u2 ON oc.mod_user=u2.cusuario LEFT JOIN nom_trabajadores t2 ON u2.ctrabajador=t2.ctrabajador LEFT JOIN data_entes d2 ON t2.cdata=d2.cdata LEFT JOIN nom_cargos c2 ON t2.ccargo=c2.ccargo";
 		//ODS
 		$this->table5 .= " LEFT JOIN co_cotizacion_sub cs ON oc.ods=cs.ccotizacion LEFT JOIN co_cotizacion cc ON cs.corigen=cc.ccotizacion LEFT JOIN cli_maquinas cm ON cc.cmaquina=cm.cmaquina LEFT JOIN cli_clientes c ON cm.ccliente=c.ccliente LEFT JOIN data_entes d3 ON c.cdata=d3.cdata";
+		//COT (COMP)
+		$this->table5 .= " LEFT JOIN com_cot_ser cos ON oc.ccotizacion=cos.ccotizacion LEFT JOIN co_cotizacion_sub cs1 ON cos.cods=cs1.ccotizacion LEFT JOIN co_cotizacion cc1 ON cs1.corigen=cc1.ccotizacion LEFT JOIN cli_maquinas cm1 ON cc1.cmaquina=cm1.cmaquina LEFT JOIN cli_clientes c3 ON cm1.ccliente=c3.ccliente LEFT JOIN data_entes d4 ON c3.cdata=d4.cdata";
 		$this->tId5 = "oc.corden";
 		$this->db5 = new database($this->table5, $this->tId5);
 		$this->db5->fields = array (
@@ -140,6 +142,10 @@ class compras{
 			array ('system',	"LPAD(pro.cproveedor*1,"._PAD_CEROS_.",'0') AS codigo_proveedor"),
 			array ('system',	"IF(cs.cordenservicio_sub>0, CONCAT(LPAD(cc.cordenservicio*1,"._PAD_CEROS_.",'0'), '-',cs.cordenservicio_sub*1),'N/A') AS ods_pad"),
 			array ('system',	"IF(oc.ccotizacion>0, LPAD(oc.ccotizacion*1,"._PAD_CEROS_.",'0'),'N/A') AS cot_pad"),
+			array ('system',	"IF(oc.ccotizacion>0, CONCAT(LPAD(cc1.cordenservicio*1,"._PAD_CEROS_.",'0'), '-',cs1.cordenservicio_sub*1),'N/A') AS ods_pad_cot"),
+			array ('system',	"IF(oc.ccotizacion>0, CONCAT(LPAD(cc1.ccotizacion*1,"._PAD_CEROS_.",'0'), '-',cs1.correlativo*1),'N/A') AS cot_pad_cot"),
+			array ('system',	"(d4.code) AS cli_cot_code"),
+			array ('system',	'd4.data AS cli_cot_nom'),
 			array ('system',	"(d.code) AS code"),
 			array ('system',	'd.data'),
 			array ('system',	'd.data2'),
