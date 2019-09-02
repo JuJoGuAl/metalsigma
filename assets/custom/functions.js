@@ -1374,20 +1374,29 @@ function calculos(){
                 }
             }
         });
-        tras=((parseFloat(jQuery("#dist").val()*costo_km))*2)+parseFloat(sal)*jQuery("#viajes").val();
-        misc = (parseInt((((sum_hh_te+sum_hh_ta)/8.5)*trabs).toFixed(0))*misce)/2;
-        valor_mo = hh_terreno+hh_taller+valor_dia+tras+misc;
-        valor_gf_mo=((valor_mo*cli_gas)/100)+((((valor_mo*cli_gas)/100)*cli_mar)/100);
-        valor_serv = valor_gf_mo+hh_terreno+hh_taller+valor_dia;
         let valor_ins = valor_rep = valor_stt = 0;
-        valor_ins = sum_ins;
-        valor_rep = sum_rep;
-        valor_stt = sum_stt;
-        valor_subtotal = valor_serv+valor_rep+valor_ins+valor_stt+tras+misc;
         let desc = 0, desc_t = jQuery("#desc").val(),vRegExp = /^\d+(\.\d+)?$/;
-        if(desc_t.match(vRegExp)){
-            desc = (desc_t*valor_subtotal)/100;
+        if(jQuery("#cotizat").val()*1==5){
+            tras            =   0;
+            misc            =   0;
+            valor_serv      =   0;
+            valor_subtotal  =   0;
+
+        }else{
+            tras            =   ((parseFloat(jQuery("#dist").val()*costo_km))*2)+parseFloat(sal)*jQuery("#viajes").val();
+            misc            =   (parseInt((((sum_hh_te+sum_hh_ta)/8.5)*trabs).toFixed(0))*misce)/2;
+            valor_mo        =   hh_terreno+hh_taller+valor_dia+tras+misc;
+            valor_gf_mo     =   ((valor_mo*cli_gas)/100)+((((valor_mo*cli_gas)/100)*cli_mar)/100);
+            valor_serv      =   valor_gf_mo+hh_terreno+hh_taller+valor_dia;
+            valor_ins       =   sum_ins;
+            valor_rep       =   sum_rep;
+            valor_stt       =   sum_stt;
+            valor_subtotal  =   valor_serv+valor_rep+valor_ins+valor_stt+tras+misc;
+            if(desc_t.match(vRegExp)){
+                desc        =   (desc_t*valor_subtotal)/100;
+            }
         }
+
         let valor_neto = valor_subtotal-desc; imp_ = ((valor_neto*imp)/100), valor_bruto = (valor_neto+imp_);    
         jQuery("#_serv").closest("td").html(valor_serv).formatCurrency().append('<input type="hidden" id="_serv" name="_serv" value="'+valor_serv+'">');
         jQuery("#_tras").closest("td").html(tras).formatCurrency().append('<input type="hidden" id="_tras" name="_tras" value="'+tras+'">');
