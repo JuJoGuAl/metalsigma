@@ -49,7 +49,7 @@
                   <td>{fecha}</td>
                   <td>{servicios}</td>
                   <td>{monto_total}</td>
-                  <td><span class="{class}" data-status="{stas_}" data-ods="{cods}">{ESTATUS}</span></td>
+                  <td><span class="{class}" data-status="{stas_}" data-cuerpo="{cuerpo}">{ESTATUS}</span></td>
                   <td>{actions}</td>
                 </tr>
                 <!-- END BLOCK : data -->
@@ -65,7 +65,7 @@
   jQuery("._stats").each(function(){
     jQuery(this).popover({
       title: '<div style="font-size: 12px;"><strong>'+jQuery(this).attr("data-status")+'</strong></div>',
-      content: '<div style="font-size: 12px;">'+jQuery(this).attr("data-ods")+'</div>',
+      content: '<div style="font-size: 12px;">'+jQuery(this).attr("data-cuerpo")+'</div>',
       trigger: 'hover',
       placement: 'left',
       container: 'body',

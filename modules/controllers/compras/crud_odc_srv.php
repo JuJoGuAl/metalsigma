@@ -51,16 +51,9 @@ if($perm_val["title"]<>"SUCCESS"){
 				$tpl->assign("estatus",$stats_color);
 				$cuerpo = "SIN COT!";
 				if($datos['cot_pad']!="N/A"){
-					$cuerpo = "<strong>".$datos["cli_cot_nom"]." (".formatRut($datos["cli_cot_code"]).")</strong><br>";
+					$cuerpo = "<strong>".$datos["cli_cot_nom"]."</strong><br>RUT: <strong>".formatRut($datos["cli_cot_code"])."</strong><br>";
 					$cuerpo .= "COT CLIENTE: <strong>".$datos["cot_pad_cot"]."</strong><br>";
 					$cuerpo .= "ODS CLIENTE: <strong>".$datos["ods_pad_cot"]."</strong><br>";
-					//$cuerpo .= "CLIENTE: <strong>".$cab["data"]."</strong><br>";
-					//$detalles=$data_class->get_cot($datos['ccotizacion']);
-					/*if($detalles["title"]=="SUCCESS"){
-						$cab = $detalles["cab"];
-						$cuerpo = "COTIZACION: <strong>".$cab["codigo"]."</strong><br>";
-						$cuerpo .= "CLIENTE: <strong>".$cab["data"]."</strong><br>";						
-					}*/
 				}
 				$tpl->assign("cuerpo",$cuerpo);
 			}			

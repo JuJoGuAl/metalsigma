@@ -61,6 +61,13 @@ if($perm_val["title"]<>"SUCCESS"){
 				$tpl->assign("actions",$cadena_acciones);
 				$tpl->assign("estatus",$stats_color);
 				$tpl->assign("class",$class_name);
+				$cuerpo = "SIN COTIZACION!";
+				if($datos['cot_pad']!="N/A"){
+					$cuerpo = "<strong>".$datos["cli_cot_nom"]."</strong><br>RUT: <strong>".formatRut($datos["cli_cot_code"])."</strong><br>";
+					$cuerpo .= "COT CLIENTE: <strong>".$datos["cot_pad"]."</strong><br>";
+					$cuerpo .= "ODS CLIENTE: <strong>".$datos["ods_pad"]."</strong><br>";
+				}
+				$tpl->assign("cuerpo",$cuerpo);
 			}			
 		}
 		$ins=$perm_val["content"][0]["ins"];
