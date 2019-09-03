@@ -49,7 +49,8 @@
           <div class="card-body">
             <h6>
               <p style="margin: .5rem 0;">CLIENTE: <strong>{code} / {data}</strong></p>
-            <p style="margin: .5rem 0;">EQUIPO: <strong>{equipo} {marca} {modelo}</strong></p>
+              <p style="margin: .5rem 0;">EQUIPO: <strong>{equipo} {marca} {modelo}</strong></p>
+              <p style="margin: .5rem 0;">SERIAL: <strong>{serial}</strong></p>
             </h6>
             <div class="d-flex no-block align-items-center pb-3">
               <div>{form_title}<strong>{id_tittle}</strong> - {form_title2}<strong>{id_tittle2}</strong></div>
