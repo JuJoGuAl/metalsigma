@@ -1,7 +1,7 @@
 /*
  * Container style
  */
-.ps {
+ .ps {
   overflow: hidden !important;
   overflow-anchor: none;
   -ms-overflow-style: none;
@@ -25,7 +25,7 @@
 }
 
 .ps__rail-y {
-  display: none;
+  /*display: none;*/
   opacity: 0;
   transition: background-color .2s linear, opacity .2s linear;
   -webkit-transition: background-color .2s linear, opacity .2s linear;

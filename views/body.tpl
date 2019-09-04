@@ -14,7 +14,7 @@
     <link href="./assets/fullcalendar/css/fullcalendar.min.css" rel="stylesheet">
     <link href="./assets/fullcalendar/css/calendar.css" rel="stylesheet">
     <link href="./assets/jquery-confirm/css/jquery-confirm.css" rel="stylesheet">
-    <link href="./assets/perfect-scrollbar_/perfect-scrollbar.css" rel="stylesheet">
+    <link href="./assets/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet">
     <link href="{style}" rel="stylesheet">
     <!-- jQuery -->
     <script src="./assets/jquery/jquery.min.js"></script>
@@ -154,8 +154,7 @@
     <script src="./assets/app/app.init.material.js"></script>
     <script src="./assets/app/app-style-switcher.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
-    <!-- <script src="./assets/perfect-scrollbar/perfect-scrollbar.jquery.min.js"></script> -->
-    <script src="./assets/perfect-scrollbar_/perfect-scrollbar.js"></script>
+    <script src="./assets/perfect-scrollbar/perfect-scrollbar.js"></script>
     <!--Wave Effects -->
     <script src="./assets/waves/waves.js"></script>
     <!--DataTable -->

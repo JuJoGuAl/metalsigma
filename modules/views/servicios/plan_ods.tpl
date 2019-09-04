@@ -213,8 +213,7 @@
   function($){
     "use strict";
     $.CalendarApp.init();
-    new PerfectScrollbar('#calendar-events');
   }(window.jQuery);
-  setTimeout("jQuery('#calendar').fullCalendar('render'); jQuery('#calendar-events').height(jQuery('#calendar .fc-view-container').height()+jQuery('#calendar .fc-header-toolbar').height());",100);
+  setTimeout("jQuery('#calendar').fullCalendar('render'); jQuery('#calendar-events').height(jQuery('#calendar .fc-view-container').height()+jQuery('#calendar .fc-header-toolbar').height()); new PerfectScrollbar('#calendar-events');",100);
 </script>
 <!-- END BLOCK : module -->
