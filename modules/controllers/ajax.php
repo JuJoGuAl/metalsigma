@@ -113,6 +113,9 @@ if (!isset($_SESSION['metalsigma_log'])){
 			case 'search_requisicion':
 			$titles='<tr><th>CODIGO</th><th>ALMACEN SOL.</th><th>ALMACEN REQ.</th><th>FECHA</th></tr>';
 			break;
+			case 'search_ods_gar':
+			$titles='<tr><th>COT</th><th>ODS</th><th>FAC</th><th>FECHA FAC</th><th>TIPO COT</th><th>LUGAR</th><th>EQUIPO</th></tr>';
+			break;
 		}
 		$table.='<div class="table-responsive"><table class="table table-bordered table-hover datatables" id="'.$accion.'_tbl"><thead>'.$titles.'</thead><tbody>';
 		if($accion=="add_eqs"){
@@ -595,7 +598,8 @@ if (!isset($_SESSION['metalsigma_log'])){
 		}elseif($accion=="refresh_cotizaciones"){
 			$arr = json_decode($_POST["stat"]);
 			$fstat = ($arr[0]=="-1") ? false : json_decode($_POST["stat"]);
-			$data=$cotizaciones->list_all($fstat);
+			$ftipo = ($_POST["tipo"]=="-1") ? false : $_POST["tipo"];
+			$data=$cotizaciones->list_all($fstat,false,$ftipo);
 			if($data["title"]=="SUCCESS"){
 				$response["title"]="SUCCESS";
 				foreach ($data["content"] as $key => $datos){
@@ -607,19 +611,26 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$detalles=$cotizaciones->list_sub($datos['codigo'],$array_cot_all);
 					$sub_status = "";
 					$contador = 0;
+					$class = "";
 					if($detalles["title"]=="SUCCESS"){
 						foreach ($detalles["content"] as $llave1 => $datos1) {
 							$contador++;
 							$clas_="";
-							if($_POST["stat"]!="-1"){
+							if($arr[0]!="-1"){
 								$clas_ .= ($datos1["status"]==$fstat[0]) ? "font-weight-bold" : "" ;
 							}
-							$sub_status .= "<span class='".$clas_."'>".$datos1["correlativo"].": ".$array_status[$datos1["status"]]."</span><br>";
+							$estatus_=$array_status[$datos1["status"]];
+							if($_POST["tipo"]!="-1"){
+								$estatus_ .= ($datos1["ctipo"]==$_POST["tipo"]) ? " <strong>(".$datos1["tipo"].")</strong>" : "" ;
+							}
+							$class = ($datos1["ctipo"]==5) ? "table-warning" : $class ;
+							$sub_status .= "<span class='".$clas_."'>".$datos1["correlativo"].": ".$estatus_."</span><br>";
 						}
 
 					}
 					$data["content"][$key]["boton"] = $cadena_acciones;
 					$data["content"][$key]["cuentas"] = $contador;
+					$data["content"][$key]["class"] = $class;
 					$data["content"][$key]["sub_status"] = $sub_status;
 				}
 				$response["content"]=$data["content"];
@@ -630,7 +641,8 @@ if (!isset($_SESSION['metalsigma_log'])){
 		}elseif($accion=="refresh_ods"){
 			$arr = json_decode($_POST["stat"]);
 			$fstat = ($arr[0]=="-1") ? $array_ods : json_decode($_POST["stat"]) ;
-			$data=$cotizaciones->list_all($fstat);
+			$ftipo = ($_POST["tipo"]=="-1") ? false : $_POST["tipo"];
+			$data=$cotizaciones->list_all($fstat,false,$ftipo);
 			if($data["title"]=="SUCCESS"){
 				$response["title"]="SUCCESS";
 				foreach ($data["content"] as $key => $datos){
@@ -640,14 +652,20 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$detalles=$cotizaciones->list_sub($datos['codigo'],$array_ods);
 					$sub_status = "";
 					$contador = 0;
+					$class = "";
 					if($detalles["title"]=="SUCCESS"){
 						foreach ($detalles["content"] as $llave1 => $datos1) {
 							$contador++;
 							$clas_="";
-							if($_POST["stat"]!="-1"){
+							if($arr[0]!="-1"){
 								$clas_ .= ($datos1["status"]==$fstat[0]) ? "font-weight-bold" : "" ;
 							}
-							$sub_status .= "<span class='".$clas_."'>".$datos1["correlativo"].": ".$array_status[$datos1["status"]]."</span><br>";
+							$estatus_=$array_status[$datos1["status"]];
+							if($_POST["tipo"]!="-1"){
+								$estatus_ .= ($datos1["ctipo"]==$_POST["tipo"]) ? " <strong>(".$datos1["tipo"].")</strong>" : "" ;
+							}
+							$class = ($datos1["ctipo"]==5) ? "table-warning" : $class ;
+							$sub_status .= "<span class='".$clas_."'>".$datos1["correlativo"].": ".$estatus_."</span><br>";
 						}
 
 					}
@@ -655,6 +673,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$data["content"][$key]["cuentas"] = $contador;
 					$data["content"][$key]["sub_status"] = $sub_status;
 					$data["content"][$key]["code"] = formatRut($datos['code']);
+					$data["content"][$key]["class"] = $class;
 				}
 				$response["content"]=$data["content"];
 			}else{
@@ -1094,6 +1113,20 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$geojson[0] = 0;
 			}
 			$response = $geojson;
+		}else if ($accion=="search_ods_gar"){
+			$status_ = array("FAC");
+			$data=$cotizaciones->list_sub($_POST["codigo"],$status_,false,false,false,false,false,false,constant("MAX_DIAS_GAR"));
+			if($data["title"]=="SUCCESS"){
+				foreach ($data["content"] as $key => $value){
+					$table.='<tr><td><input class="_ods" type="hidden" value="'.$value["codigo"].'">'.$value["cot_full"].'</td><td>'.$value["ods_full"].'</td><td>'.$value['cfactura'].'</td><td>'.$value['fecha_fac'].'</td><td>'.$value['tipo'].'</td><td>'.$value['lugar'].'</td><td>'.$value['equipo'].'</td></tr>';
+				}
+				$table.="</tbody></table></div>";
+				$response=$table;
+			}else{
+				$response["title"]="ERROR";
+				$response["content"]="NO EXISTEN ODS QUE CUMPLAN CON LOS REQUERIMIENTOS";
+			}
+
 		}
 	}
 }

@@ -55,7 +55,7 @@
                 <tr class="{estatus}">
                   <td>{cot_full}</td>
                   <td>{ods_full}</td>
-                  <td>{tipo}</td>
+                  <td>{tipo}{gar}</td>
                   <td>{lugar}</td>
                   <td>{equipo}</td>
                   <td>{crea_user}</td>

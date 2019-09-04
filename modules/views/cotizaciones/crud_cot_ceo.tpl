@@ -52,7 +52,7 @@
               </thead>
               <tbody>
                 <!-- START BLOCK : data -->
-                <tr>
+                <tr class="{class}">
                   <td>{codigo}</td>
                   <td>{code}</td>
                   <td>{data}</td>

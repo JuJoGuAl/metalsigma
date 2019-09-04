@@ -17,7 +17,7 @@
     jQuery.ajax({
       type: "POST",
       url: "./modules/controllers/ajax.php",
-      data : "accion=refresh_ods&stat="+JSON.stringify(sta)+"&mod=crud_ods",
+      data : "accion=refresh_ods&stat="+JSON.stringify(sta)+"&tipo="+jQuery("#ftipo").val()+"&mod=crud_ods",
       dataType:'json',
       success: function(data){
         table = jQuery('.datatables').DataTable();
@@ -38,6 +38,7 @@
               value.boton
             ]).draw().node();
             jQuery(rowNode).find("td:eq(7)").attr("align","center");
+            jQuery(rowNode).addClass(value.class);
           });
           jQuery("._stats").each(function(){
             jQuery(this).popover({
@@ -97,6 +98,17 @@
                 </select>
               </div>
             </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="ftipo" class="control-label col-form-label">TIPO DE COTIZACION</label>
+                <select class="form-control custom-select filtros" id="ftipo" name="ftipo">
+                  <option value="-1">TODAS...</option>
+                  <!-- START BLOCK : tipo_det -->
+                  <option value="{codigo}" {selected}>{tipo}</option>
+                  <!-- END BLOCK : tipo_det -->
+                </select>
+              </div>
+            </div>
           </div>
           <br>
           <div class="table-responsive">
@@ -116,7 +128,7 @@
               </thead>
               <tbody>
                 <!-- START BLOCK : data -->
-                <tr>
+                <tr class="{class}">
                   <td>{codigo}</td>
                   <td>{codigo_ods}</td>
                   <td>{code}</td>

@@ -138,19 +138,23 @@ class cotizaciones{
 		//AUDITORIA
 		$this->table2 .= " LEFT JOIN adm_usuarios u1 ON co.crea_user=u1.cusuario LEFT JOIN nom_trabajadores t1 ON u1.ctrabajador=t1.ctrabajador LEFT JOIN data_entes d1 ON t1.cdata=d1.cdata LEFT JOIN nom_cargos c1 ON t1.ccargo=c1.ccargo";
 		$this->table2 .= " LEFT JOIN adm_usuarios u2 ON co.mod_user=u2.cusuario LEFT JOIN nom_trabajadores t2 ON u2.ctrabajador=t2.ctrabajador LEFT JOIN data_entes d2 ON t2.cdata=d2.cdata LEFT JOIN nom_cargos c2 ON t2.ccargo=c2.ccargo";
+		//ORIGEN
+		$this->table2 .= " LEFT JOIN co_cotizacion_sub co1 ON co.corigen_gar=co1.ccotizacion LEFT JOIN co_cotizacion cp1 ON co1.corigen=cp1.ccotizacion";
 		$this->tId2 = "co.ccotizacion";
 		$this->db2 = new database($this->table2, $this->tId2);
 		$this->db2->fields = array (
 			array ('system',	"LPAD(".$this->tId2."*1,"._PAD_CEROS_.",'0') AS codigo"),
-			array ('system',	"LPAD(corigen*1,"._PAD_CEROS_.",'0') AS origen"),
-			array ('system',	"LPAD(correlativo*1,"._PAD_CEROS_.",'0') AS correlativo"),
+			array ('system',	"LPAD(co.corigen*1,"._PAD_CEROS_.",'0') AS origen"),
+			array ('system',	"LPAD(co.correlativo*1,"._PAD_CEROS_.",'0') AS correlativo"),
 			array ('system',	"LPAD(c.ccliente*1,"._PAD_CEROS_.",'0') AS codigo_cliente"),
 			array ('system',	"IF(co.cordenservicio_sub=0, 'N/A', LPAD(co.cordenservicio_sub*1,"._PAD_CEROS_.",'0')) AS codigo_ods"),
 			array ('system',	"IF(co.cordenservicio_sub>0, CONCAT(LPAD(cp.cordenservicio*1,"._PAD_CEROS_.",'0'), '-',co.cordenservicio_sub*1),'N/A') AS ods_full"),
-			//array ('system',	"IF(co.cordenservicio_sub>0, CONCAT(LPAD(cp.cordenservicio*1,"._PAD_CEROS_.",'0'), '-',TRIM(LEADING '0' FROM co.cordenservicio_sub)),'N/A') AS ods_pad"),
 			array ('system',	"CONCAT(LPAD(cp.ccotizacion*1,"._PAD_CEROS_.",'0'), '-',co.correlativo*1) AS cot_full"),
+			array ('system',	"IF(co.corigen_gar>0, LPAD(co.corigen_gar*1,"._PAD_CEROS_.",'0'), 'N/A') AS cot_gar_full"),
+			array ('system',	"IF(co1.cordenservicio_sub>0, CONCAT(LPAD(cp1.cordenservicio*1,"._PAD_CEROS_.",'0'), '-',co1.cordenservicio_sub*1),'N/A') AS ods_full_gar"),
+			array ('system',	"CONCAT(LPAD(cp1.ccotizacion*1,"._PAD_CEROS_.",'0'), '-',co1.correlativo*1) AS cot_full_gar"),
 			array ('system',	"IF(co.cfactura>0, co.cfactura,'N/A') AS cfactura"),
-			array ('system',	"IF(fecha_fac>0, DATE_FORMAT(co.fecha_fac, '%d-%m-%Y'),'N/A') AS fecha_fac"),
+			array ('system',	"IF(co.fecha_fac>0, DATE_FORMAT(co.fecha_fac, '%d-%m-%Y'),'N/A') AS fecha_fac"),
 			array ('system',	"d.direccion"),
 			array ('system',	"d.tel_fijo"),
 			array ('system',	"d.tel_movil"),
@@ -248,7 +252,8 @@ class cotizaciones{
 			array ('public',	'm_imp'),
 			array ('public',	'm_bruto'),
 			array ('public',	'notas'),
-			array ('public_i',	'corigen'),
+			array ('public',	'corigen_gar'),
+			array ('public_i',	'corigen'),			
 			array ('public_i',	'crea_user'),
 			array ('public_u',	'mod_user')
 		);
@@ -479,7 +484,7 @@ class cotizaciones{
 	}
 	/** COTIZACIONES */
 	//LISTAR
-	public function list_all($status=false,$campos=false){
+	public function list_all($status=false,$campos=false,$tipo=false){
 		$data = array ();
 		$cont=-1;
 		if($status){
@@ -487,6 +492,12 @@ class cotizaciones{
 			$data[$cont]["row"]="cb.status";
 			$data[$cont]["operator"]="IN";
 			$data[$cont]["value"]=$status;
+		}
+		if($tipo){
+			$cont++;
+			$data[$cont]["row"]="cb.ctipo";
+			$data[$cont]["operator"]="=";
+			$data[$cont]["value"]=$tipo;
 		}
 		return $this->db1->getRecords($campos,$data,"cp.ccotizacion");
 	}
@@ -506,7 +517,7 @@ class cotizaciones{
 	}
 	/** COTIZACIONES_SUB */
 	//LISTAR
-	public function list_sub($origen=false,$status=false,$times=false,$cliente=false,$finicio=false,$ffin=false,$cuentas=false,$notIn=false){
+	public function list_sub($origen=false,$status=false,$times=false,$cliente=false,$finicio=false,$ffin=false,$cuentas=false,$notIn=false,$dias_old=false){
 		$data = array (); $cont=-1;
 		if($origen){
 			$cont++;
@@ -549,6 +560,16 @@ class cotizaciones{
 			$data[$cont]["row"]="co.ccotizacion";
 			$data[$cont]["operator"]="NOT IN";
 			$data[$cont]["value"]=$notIn;
+		}
+		if($dias_old){
+			$cont++;
+			$data[$cont]["row"]="DATEDIFF(NOW(),co.fecha_fac)";
+			$data[$cont]["operator"]="<=";
+			$data[$cont]["value"]=$dias_old;
+			$cont++;
+			$data[$cont]["row"]="co.corigen_gar";
+			$data[$cont]["operator"]="=";
+			$data[$cont]["value"]=0;
 		}
 		$having = ($times) ? "restante $times" : "" ;
 		$having = ($cuentas) ? "cuenta > 0" : "" ;

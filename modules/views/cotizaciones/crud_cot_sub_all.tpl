@@ -1,48 +1,4 @@
 <!-- START BLOCK : module -->
-<script>
-  jQuery('.filtros').change(function(){
-    let code = jQuery("#fid").val(), sta = new Array();
-    jQuery(".preloader").fadeIn();
-    sta.push(jQuery("#festatus").val());
-    jQuery.ajax({
-      type: "POST",
-      url: "./modules/controllers/ajax.php",
-      data : "accion=refresh_cotizaciones&stat="+JSON.stringify(sta)+"&code="+code+"&mod=crud_cot_all",
-      dataType:'json',
-      success: function(data){
-        table = jQuery('.datatables').DataTable();
-        table.clear();
-        if(data.title=="SUCCESS"){
-          jQuery(data.content).each(function(index,value){
-            var rowNode = table.row.add([
-              value.correlativo,
-              value.tipo,
-              value.lugar,
-              value.equipo,
-              value.m_neto,
-              value.crea_user,
-              value.status_,
-              value.boton
-            ]).draw().node();
-            jQuery(rowNode).addClass(value.estatus);
-          });
-        }else if(data.content==-1){
-          document.location.href="./?error=1";
-        }
-        jQuery('.tooltip').tooltip("dispose");
-        jQuery('[data-toggle="tooltip"]').tooltip();
-        jQuery('[data-toggle="popover"]').popover('dispose');
-        jQuery('.popover').remove();
-        jQuery('[data-toggle="popover"]').popover({ container: "body", trigger: "hover", html : true });
-        jQuery(".preloader").fadeOut();
-      },
-      error: function(x,err,msj){
-          jQuery(".preloader").fadeOut();
-          Modal_error(x,err,msj);
-      }
-    });
-  });
-</script>
 <div class="page-breadcrumb bg-white">
     <div class="row">
         <div class="col-lg-3 col-md-4 col-xs-12 align-self-center">
@@ -101,7 +57,7 @@
                 <!-- START BLOCK : data -->
                 <tr class="{estatus}">
                   <td>{correlativo}</td>
-                  <td>{tipo}</td>
+                  <td>{tipo}{gar}</td>
                   <td>{lugar}</td>
                   <td>{equipo}</td>
                   <td>{m_neto}</td>
@@ -118,4 +74,48 @@
     </div>
   </div>
 </div>
+<script>
+  jQuery('.filtros').change(function(){
+    let code = jQuery("#fid").val(), sta = new Array();
+    jQuery(".preloader").fadeIn();
+    sta.push(jQuery("#festatus").val());
+    jQuery.ajax({
+      type: "POST",
+      url: "./modules/controllers/ajax.php",
+      data : "accion=refresh_cotizaciones&stat="+JSON.stringify(sta)+"&code="+code+"&mod=crud_cot_all",
+      dataType:'json',
+      success: function(data){
+        table = jQuery('.datatables').DataTable();
+        table.clear();
+        if(data.title=="SUCCESS"){
+          jQuery(data.content).each(function(index,value){
+            var rowNode = table.row.add([
+              value.correlativo,
+              value.tipo,
+              value.lugar,
+              value.equipo,
+              value.m_neto,
+              value.crea_user,
+              value.status_,
+              value.boton
+            ]).draw().node();
+            jQuery(rowNode).addClass(value.estatus);
+          });
+        }else if(data.content==-1){
+          document.location.href="./?error=1";
+        }
+        jQuery('.tooltip').tooltip("dispose");
+        jQuery('[data-toggle="tooltip"]').tooltip();
+        jQuery('[data-toggle="popover"]').popover('dispose');
+        jQuery('.popover').remove();
+        jQuery('[data-toggle="popover"]').popover({ container: "body", trigger: "hover", html : true });
+        jQuery(".preloader").fadeOut();
+      },
+      error: function(x,err,msj){
+          jQuery(".preloader").fadeOut();
+          Modal_error(x,err,msj);
+      }
+    });
+  });
+</script>
 <!-- END BLOCK : module -->

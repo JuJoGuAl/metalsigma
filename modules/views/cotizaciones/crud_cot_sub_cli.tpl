@@ -49,7 +49,7 @@
                 <!-- START BLOCK : data -->
                 <tr class="{estatus}">
                   <td>{correlativo}</td>
-                  <td>{tipo}</td>
+                  <td>{tipo}{gar}</td>
                   <td>{lugar}</td>
                   <td>{equipo}</td>
                   <td>{m_neto}</td>

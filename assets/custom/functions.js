@@ -1147,6 +1147,9 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                     Modal_error(x,err);
                 }
             });
+        }else if (acc=="search_ods_gar"){
+            jQuery("#cods_gar").val(table.find('._ods').val());
+            jQuery("#ods_gar").val("COT: "+table.find('td:eq(0)').text()+" ODS: "+table.find('td:eq(1)').text());
         }
     }
     jQuery(this).find(".modal-body .modal-body-content").empty();

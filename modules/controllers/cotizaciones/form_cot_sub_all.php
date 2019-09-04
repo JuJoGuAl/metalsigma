@@ -40,6 +40,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				array_push($datos, $__imp);
 				array_push($datos, $__bruto);
 				array_push($datos, $_notas);
+				array_push($datos, $_cods_gar);
 				//EL REGISTRO ES NUEVO
 				if($_id==0){
 					array_push($datos, $_cotiza);//COTIZA_ORIGEN
@@ -176,6 +177,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$tpl->assign("status_color",color_status("PEN","badge"));
 				$tpl->assign("codigo",0);
 				$tpl->assign("hide",'style="display:none;"');
+				$tpl->assign("hide1",'style="display:none;"');
 				$datos=$data_class->get_all($_GET["id"]);
 				$csegmento=$datos["content"]["csegmento"];
 				$cpago=$datos["content"]["cpago"];
@@ -279,6 +281,8 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$tpl->assign("id_tittle",$cab["cot_full"]);
 				$tpl->assign("status_color",color_status($cab['status'],"badge"));
 				$tpl->assign("hide",$style);
+				$style1 = ($cab["cot_gar_full"]=="N/A") ? 'style="display:none;"' : '' ;
+				$tpl->assign("hide1",$style1);
 				$csegmento=$cab_cli["csegmento"];
 				$csegmento2 = ($cab["parte"]==0) ? 6 : $csegmento ;
 				$cpago=$cab_cli["cpago"];
@@ -319,6 +323,8 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 					}
 					$tpl->assign("porc_hist",$porc);
 				}
+				$garantia = ($cab["cot_gar_full"]!="N/A") ? "COT: ".$cab["cot_full_gar"]." ODS: ".$cab["ods_full_gar"] : "" ;
+				$tpl->assign("ods_gar_full",$garantia);
 				foreach ($cab_cli as $key => $value){
 					$value = ($key=="code") ? formatRut($value) : $value ;
 					$tpl->assign($key,$value);

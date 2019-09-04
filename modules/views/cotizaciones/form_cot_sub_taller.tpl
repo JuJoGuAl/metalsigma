@@ -60,6 +60,16 @@
                           </select>
                         </div>
                       </div>
+                      <div id="garantias" class="col-sm-6" {hide1}>
+                        <div class="form-group">
+                          <label for="ods_gar" class="control-label col-form-label">ODS</label>
+                          <div class="input-group">
+                            <input type="text" class="form-control validar" id="ods_gar" name="ods_gar" placeholder="SELECCIONE UNA ODS" value="{ods_gar_full}" readonly> 
+                            <input type="hidden" id="cods_gar" name="cods_gar" value="{cot_gar_full}">
+                            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_ods_gar"><span class="fa fa-search"></span></button></div>
+                          </div>
+                        </div>
+                      </div>
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="lugar" class="control-label col-form-label">LUGAR</label>
@@ -468,35 +478,53 @@
         non_det.push(jQuery(this).val());
       });
       modal_search("SELECCIONE UNA COTIZACION DE SERVICIO A APLICAR",'accion='+acc+'&mod='+submod+'&not='+JSON.stringify(non_det),'POST',false,false);
+    }else if(acc=="search_ods_gar"){
+      modal_search("SELECCIONE UNA ODS PARA APLICAR GARANTIA",'accion='+acc+'&mod='+submod+'&codigo='+jQuery("#cotiza").val(),'POST',false,false);
+    }
+  });
+  jQuery('#cotizat').change(function(){
+    if((jQuery(this).val()*1)==5){
+      jQuery('#garantias').fadeIn();
+    }else{
+      jQuery('#garantias').fadeOut();
     }
   });
   jQuery('#lugar, #vehiculo, #equipot, #coteq').change(function(){
     if(jQuery.inArray(jQuery("#stats").val(),array_status_calc_odc)!=-1){
-      jQuery(".preloader").fadeIn();
-      jQuery.ajax({
-        url: "./modules/controllers/ajax.php",
-        type: "POST",
-        data : jQuery("#form_").serialize() + "&mod="+submod+"&accion=calculos_",
-        dataType:'json',
-        success: function(data){
-          if(data.title=="SUCCESS"){
-            sal=data.content.salida;
-            costo_km=data.content.costo_km;
-            hh_normal_taller=data.content.hh_taller;
-            hh_normal_terreno=data.content.hh_terreno;
-            trabs=data.content.trabs;
-            arriendo=data.content.valor_peso_dia;
+      if((jQuery("#cotizat").val()*1)==5){
+        sal               = 0;
+        costo_km          = 0;
+        hh_normal_taller  = 0;
+        hh_normal_terreno = 0;
+        trabs             = 0;
+        arriendo          = 0;
+      }else{
+        jQuery(".preloader").fadeIn();
+        jQuery.ajax({
+          url: "./modules/controllers/ajax.php",
+          type: "POST",
+          data : jQuery("#form_").serialize() + "&mod="+submod+"&accion=calculos_",
+          dataType:'json',
+          success: function(data){
+            if(data.title=="SUCCESS"){
+              sal=data.content.salida;
+              costo_km=data.content.costo_km;
+              hh_normal_taller=data.content.hh_taller;
+              hh_normal_terreno=data.content.hh_terreno;
+              trabs=data.content.trabs;
+              arriendo=data.content.valor_peso_dia;
+              jQuery(".preloader").fadeOut();
+            }else{
+              jQuery(".preloader").fadeOut();
+              dialog(data.content,data.title);
+            }
+          },
+          error: function(x,err){
             jQuery(".preloader").fadeOut();
-          }else{
-            jQuery(".preloader").fadeOut();
-            dialog(data.content,data.title);
+            Modal_error(x,err);
           }
-        },
-        error: function(x,err){
-          jQuery(".preloader").fadeOut();
-          Modal_error(x,err);
-        }
-      });
+        });
+      }
     }
     if((jQuery("#lugar").val()*1)==2){
       jQuery('#terreno').fadeIn();

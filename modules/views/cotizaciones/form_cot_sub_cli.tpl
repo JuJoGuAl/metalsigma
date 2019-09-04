@@ -61,6 +61,15 @@
                           </select>
                         </div>
                       </div>
+                      <div id="garantias" class="col-sm-6" {hide1}>
+                        <div class="form-group">
+                          <label for="ods_gar" class="control-label col-form-label">ODS</label>
+                          <div class="input-group">
+                            <input type="text" class="form-control validar" id="ods_gar" name="ods_gar" placeholder="SELECCIONE UNA ODS" value="{ods_gar_full}" readonly> 
+                            <input type="hidden" id="cods_gar" name="cods_gar" value="{cot_gar_full}">
+                          </div>
+                        </div>
+                      </div>
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="lugar" class="control-label col-form-label">LUGAR</label>

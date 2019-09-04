@@ -135,6 +135,8 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 				$tpl->assign("id_tittle",$cab["cot_full"]);
 				$tpl->assign("status_color",color_status($cab['status'],"badge"));
 				$tpl->assign("hide",$style);
+				$style1 = ($cab["cot_gar_full"]=="N/A") ? 'style="display:none;"' : '' ;
+				$tpl->assign("hide1",$style1);
 				$csegmento=$cab_cli["csegmento"];
 				$csegmento2 = ($cab["parte"]==0) ? 6 : $csegmento ;
 				$cpago=$cab_cli["cpago"];
@@ -155,6 +157,8 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 					}
 					$tpl->assign("porc_hist",$porc);
 				}
+				$garantia = ($cab["cot_gar_full"]!="N/A") ? "COT: ".$cab["cot_full_gar"]." ODS: ".$cab["ods_full_gar"] : "" ;
+				$tpl->assign("ods_gar_full",$garantia);
 				foreach ($cab_cli as $key => $value){
 					$value = ($key=="code") ? formatRut($value) : $value ;
 					$tpl->assign($key,$value);

@@ -36,6 +36,13 @@ if($perm_val["title"]<>"SUCCESS"){
 				}
 			}
 		}
+		$tipo=$data_class->list_();
+		foreach ($tipo["content"] as $key => $value) {
+			$tpl->newBlock("tipo_det");
+			foreach ($tipo["content"][$key] as $key1 => $value1){
+				$tpl->assign($key1,$value1);
+			}
+		}
 		$array_temp = array('APB');
 		$data=$data_class->list_all($array_temp);
 		if($data["title"]=="SUCCESS"){
@@ -53,15 +60,19 @@ if($perm_val["title"]<>"SUCCESS"){
 				$detalles=$data_class->list_sub($datos['codigo'],$array_ods);
 				$sub_status = "";
 				$contador = 0;
+				$class = "";
 				if($detalles["title"]=="SUCCESS"){
 					foreach ($detalles["content"] as $llave1 => $datos1) {
 						$contador++;
-						$sub_status .= $datos1["correlativo"].": ".$array_status[$datos1["status"]]."<br>";
+						$gar = ($datos1["ctipo"]==5) ? " (GARANTIA)" : "" ;
+						$class = ($datos1["ctipo"]==5) ? "table-warning" : $class ;
+						$sub_status .= $datos1["correlativo"].": ".$array_status[$datos1["status"]].$gar."<br>";
 					}
 
 				}
 				$tpl->assign("cuentas",$contador);
 				$tpl->assign("sub_status",$sub_status);
+				$tpl->assign("class",$class);
 			}			
 		}
 	}
