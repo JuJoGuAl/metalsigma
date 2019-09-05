@@ -64,83 +64,87 @@ if($perm_val["title"]<>"SUCCESS"){
 			$spreadsheet->setActiveSheetIndex(0)
 				->setCellValue('B8', '# COT')
 				->setCellValue('C8', '# ODS')
-				->setCellValue('D8', 'CLIENTE')
-				->setCellValue('E8', 'EQUIPO')
-				->setCellValue('F8', 'ASESOR COMERCIAL')
-				->setCellValue('G8', 'COORDINADOR TECNICO')
-				->setCellValue('H8', 'FECHA INICIO SERVICIO')
-				->setCellValue('I8', 'FECHA TERMINO SERVICIO')
-				->setCellValue('J8', 'ESTADO ORDEN')				
-				->setCellValue('K8', '# FACTURA')
-				->setCellValue('L8', 'FECHA FAC')
-				->setCellValue('M8', 'VALOR NETO')
-				->setCellValue('N8', 'VALOR BRUTO')
-				->setCellValue('O8', 'PAGO')
-				->setCellValue('P8', 'FECHA PAGO')
-				->setCellValue('Q8', 'MARGEN')
+				->setCellValue('D8', 'TIPO DE COT')
+				->setCellValue('E8', 'CLIENTE')
+				->setCellValue('F8', 'EQUIPO')
+				->setCellValue('G8', 'ASESOR COMERCIAL')
+				->setCellValue('H8', 'COORDINADOR TECNICO')
+				->setCellValue('I8', 'FECHA INICIO SERVICIO')
+				->setCellValue('J8', 'FECHA TERMINO SERVICIO')
+				->setCellValue('K8', 'ESTADO ORDEN')				
+				->setCellValue('L8', '# FACTURA')
+				->setCellValue('M8', 'FECHA FAC')
+				->setCellValue('N8', 'VALOR NETO')
+				->setCellValue('O8', 'VALOR BRUTO')
+				->setCellValue('P8', 'PAGO')
+				->setCellValue('Q8', 'FECHA PAGO')
+				->setCellValue('R8', 'MARGEN')
 				;
 			$row=8;//CONTADOR DE DONDE EMPIEZO A COLOCAR LA DATA
 			//CONTENIDO
 			foreach ($cotiza["content"] as $llave => $datos) {
-				$planificacion=$planes->get_plan($datos["codigo"]);
+				$planificacion=$planes->get_plan_cot($datos["codigo"]);
 				$tecnico="N/A";
 				if($planificacion["title"]=="SUCCESS"){
 					$tecnico=$planificacion["det"][0]["data"];
+					//$tecnico=$planificacion["cab"]["codigo_cabecera"];
 				}
 				$row++;
 				$spreadsheet->setActiveSheetIndex(0)
+					//->setCellValue('A'.$row, $datos["codigo"])
 					->setCellValue('B'.$row, $datos["cot_full"])
 					->setCellValue('C'.$row, $datos["ods_full"])
-					->setCellValue('D'.$row, $datos["data"])
-					->setCellValue('E'.$row, $datos["maquina"]." ".$datos["marca"]." ".$datos["modelo"]." S/N: ".$datos["serial"])
-					->setCellValue('F'.$row, $datos["crea_user"])
-					->setCellValue('G'.$row, $tecnico)
-					->setCellValue('H'.$row, ($datos["llegada"]=="00/00/0000") ? "-" : "=".date_excel($datos["llegada"]))
-					->setCellValue('I'.$row, ($datos["retiro"]=="00/00/0000") ? "-" : "=".date_excel($datos["retiro"]))
-					->setCellValue('J'.$row, $array_status[$datos["status"]])
-					->setCellValue('K'.$row, $datos["cfactura"])				
-					->setCellValue('L'.$row, ($datos["fecha_fac"]=="N/A") ? "-" : "=".date_excel($datos["fecha_fac"]))
-					->setCellValue('M'.$row, $datos["m_neto"])
-					->setCellValue('N'.$row, $datos["m_bruto"])
-					->setCellValue('O'.$row, "")
+					->setCellValue('D'.$row, $datos["tipo"])
+					->setCellValue('E'.$row, $datos["data"])
+					->setCellValue('F'.$row, $datos["maquina"]." ".$datos["marca"]." ".$datos["modelo"]." S/N: ".$datos["serial"])
+					->setCellValue('G'.$row, $datos["crea_user"])
+					->setCellValue('H'.$row, $tecnico)
+					->setCellValue('I'.$row, ($datos["llegada"]=="00-00-0000") ? "-" : "=".date_excel($datos["llegada"]))
+					->setCellValue('J'.$row, ($datos["retiro"]=="00-00-0000") ? "-" : "=".date_excel($datos["retiro"]))
+					->setCellValue('K'.$row, $array_status[$datos["status"]])
+					->setCellValue('L'.$row, $datos["cfactura"])				
+					->setCellValue('M'.$row, ($datos["fecha_fac"]=="N/A") ? "-" : "=".date_excel($datos["fecha_fac"]))
+					->setCellValue('N'.$row, $datos["m_neto"])
+					->setCellValue('O'.$row, $datos["m_bruto"])
 					->setCellValue('P'.$row, "")
 					->setCellValue('Q'.$row, "")
+					->setCellValue('R'.$row, "")
 					;
 			}
 			//FORMATOS/ESTILOS
-			$spreadsheet->getActiveSheet(0)->getStyle('B8:Q8')->getFill()
+			$spreadsheet->getActiveSheet(0)->getStyle('B8:R8')->getFill()
 			->setFillType(Fill::FILL_SOLID)
 			->getStartColor()->setARGB('FFC000');
-			$spreadsheet->setActiveSheetIndex(0)->getStyle('B8:Q8')->getFont()->setBold(true);
-			$spreadsheet->setActiveSheetIndex(0)->getStyle('B8:Q8')->getAlignment()->setWrapText(true);
-			$spreadsheet->setActiveSheetIndex(0)->getStyle('B8:Q8')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-			$spreadsheet->setActiveSheetIndex(0)->getStyle('B8:Q8')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+			$spreadsheet->setActiveSheetIndex(0)->getStyle('B8:R8')->getFont()->setBold(true);
+			$spreadsheet->setActiveSheetIndex(0)->getStyle('B8:R8')->getAlignment()->setWrapText(true);
+			$spreadsheet->setActiveSheetIndex(0)->getStyle('B8:R8')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+			$spreadsheet->setActiveSheetIndex(0)->getStyle('B8:R8')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 			$spreadsheet->setActiveSheetIndex(0)->getColumnDimension('B')->setWidth(13);
 			$spreadsheet->setActiveSheetIndex(0)->getColumnDimension('C')->setWidth(13);
-			$celda_auto=array('H','I','J','K','L','M','N','O','P');
+			$celda_auto=array('I','J','K','L','M','N','O','P','Q','R');
 			foreach($celda_auto as $columnID){
 				$spreadsheet->setActiveSheetIndex(0)->getColumnDimension($columnID)->setWidth(15);
 			}
-			$celda_auto=array('D','E','F','G','J');
+			$celda_auto=array('D','E','F','G','H','K');
 			foreach($celda_auto as $columnID){
 				$spreadsheet->setActiveSheetIndex(0)->getColumnDimension($columnID)->setAutoSize(true);
 			}
 			$spreadsheet->setActiveSheetIndex(0)
-					->getStyle('L9:P'.$row)
+					->getStyle('M9:R'.$row)
 					->getNumberFormat()
 					->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED3);
 			$spreadsheet->setActiveSheetIndex(0)
-					->getStyle('H9:I'.$row)
+					->getStyle('I9:J'.$row)
 					->getNumberFormat()
-					->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
+					->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYYYY);
 			$spreadsheet->setActiveSheetIndex(0)
-					->getStyle('K9:K'.$row)
+					->getStyle('M9:M'.$row)
 					->getNumberFormat()
-					->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
+					->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYYYY);
 			$spreadsheet->setActiveSheetIndex(0)
-					->getStyle('O9:O'.$row)
+					->getStyle('Q9:Q'.$row)
 					->getNumberFormat()
-					->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
+					->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYYYY);
 			// RENOMBRO LA HOJA
 			$spreadsheet->getActiveSheet()->setTitle('PROGRAMACION');
 			$spreadsheet->setActiveSheetIndex(0);

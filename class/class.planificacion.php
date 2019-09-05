@@ -237,13 +237,40 @@ class planificaciones{
 		}
 		return $result;
 	}
-	//OBTENER
+	//OBTENER POR ID
 	public function get_plan($id){
 		$data = $result = $resultado = array ();
 		$result = $this->db2->getRecord($id);
 		if($result["title"]=="SUCCESS"){
 			$resultado["title"]="SUCCESS";
 			$cab=$result["content"][0];
+			$resultado["cab"]=$cab;
+
+			$data[0]["row"]="pd.cplanificacion";
+			$data[0]["operator"]="=";
+			$data[0]["value"]=$id;
+			$result = $this->db3->getRecords(false,$data);
+			if($result["title"]=="SUCCESS"){
+				$resultado["det"]=$result["content"];
+			}else{
+				$resultado["det"]=NULL;
+			}
+		}else{
+			$resultado = $result;
+		}
+		return $resultado;
+	}
+	//OBTENER POR COT
+	public function get_plan_cot($cot){
+		$data = $result = $resultado = array ();
+		$data[0]["row"]="pc.cordenservicio_sub";
+		$data[0]["operator"]="=";
+		$data[0]["value"]=$cot;
+		$result = $this->db2->getRecords(false,$data);
+		if($result["title"]=="SUCCESS"){
+			$resultado["title"]="SUCCESS";
+			$cab=$result["content"][0];
+			$id = $cab["codigo_cabecera"];
 			$resultado["cab"]=$cab;
 
 			$data[0]["row"]="pd.cplanificacion";
