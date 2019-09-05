@@ -1,4 +1,87 @@
 <!-- START BLOCK : module -->
+<div class="page-breadcrumb bg-white">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-xs-12 align-self-center">
+            <h5 class="font-medium text-uppercase mb-0">{menu_name}</h5>
+        </div>
+        <div class="col-lg-9 col-md-8 col-xs-12 align-self-center">
+            <nav aria-label="breadcrumb" class="mt-2 float-md-right float-left">
+                <ol class="breadcrumb mb-0 justify-content-end p-0 bg-white">
+                    <li class="breadcrumb-item"><a class="menu" href="javascript:void(0)" data-menu="{mod}" data-mod="{submod}" data-acc="MODULO">{menu_pri}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{menu_sec}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="page-content container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="material-card card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="festatus" class="control-label col-form-label">ESTATUS</label>
+                <select class="form-control custom-select filtros" id="festatus" name="festatus">
+                  <option value="-1">TODOS...</option>
+                  <!-- START BLOCK : fstat_det -->
+                  <option value="{code}" {selected}>{valor}</option>
+                  <!-- END BLOCK : fstat_det -->
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="ftipo" class="control-label col-form-label">TIPO DE COTIZACION</label>
+                <select class="form-control custom-select filtros" id="ftipo" name="ftipo">
+                  <option value="-1">TODAS...</option>
+                  <!-- START BLOCK : tipo_det -->
+                  <option value="{codigo}" {selected}>{tipo}</option>
+                  <!-- END BLOCK : tipo_det -->
+                </select>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
+              <thead>
+                <tr>
+                  <th>COTIZACION</th>
+                  <th>ODS</th>
+                  <th width="75px">RUT</th>
+                  <th>CLIENTE</th>
+                  <th>EQUIPO</th>
+                  <th>SEGMENTO</th>
+                  <th>FECHA</th>
+                  <th>SUB-COT</th>
+                  <th>OPC</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- START BLOCK : data -->
+                <tr class="{class}">
+                  <td>{codigo}</td>
+                  <td>{codigo_ods}</td>
+                  <td>{code}</td>
+                  <td>{data}</td>
+                  <td>{equipo} {marca} {modelo}<br><span style="font-size: 11px">S/N: {serial}</span></td>
+                  <td>{segmento}</td>
+                  <td>{crea}</td>
+                  <td align="center"><h3><span class="badge badge-secondary _stats" data-count="{cuentas}" data-cuerpo="{sub_status}">{cuentas}</span></h3></td>
+                  <td>{actions}</td>
+                </tr>
+                <!-- END BLOCK : data -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
   jQuery("._stats").each(function(){
     jQuery(this).popover({
@@ -65,87 +148,4 @@
     });
   });
 </script>
-<div class="page-breadcrumb bg-white">
-    <div class="row">
-        <div class="col-lg-3 col-md-4 col-xs-12 align-self-center">
-            <h5 class="font-medium text-uppercase mb-0">{menu_name}</h5>
-        </div>
-        <div class="col-lg-9 col-md-8 col-xs-12 align-self-center">
-            <nav aria-label="breadcrumb" class="mt-2 float-md-right float-left">
-                <ol class="breadcrumb mb-0 justify-content-end p-0 bg-white">
-                    <li class="breadcrumb-item"><a class="menu" href="javascript:void(0)" data-menu="{mod}" data-mod="{submod}" data-acc="MODULO">{menu_pri}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{menu_sec}</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-</div>
-
-<div class="page-content container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <div class="material-card card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-sm-4">
-              <div class="form-group">
-                <label for="festatus" class="control-label col-form-label">ESTATUS</label>
-                <select class="form-control custom-select filtros" id="festatus" name="festatus">
-                  <option value="-1">TODOS...</option>
-                  <!-- START BLOCK : fstat_det -->
-                  <option value="{code}" {selected}>{valor}</option>
-                  <!-- END BLOCK : fstat_det -->
-                </select>
-              </div>
-            </div>
-            <div class="col-sm-4">
-              <div class="form-group">
-                <label for="ftipo" class="control-label col-form-label">TIPO DE COTIZACION</label>
-                <select class="form-control custom-select filtros" id="ftipo" name="ftipo">
-                  <option value="-1">TODAS...</option>
-                  <!-- START BLOCK : tipo_det -->
-                  <option value="{codigo}" {selected}>{tipo}</option>
-                  <!-- END BLOCK : tipo_det -->
-                </select>
-              </div>
-            </div>
-          </div>
-          <br>
-          <div class="table-responsive">
-            <table class="table table-bordered table-hover datatables">
-              <thead>
-                <tr>
-                  <th>COTIZACION</th>
-                  <th>ODS</th>
-                  <th width="75px">RUT</th>
-                  <th>CLIENTE</th>
-                  <th>EQUIPO</th>
-                  <th>SEGMENTO</th>
-                  <th>FECHA</th>
-                  <th>SUB-COT</th>
-                  <th>OPC</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- START BLOCK : data -->
-                <tr class="{class}">
-                  <td>{codigo}</td>
-                  <td>{codigo_ods}</td>
-                  <td>{code}</td>
-                  <td>{data}</td>
-                  <td>{equipo} {marca} {modelo}<br><span style="font-size: 11px">S/N: {serial}</span></td>
-                  <td>{segmento}</td>
-                  <td>{crea}</td>
-                  <td align="center"><h3><span class="badge badge-secondary _stats" data-count="{cuentas}" data-cuerpo="{sub_status}">{cuentas}</span></h3></td>
-                  <td>{actions}</td>
-                </tr>
-                <!-- END BLOCK : data -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- END BLOCK : module -->

@@ -59,7 +59,7 @@
           </div>          
           <br>
           <div class="table-responsive">
-            <table class="table table-bordered table-hover datatables">
+            <table class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
               <thead>
                 <tr>
                   <th>COTIZACION</th>

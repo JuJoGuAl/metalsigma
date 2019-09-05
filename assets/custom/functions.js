@@ -145,7 +145,11 @@ function GetModule(mod,submod,ref,subref,acc,id){
                 }
                 jQuery(document).ready(function() {
                     if(acc!="NEW" && acc!="EDIT"){
-                        jQuery(".datatables").DataTable();
+                        let table = jQuery(".datatables");
+                        table.DataTable({
+                            "order" : table.is("[data-dt_order]") ? (table.data("dt_order") == false ? [] : table.data("dt_order")) : [[0, 'asc']],
+                            "pageLength" : table.is("[data-dt_page_lenght]") ? table.data("dt_page_lenght") : 10,
+                        });
                     }
                     jQuery('.tooltip').tooltip("dispose");
                     jQuery('[data-toggle="tooltip"]').tooltip();
