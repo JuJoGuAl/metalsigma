@@ -148,6 +148,7 @@ class cotizaciones{
 			array ('system',	"LPAD(co.correlativo*1,"._PAD_CEROS_.",'0') AS correlativo"),
 			array ('system',	"LPAD(c.ccliente*1,"._PAD_CEROS_.",'0') AS codigo_cliente"),
 			array ('system',	"IF(co.cordenservicio_sub=0, 'N/A', LPAD(co.cordenservicio_sub*1,"._PAD_CEROS_.",'0')) AS codigo_ods"),
+			array ('system',	"IF(cp.cordenservicio=0, 'N/A', LPAD(cp.cordenservicio*1,"._PAD_CEROS_.",'0')) AS codigo_ods_cab"),
 			array ('system',	"IF(co.cordenservicio_sub>0, CONCAT(LPAD(cp.cordenservicio*1,"._PAD_CEROS_.",'0'), '-',co.cordenservicio_sub*1),'N/A') AS ods_full"),
 			array ('system',	"CONCAT(LPAD(cp.ccotizacion*1,"._PAD_CEROS_.",'0'), '-',co.correlativo*1) AS cot_full"),
 			array ('system',	"IF(co.corigen_gar>0, LPAD(co.corigen_gar*1,"._PAD_CEROS_.",'0'), 'N/A') AS cot_gar_full"),
@@ -517,7 +518,7 @@ class cotizaciones{
 	}
 	/** COTIZACIONES_SUB */
 	//LISTAR
-	public function list_sub($origen=false,$status=false,$times=false,$cliente=false,$finicio=false,$ffin=false,$cuentas=false,$notIn=false,$dias_old=false){
+	public function list_sub($origen=false,$status=false,$times=false,$cliente=false,$finicio=false,$ffin=false,$cuentas=false,$notIn=false,$dias_old=false,$orden=false){
 		$data = array (); $cont=-1;
 		if($origen){
 			$cont++;
@@ -573,7 +574,8 @@ class cotizaciones{
 		}
 		$having = ($times) ? "restante $times" : "" ;
 		$having = ($cuentas) ? "cuenta > 0" : "" ;
-		return $this->db2->getRecords(false,$data,"co.ccotizacion",false,$having);
+		$forden = ($orden) ? $orden : false ;
+		return $this->db2->getRecords(false,$data,"co.ccotizacion",$forden,$having);
 	}
 	//LISTAR AGRUPADOS
 	public function list_sub_group($group,$campos,$status=false,$vendedor=false,$mes=false,$year=false){

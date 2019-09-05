@@ -63,18 +63,16 @@
         <div id="calendar-events" class="card-body" style="height: 700px; position: relative; padding: 0.5rem; padding-top: 1.57rem;">
           <!-- START BLOCK : ods -->
           <div class="col-md-12 calendar-events" style="padding: 0px 10px;" data-codigo="{codigo}">
-            <div class="card material-card">
+            <div class="card material-card {bg}">
               <div class="card-body" style="padding: 0.7rem;">
                 <h6 class="text-uppercase" style="font-size: 0.8rem;"><i class="fa fa-circle text-{color} mr-2"></i> {ods_full}: <strong>{data}</strong></h6>
                 <p>{maquina} {marca} {modelo}</p>
                 <div class="d-flex align-items-center">
-                  <div class="col-6">
-                      <div class="progress">
-                          <div class="progress-bar bg-primary" role="progressbar" style="width: {avance}%" aria-valuenow="{avance}" aria-valuemin="0" aria-valuemax="{avance}"></div>
-                      </div>
-                  </div>
-                  <div class="ml-auto">
-                    <p class="text-primary mb-0"></i>{restante} / {horas}</p>
+                  <div class="col-12">
+                    <h5>DISP: {restante}<span class="pull-right">{avance}%</span></h5>
+                    <div class="progress">
+                      <div class="progress-bar bg-primary" role="progressbar" style="width: {avance}%" aria-valuenow="{avance}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
                   </div>
                 </div>
               </div>

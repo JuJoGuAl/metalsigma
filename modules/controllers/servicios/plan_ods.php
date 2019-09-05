@@ -71,13 +71,18 @@ if($perm_val["title"]<>"SUCCESS"){
 				}
 			}
 		}
-		$data4=$data_class->list_sub(false,$array_cot_ods,">= 0");
+		$data4=$data_class->list_sub(false,$array_cot_ods,">= 0",false,false,false,false,false,false,"co.mod_date DESC");
+		//print_r($data4);
 		if($data4["title"]=="SUCCESS"){
 			foreach ($data4["content"] as $key => $value){
 				$tpl->newBlock("ods");
 				foreach ($data4["content"][$key] as $key1 => $value1){
 					$tpl->assign($key1,$value1);
 				}
+				$clas_ = ($data4["content"][$key]["ctipo"]==5) ? "bg-warning" : "" ;
+				$tpl->assign("bg",$clas_);
+				$clas2_ = ($data4["content"][$key]["ctipo"]==5) ? "" : "text-success" ;
+				$tpl->assign("text",$clas2_);
 				$tpl->assign("color",$trab_color[$data4["content"][$key]["ods_full"]]);
 			}
 		}
