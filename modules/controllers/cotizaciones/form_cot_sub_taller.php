@@ -22,6 +22,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$resultado=$clientes->get_cliente($_cliente);
 				$cliente = $resultado["content"][0];
 				$status_cot = ($cliente["descu"]<$_desc) ?  "PAC" : "PCL" ;
+				$status_cot = ($_cotizat==5) ? "APB" : $status_cot ;
 				array_push($datos, $_cotizat);
 				array_push($datos, $_lugar);
 				array_push($datos, $_vehiculo);
@@ -103,6 +104,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 						$mensaje = ($cliente["descu"]<$_desc) ?  "COTIZACION ENVIADA A APROBACION DE CEO" : "COTIZACION ENVIADA A APROBACION DE CLIENTE!" ;
 					break;
 				}
+				$mensaje = ($_cotizat==5) ? "COTIZACION PROCESADA" : $mensaje ;
 				if($resultado["title"]=="SUCCESS"){
 					$response['title']=$resultado["title"];
 					$response["content"]=$mensaje;
@@ -169,6 +171,10 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$tpl->assign("hide",$style);
 				$style1 = ($cab["cot_gar_full"]=="N/A") ? 'style="display:none;"' : '' ;
 				$tpl->assign("hide1",$style1);
+				$style2 = ($cab["ctipo"]==5) ? 'disabled="disabled" style="display:none;"' : '' ;
+				$tpl->assign("hide2",$style2);
+				$style3 = ($cab["ctipo"]==5) ? 'validar' : '' ;
+				$tpl->assign("hide3",$style3);
 				$csegmento=$cab_cli["csegmento"];
 				$csegmento2 = ($cab["parte"]==0) ? 6 : $csegmento ;
 				$cpago=$cab_cli["cpago"];

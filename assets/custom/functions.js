@@ -1173,15 +1173,15 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                         jQuery.each(data.det, function(key,value){
                             var count = (jQuery("#table_det_cot tbody tr").length-1)+1;
                             tr=`<tr class="datas">
-                            <td>`+count+`<input name="c_det[]" id="c_det[]" type="hidden" value="`+value.codigo+`"></td>
+                            <td>`+count+`<input name="c_det[]" id="c_det[]" type="hidden" value="0"></td>
                             <td><input name="cparte[]" id="cparte[`+count+`]" type="hidden" value="`+value.cparte+`">`+value.parte+`</td>
                             <td><input name="cpieza[]" id="cpieza[`+count+`]" type="hidden" value="`+value.cpieza+`">`+value.pieza+`</td>
                             <td><input name="cservi[]" id="cservi[`+count+`]" type="hidden" value="`+value.cservicio+`">`+value.articulo+`</td>
-                            <td><input name="hhtaller[]" id="hhtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_ta" style="width: 60px" maxlength="5" value="`+value.hh_taller+`"></td>
-                            <td><input name="hhterreno[]" id="hhterreno[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_te" style="width: 60px" maxlength="5" value="`+value.hh_terreno+`"></td>
-                            <td><input name="dtaller[]" id="dtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_dtaller" style="width: 50px" maxlength="2" value="`+value.dias_taller+`"></td>
-                            <td><input name="inicio[]" id="inicio[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:100px;" autocomplete="off" value="`+value.finicio1+`"></td>
-                            <td><input name="fin[]" id="fin[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:100px;" autocomplete="off" value="`+value.ffin1+`"></td>
+                            <td><input name="hhtaller[]" id="hhtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_ta" style="width: 60px" maxlength="5"></td>
+                            <td><input name="hhterreno[]" id="hhterreno[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_te" style="width: 60px" maxlength="5"></td>
+                            <td><input name="dtaller[]" id="dtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_dtaller" style="width: 50px" maxlength="2"></td>
+                            <td><input name="inicio[]" id="inicio[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:100px;" autocomplete="off"></td>
+                            <td><input name="fin[]" id="fin[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:100px;" autocomplete="off"></td>
                             <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
                             </tr>`;
                             jQuery("#table_det_cot tbody tr:last").before(tr);

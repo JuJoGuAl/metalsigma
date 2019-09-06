@@ -65,9 +65,9 @@
                       <div class="form-group">
                         <label for="ods_gar" class="control-label col-form-label">ODS</label>
                         <div class="input-group">
-                          <input type="text" class="form-control validar" id="ods_gar" name="ods_gar" placeholder="SELECCIONE UNA ODS" value="{ods_gar_full}" readonly> 
+                          <input type="text" class="form-control {hide3}" id="ods_gar" name="ods_gar" placeholder="SELECCIONE UNA ODS" value="{ods_gar_full}" readonly> 
                           <input type="hidden" id="cods_gar" name="cods_gar" value="{cot_gar_full}">
-                          <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_ods_gar"><span class="fa fa-search"></span></button></div>
+                          <div class="input-group-append"><button class="btn btn-outline-secondary ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_ods_gar"><span class="fa fa-search"></span></button></div>
                         </div>
                       </div>
                     </div>
@@ -178,7 +178,7 @@
                           </tbody>
                         </table>
                         <p style="text-align:left;">
-                          <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_sistema" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
+                          <button class="btn btn-outline-secondary waves-effect waves-light ctrl" {hide2} type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_sistema" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
                         </p>
                       </div>
                       <div class="col-sm-12">
@@ -459,115 +459,117 @@
 </div>
 </div>
 <script>
-jQuery('button').on('click', function(){
-  submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc"), assoc_id = jQuery(this).attr("data-id");
-  if(acc=="SAVE" || acc=="PROC"){
-    if(count_row("table_det_cot","COMPONENTE")){
-      if(check_datas_cot()){
-        if(acc=="PROC"){ jQuery("#accion").val("proc"); }
-        let cli_desc = jQuery("#desc_percent").val(), cot_desc = jQuery("#desc").val();
-        let event = function (){ SendForm(mod,submod,ref,subref,"#form_",assoc_id); }
-        if(cot_desc>cli_desc){
-          dialog("El DESCUENTO DE LA COTIZACION SUPERA EL MAXIMO DEL CLIENTE, DE CONTINUAR DEBERA SER APROBADA POR EL CEO","WARNING",event);
-        }else{
-          SendForm(mod,submod,ref,subref,"#form_",assoc_id);
-        }
-      }
-    }else{ jQuery('.nav-tabs li:nth-child(1) > a').trigger('click'); }
-  }else if(acc=="search_sistema"){
-    modal_search("SELECCIONE UN SISTEMA",'accion='+acc+'&mod='+submod,'POST',false,false);
-  }else if(acc=="add_ins" || acc=="add_rep" || acc=="add_ser"){
-    var non_det = new Array();
-    jQuery('#table_'+acc+' tbody tr td input[id^="carticulo"]').each(function(row, tr){
-      non_det.push(jQuery(this).val());
-    });
-    modal_search("SELECCIONE UN ITEM",'accion='+acc+'&mod='+submod+'&not='+JSON.stringify(non_det),'POST',false,false);
-  }else if(acc=="add_ser_cot"){
-    var non_det = new Array();
-    jQuery('#table_add_ser tbody tr td input[id^="ccotizacion"]').each(function(row, tr){
-      non_det.push(jQuery(this).val());
-    });
-    modal_search("SELECCIONE UNA COTIZACION DE SERVICIO A APLICAR",'accion='+acc+'&mod='+submod+'&not='+JSON.stringify(non_det),'POST',false,false);
-  }else if(acc=="IMP"){
-    if(jQuery.inArray(jQuery("#stats").val(),array_status_print_cot)!=-1){
-      imprimir("./modules/reports/rep_cot_sub.php?code="+jQuery('#id').val()+"&accion="+acc+"&submod="+submod);
-    }else{
-      dialog("LA TRANSACCION NO CUMPLE CON LOS REQUISITOS PARA GENERAR EL PDF","ERROR");
-    }
-  }else if(acc=="search_ods_gar"){
-    modal_search("SELECCIONE UNA ODS PARA APLICAR GARANTIA",'accion='+acc+'&mod='+submod+'&codigo='+jQuery("#cotiza").val(),'POST',false,false);
-  }
-});
-jQuery('#cotizat').change(function(){
-  jQuery("#table_det_cot tbody .datas").empty();
-  jQuery("#ods_gar").val("");
-  jQuery("#cods_gar").val("");
-  calculos();
-  if((jQuery(this).val()*1)==5){
-    jQuery('#garantias').fadeIn();
-    jQuery("[data-acc='search_sistema']").hide().attr("disabled", true);
-  }else{
-    jQuery('#garantias').fadeOut();
-    jQuery("[data-acc='search_sistema']").show().attr("disabled", false);
-  }
-});
-jQuery('#lugar, #vehiculo, #equipot, #coteq').change(function(){
-  if(jQuery.inArray(jQuery("#stats").val(),array_status_calc_odc)!=-1){
-    if((jQuery("#cotizat").val()*1)==5){
-      sal               = 0;
-      costo_km          = 0;
-      hh_normal_taller  = 0;
-      hh_normal_terreno = 0;
-      trabs             = 0;
-      arriendo          = 0;
-    }else{
-      jQuery(".preloader").fadeIn();
-      jQuery.ajax({
-        url: "./modules/controllers/ajax.php",
-        type: "POST",
-        data : jQuery("#form_").serialize() + "&mod="+submod+"&accion=calculos_",
-        dataType:'json',
-        success: function(data){
-          if(data.title=="SUCCESS"){
-            sal=data.content.salida;
-            costo_km=data.content.costo_km;
-            hh_normal_taller=data.content.hh_taller;
-            hh_normal_terreno=data.content.hh_terreno;
-            trabs=data.content.trabs;
-            arriendo=data.content.valor_peso_dia;
-            jQuery(".preloader").fadeOut();
+  jQuery('button').on('click', function(){
+    submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc"), assoc_id = jQuery(this).attr("data-id");
+    if(acc=="SAVE" || acc=="PROC"){
+      if(count_row("table_det_cot","COMPONENTE")){
+        if(check_datas_cot()){
+          if(acc=="PROC"){ jQuery("#accion").val("proc"); }
+          let cli_desc = jQuery("#desc_percent").val(), cot_desc = jQuery("#desc").val();
+          let event = function (){ SendForm(mod,submod,ref,subref,"#form_",assoc_id); }
+          if(cot_desc>cli_desc){
+            dialog("El DESCUENTO DE LA COTIZACION SUPERA EL MAXIMO DEL CLIENTE, DE CONTINUAR DEBERA SER APROBADA POR EL CEO","WARNING",event);
           }else{
-            jQuery(".preloader").fadeOut();
-            dialog(data.content,data.title);
+            SendForm(mod,submod,ref,subref,"#form_",assoc_id);
           }
-        },
-        error: function(x,err){
-          jQuery(".preloader").fadeOut();
-          Modal_error(x,err);
         }
+      }else{ jQuery('.nav-tabs li:nth-child(1) > a').trigger('click'); }
+    }else if(acc=="search_sistema"){
+      modal_search("SELECCIONE UN SISTEMA",'accion='+acc+'&mod='+submod,'POST',false,false);
+    }else if(acc=="add_ins" || acc=="add_rep" || acc=="add_ser"){
+      var non_det = new Array();
+      jQuery('#table_'+acc+' tbody tr td input[id^="carticulo"]').each(function(row, tr){
+        non_det.push(jQuery(this).val());
       });
+      modal_search("SELECCIONE UN ITEM",'accion='+acc+'&mod='+submod+'&not='+JSON.stringify(non_det),'POST',false,false);
+    }else if(acc=="add_ser_cot"){
+      var non_det = new Array();
+      jQuery('#table_add_ser tbody tr td input[id^="ccotizacion"]').each(function(row, tr){
+        non_det.push(jQuery(this).val());
+      });
+      modal_search("SELECCIONE UNA COTIZACION DE SERVICIO A APLICAR",'accion='+acc+'&mod='+submod+'&not='+JSON.stringify(non_det),'POST',false,false);
+    }else if(acc=="IMP"){
+      if(jQuery.inArray(jQuery("#stats").val(),array_status_print_cot)!=-1){
+        imprimir("./modules/reports/rep_cot_sub.php?code="+jQuery('#id').val()+"&accion="+acc+"&submod="+submod);
+      }else{
+        dialog("LA TRANSACCION NO CUMPLE CON LOS REQUISITOS PARA GENERAR EL PDF","ERROR");
+      }
+    }else if(acc=="search_ods_gar"){
+      modal_search("SELECCIONE UNA ODS PARA APLICAR GARANTIA",'accion='+acc+'&mod='+submod+'&codigo='+jQuery("#cotiza").val(),'POST',false,false);
     }
-  }
-  if((jQuery("#lugar").val()*1)==2){
-    jQuery('#terreno').fadeIn();
-  }else{
-    jQuery('#terreno').fadeOut();
-  }
-  calculos();
-});
-jQuery("#form_").on("change, keypress, keyup",function(){
-  calculos();
-});
-jQuery("#form_").on("blur, focusout, focusin",function(){
-  calculos();
-});
-setTimeout(function(){ jQuery('#lugar').trigger("change"); },200);
-jQuery('.dates').datepicker().on('changeDate', function(){
-  calculos();
-});
-<!-- START BLOCK : val -->
-block_controls(true);
-setTimeout(function(){ jQuery(".dates").datepicker("destroy"); },100);
-<!-- END BLOCK : val -->
+  });
+  jQuery('#cotizat').change(function(){
+    jQuery("#table_det_cot tbody .datas").empty();
+    jQuery("#ods_gar").val("");
+    jQuery("#cods_gar").val("");
+    calculos();
+    if((jQuery(this).val()*1)==5){
+      jQuery('#garantias').fadeIn();
+      jQuery("#ods_gar").addClass("validar");
+      jQuery("[data-acc='search_sistema']").hide().attr("disabled", true);
+    }else{
+      jQuery('#garantias').fadeOut();
+      jQuery("#ods_gar").removeClass("validar");
+      jQuery("[data-acc='search_sistema']").show().attr("disabled", false);
+    }
+  });
+  jQuery('#lugar, #vehiculo, #equipot, #coteq').change(function(){
+    if(jQuery.inArray(jQuery("#stats").val(),array_status_calc_odc)!=-1){
+      if((jQuery("#cotizat").val()*1)==5){
+        sal               = 0;
+        costo_km          = 0;
+        hh_normal_taller  = 0;
+        hh_normal_terreno = 0;
+        trabs             = 0;
+        arriendo          = 0;
+      }else{
+        jQuery(".preloader").fadeIn();
+        jQuery.ajax({
+          url: "./modules/controllers/ajax.php",
+          type: "POST",
+          data : jQuery("#form_").serialize() + "&mod="+submod+"&accion=calculos_",
+          dataType:'json',
+          success: function(data){
+            if(data.title=="SUCCESS"){
+              sal=data.content.salida;
+              costo_km=data.content.costo_km;
+              hh_normal_taller=data.content.hh_taller;
+              hh_normal_terreno=data.content.hh_terreno;
+              trabs=data.content.trabs;
+              arriendo=data.content.valor_peso_dia;
+              jQuery(".preloader").fadeOut();
+            }else{
+              jQuery(".preloader").fadeOut();
+              dialog(data.content,data.title);
+            }
+          },
+          error: function(x,err){
+            jQuery(".preloader").fadeOut();
+            Modal_error(x,err);
+          }
+        });
+      }
+    }
+    if((jQuery("#lugar").val()*1)==2){
+      jQuery('#terreno').fadeIn();
+    }else{
+      jQuery('#terreno').fadeOut();
+    }
+    calculos();
+  });
+  jQuery("#form_").on("change, keypress, keyup",function(){
+    calculos();
+  });
+  jQuery("#form_").on("blur, focusout, focusin",function(){
+    calculos();
+  });
+  setTimeout(function(){ jQuery('#lugar').trigger("change"); },200);
+  jQuery('.dates').datepicker().on('changeDate', function(){
+    calculos();
+  });
+  <!-- START BLOCK : val -->
+  block_controls(true);
+  setTimeout(function(){ jQuery(".dates").datepicker("destroy"); },100);
+  <!-- END BLOCK : val -->
 </script>
 <!-- END BLOCK : module -->

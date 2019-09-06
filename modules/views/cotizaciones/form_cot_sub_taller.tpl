@@ -64,9 +64,9 @@
                         <div class="form-group">
                           <label for="ods_gar" class="control-label col-form-label">ODS</label>
                           <div class="input-group">
-                            <input type="text" class="form-control validar" id="ods_gar" name="ods_gar" placeholder="SELECCIONE UNA ODS" value="{ods_gar_full}" readonly> 
+                            <input type="text" class="form-control {hide3}" id="ods_gar" name="ods_gar" placeholder="SELECCIONE UNA ODS" value="{ods_gar_full}" readonly> 
                             <input type="hidden" id="cods_gar" name="cods_gar" value="{cot_gar_full}">
-                            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_ods_gar"><span class="fa fa-search"></span></button></div>
+                            <div class="input-group-append"><button class="btn btn-outline-secondary ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_ods_gar"><span class="fa fa-search"></span></button></div>
                           </div>
                         </div>
                       </div>
@@ -177,7 +177,7 @@
                             </tbody>
                           </table>
                           <p style="text-align:left;">
-                            <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_sistema" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
+                            <button class="btn btn-outline-secondary waves-effect waves-light ctrl" {hide2} type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_sistema" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
                           </p>
                         </div>
                         <div class="col-sm-12">
@@ -483,10 +483,18 @@
     }
   });
   jQuery('#cotizat').change(function(){
+    jQuery("#table_det_cot tbody .datas").empty();
+    jQuery("#ods_gar").val("");
+    jQuery("#cods_gar").val("");
+    calculos();
     if((jQuery(this).val()*1)==5){
       jQuery('#garantias').fadeIn();
+      jQuery("#ods_gar").addClass("validar");
+      jQuery("[data-acc='search_sistema']").hide().attr("disabled", true);
     }else{
       jQuery('#garantias').fadeOut();
+      jQuery("#ods_gar").removeClass("validar");
+      jQuery("[data-acc='search_sistema']").show().attr("disabled", false);
     }
   });
   jQuery('#lugar, #vehiculo, #equipot, #coteq').change(function(){
@@ -533,7 +541,11 @@
     }
     calculos();
   });
-  jQuery("#form_").on("blur, change, keypress, keyup, focusout, focusin",function(){
+  jQuery("#form_").on("blur, focusout, focusin",function(){
+    calculos();
+  });
+  setTimeout(function(){ jQuery('#lugar').trigger("change"); },200);
+  jQuery('.dates').datepicker().on('changeDate', function(){
     calculos();
   });
   setTimeout(function(){ jQuery('#lugar').trigger("change"); },200);

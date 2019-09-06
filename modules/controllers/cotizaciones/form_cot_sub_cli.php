@@ -137,7 +137,9 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 				$tpl->assign("hide",$style);
 				$style1 = ($cab["cot_gar_full"]=="N/A") ? 'style="display:none;"' : '' ;
 				$tpl->assign("hide1",$style1);
-				$csegmento=$cab_cli["csegmento"];
+				$style2 = ($cab["ctipo"]==5) ? 'disabled="disabled" style="display:none;"' : '' ;
+				$style3 = ($cab["ctipo"]==5) ? 'validar' : '' ;
+				$tpl->assign("hide3",$style3);
 				$csegmento2 = ($cab["parte"]==0) ? 6 : $csegmento ;
 				$cpago=$cab_cli["cpago"];
 				$cequipo=$cab["cequipo"];

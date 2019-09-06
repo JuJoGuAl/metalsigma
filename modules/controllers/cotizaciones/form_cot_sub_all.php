@@ -283,6 +283,10 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$tpl->assign("hide",$style);
 				$style1 = ($cab["cot_gar_full"]=="N/A") ? 'style="display:none;"' : '' ;
 				$tpl->assign("hide1",$style1);
+				$style2 = ($cab["ctipo"]==5) ? 'disabled="disabled" style="display:none;"' : '' ;
+				$tpl->assign("hide2",$style2);
+				$style3 = ($cab["ctipo"]==5) ? 'validar' : '' ;
+				$tpl->assign("hide3",$style3);
 				$csegmento=$cab_cli["csegmento"];
 				$csegmento2 = ($cab["parte"]==0) ? 6 : $csegmento ;
 				$cpago=$cab_cli["cpago"];
@@ -399,8 +403,10 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 						if($value["del"]==0){
 							$codigo.='<input name="c_det[]" id="c_det[]" type="hidden" value="'.$value["codigo"].'">';
 							$parte = '<input name="cparte[]" id="cparte[]" type="hidden" value="'.$value["cparte"].'">'.$value["parte"];
-							$pieza = '<input name="cpieza[]" id="cpieza[]" type="hidden" value="'.$value["cpieza"].'">'.$value["pieza"].'<button class="btn btn-outline-secondary waves-effect waves-light btn-sm pieza ctrl" type="button" data-menu="'.$var_array_nav["mod"].'" data-mod="'.$var_array_nav["submod"].'" data-ref="'.$var_array_nav["ref"].'" data-subref="'.$var_array_nav["subref"].'" data-acc="search_componente" data-id="0" style="margin-left: .5rem;"><span class="btn-label"><i class="fas fa-sync"></i></span></button>';
-							$articulo = '<input name="cservi[]" id="cservi[]" type="hidden" value="'.$value["cservicio"].'"><input name="price[]" id="price[]" type="hidden" value="'.$value["precio"].'">'.$value["articulo"].'<button class="btn btn-outline-secondary waves-effect waves-light btn-sm servicio ctrl" type="button" data-menu="'.$var_array_nav["mod"].'" data-mod="'.$var_array_nav["submod"].'" data-ref="'.$var_array_nav["ref"].'" data-subref="'.$var_array_nav["subref"].'" data-acc="search_servicio_propio" data-id="0" style="margin-left: .5rem;"><span class="btn-label"><i class="fas fa-sync"></i></span></button>';
+							$boton1 = ($cab["ctipo"]!=5) ? '<button class="btn btn-outline-secondary waves-effect waves-light btn-sm pieza ctrl" type="button" data-menu="'.$var_array_nav["mod"].'" data-mod="'.$var_array_nav["submod"].'" data-ref="'.$var_array_nav["ref"].'" data-subref="'.$var_array_nav["subref"].'" data-acc="search_componente" data-id="0" style="margin-left: .5rem;"><span class="btn-label"><i class="fas fa-sync"></i></span></button>' : '' ;
+							$pieza = '<input name="cpieza[]" id="cpieza[]" type="hidden" value="'.$value["cpieza"].'">'.$value["pieza"].$boton1;
+							$boton2 = ($cab["ctipo"]!=5) ? '<button class="btn btn-outline-secondary waves-effect waves-light btn-sm servicio ctrl" type="button" data-menu="'.$var_array_nav["mod"].'" data-mod="'.$var_array_nav["submod"].'" data-ref="'.$var_array_nav["ref"].'" data-subref="'.$var_array_nav["subref"].'" data-acc="search_servicio_propio" data-id="0" style="margin-left: .5rem;"><span class="btn-label"><i class="fas fa-sync"></i></span></button>' : '' ;
+							$articulo = '<input name="cservi[]" id="cservi[]" type="hidden" value="'.$value["cservicio"].'"><input name="price[]" id="price[]" type="hidden" value="'.$value["precio"].'">'.$value["articulo"].$boton2;
 							$hh_taller = '<input name="hhtaller[]" id="hhtaller[]" type="text" class="form-control numeric ctrl sum_hh_ta" style="width: 60px" maxlength="5" value="'.$value["hh_taller"].'">';
 							$hh_terreno = '<input name="hhterreno[]" id="hhterreno[]" type="text" class="form-control numeric ctrl sum_hh_te" style="width: 60px" maxlength="5" value="'.$value["hh_terreno"].'">';
 							$dias_taller = '<input name="dtaller[]" id="dtaller[]" type="text" class="form-control numeric ctrl sum_dtaller" style="width: 50px" maxlength="2" value="'.$value["dias_taller"].'">';

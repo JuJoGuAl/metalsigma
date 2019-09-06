@@ -164,6 +164,10 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$tpl->assign("hide",$style);
 				$style1 = ($cab["cot_gar_full"]=="N/A") ? 'style="display:none;"' : '' ;
 				$tpl->assign("hide1",$style1);
+				$style2 = ($cab["ctipo"]==5) ? 'disabled="disabled" style="display:none;"' : '' ;
+				$tpl->assign("hide2",$style2);
+				$style3 = ($cab["ctipo"]==5) ? 'validar' : '' ;
+				$tpl->assign("hide3",$style3);
 				$csegmento=$cab_cli["csegmento"];
 				$csegmento2 = ($cab["parte"]==0) ? 6 : $csegmento ;
 				$cpago=$cab_cli["cpago"];
