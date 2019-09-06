@@ -274,4 +274,4 @@ INSERT INTO `adm_parametro` (`cparametro`, `parametro`, `valor`, `block`, `crea_
 
 06-09-2019
 * GARANTIAS TRAEN TRABAJOS A LA COTIZACION.
-* FIX EN LA FUNCION DE FECHAS..
+* FIX EN LA FUNCION DE FECHAS.
