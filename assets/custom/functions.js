@@ -43,21 +43,29 @@ $.extend( true, $.fn.dataTable.defaults, {
 });
 /** Asigno el Calendario a los campos Fecha (Creo una función para poder hacerlo en los campos dinamicos)*/
 function SetCalendar(){
-    var options = {
+    let options = {
         language: 'es',
         autoclose: true,
         todayHighlight: true,
         format: "dd-mm-yyyy"
-        };
-    jQuery(".dates").datepicker("destroy");
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-        //MOBILE
-        jQuery(".dates").attr('type', 'date');
-    }else{
-        jQuery(".dates").attr('type', 'text');
-        //options.startDate = '0';
-        jQuery(".dates").datepicker(options);
-    }
+    };
+    //options.startDate = '0';
+    jQuery(".dates").each(function(){
+        let date = jQuery(this);
+        date.datepicker("destroy");
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            //MOBILE
+            date.attr('type', 'date');
+        }else{
+            //WEB
+            date.attr('type', 'text');
+            date.datepicker(options);
+            //if(date.is("[data-date]") && (date.data("date")!==null || date.data("date")!==undefined || date.data("date")!=="")){
+            if(date.val()!==null || date.val()!==undefined || date.val()!==""){
+                date.datepicker("setDate",date.val());
+            }
+        }
+    });
 }
 /** Rastreo el comportamiento de todos los botones (Enfasis en Dinamicos)
 */
@@ -1152,8 +1160,44 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                 }
             });
         }else if (acc=="search_ods_gar"){
+            jQuery(".preloader").fadeIn();
             jQuery("#cods_gar").val(table.find('._ods').val());
             jQuery("#ods_gar").val("COT: "+table.find('td:eq(0)').text()+" ODS: "+table.find('td:eq(1)').text());
+            jQuery.ajax({
+                type: "POST",
+                url: "./modules/controllers/ajax.php",
+                data : 'accion='+acc+'&code='+table.find('._ods').val()+'&mod='+submod,
+                dataType:'json',
+                success: function(data){
+                    if(data.title=="SUCCESS"){
+                        jQuery.each(data.det, function(key,value){
+                            var count = (jQuery("#table_det_cot tbody tr").length-1)+1;
+                            tr=`<tr class="datas">
+                            <td>`+count+`<input name="c_det[]" id="c_det[]" type="hidden" value="`+value.codigo+`"></td>
+                            <td><input name="cparte[]" id="cparte[`+count+`]" type="hidden" value="`+value.cparte+`">`+value.parte+`</td>
+                            <td><input name="cpieza[]" id="cpieza[`+count+`]" type="hidden" value="`+value.cpieza+`">`+value.pieza+`</td>
+                            <td><input name="cservi[]" id="cservi[`+count+`]" type="hidden" value="`+value.cservicio+`">`+value.articulo+`</td>
+                            <td><input name="hhtaller[]" id="hhtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_ta" style="width: 60px" maxlength="5" value="`+value.hh_taller+`"></td>
+                            <td><input name="hhterreno[]" id="hhterreno[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_te" style="width: 60px" maxlength="5" value="`+value.hh_terreno+`"></td>
+                            <td><input name="dtaller[]" id="dtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_dtaller" style="width: 50px" maxlength="2" value="`+value.dias_taller+`"></td>
+                            <td><input name="inicio[]" id="inicio[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:100px;" autocomplete="off" value="`+value.finicio1+`"></td>
+                            <td><input name="fin[]" id="fin[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:100px;" autocomplete="off" value="`+value.ffin1+`"></td>
+                            <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
+                            </tr>`;
+                            jQuery("#table_det_cot tbody tr:last").before(tr);
+                        });
+                        SetCalendar();
+                        jQuery(".preloader").fadeOut();
+                    }else{
+                        jQuery(".preloader").fadeOut();
+                        dialog(data.content,data.title);
+                    }
+                },
+                error: function(x,err){
+                    jQuery(".preloader").fadeOut();
+                    Modal_error(x,err);
+                }
+            });
         }
     }
     jQuery(this).find(".modal-body .modal-body-content").empty();

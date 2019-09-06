@@ -1114,17 +1114,33 @@ if (!isset($_SESSION['metalsigma_log'])){
 			}
 			$response = $geojson;
 		}else if ($accion=="search_ods_gar"){
-			$status_ = array("FAC");
-			$data=$cotizaciones->list_sub($_POST["codigo"],$status_,false,false,false,false,false,false,constant("MAX_DIAS_GAR"));
-			if($data["title"]=="SUCCESS"){
-				foreach ($data["content"] as $key => $value){
-					$table.='<tr><td><input class="_ods" type="hidden" value="'.$value["codigo"].'">'.$value["cot_full"].'</td><td>'.$value["ods_full"].'</td><td>'.$value['cfactura'].'</td><td>'.$value['fecha_fac'].'</td><td>'.$value['tipo'].'</td><td>'.$value['lugar'].'</td><td>'.$value['equipo'].'</td></tr>';
+			if(isset($_POST["code"])){
+				$data=$cotizaciones->get_sub($_POST['code']);
+				if($data["title"]=="SUCCESS"){
+					//print_r($data);
+					$response["title"]="SUCCESS";
+					$response["cab"]=$data["cab"];
+					$response["datos"]=$data["datos"];
+					$response["det"]=$data["det"];
+					$response["art"]=$data["art"];
+					$response["cot"]=$data["cot"];
+				}else{
+					$response["title"]="ERROR";
+					$response["content"]="ERROR AL OBTENER LOS DATOS LA ODS SELECCIONADA";
 				}
-				$table.="</tbody></table></div>";
-				$response=$table;
 			}else{
-				$response["title"]="ERROR";
-				$response["content"]="NO EXISTEN ODS QUE CUMPLAN CON LOS REQUERIMIENTOS";
+				$status_ = array("FAC");
+				$data=$cotizaciones->list_sub($_POST["codigo"],$status_,false,false,false,false,false,false,constant("MAX_DIAS_GAR"));
+				if($data["title"]=="SUCCESS"){
+					foreach ($data["content"] as $key => $value){
+						$table.='<tr><td><input class="_ods" type="hidden" value="'.$value["codigo"].'">'.$value["cot_full"].'</td><td>'.$value["ods_full"].'</td><td>'.$value['cfactura'].'</td><td>'.$value['fecha_fac'].'</td><td>'.$value['tipo'].'</td><td>'.$value['lugar'].'</td><td>'.$value['equipo'].'</td></tr>';
+					}
+					$table.="</tbody></table></div>";
+					$response=$table;
+				}else{
+					$response["title"]="ERROR";
+					$response["content"]="NO EXISTEN ODS QUE CUMPLAN CON LOS REQUERIMIENTOS";
+				}
 			}
 
 		}

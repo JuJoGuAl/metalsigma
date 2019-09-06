@@ -499,10 +499,16 @@ jQuery('button').on('click', function(){
   }
 });
 jQuery('#cotizat').change(function(){
+  jQuery("#table_det_cot tbody .datas").empty();
+  jQuery("#ods_gar").val("");
+  jQuery("#cods_gar").val("");
+  calculos();
   if((jQuery(this).val()*1)==5){
     jQuery('#garantias').fadeIn();
+    jQuery("[data-acc='search_sistema']").hide().attr("disabled", true);
   }else{
     jQuery('#garantias').fadeOut();
+    jQuery("[data-acc='search_sistema']").show().attr("disabled", false);
   }
 });
 jQuery('#lugar, #vehiculo, #equipot, #coteq').change(function(){
@@ -549,7 +555,10 @@ jQuery('#lugar, #vehiculo, #equipot, #coteq').change(function(){
   }
   calculos();
 });
-jQuery("#form_").on("blur, change, keypress, keyup, focusout, focusin",function(){
+jQuery("#form_").on("change, keypress, keyup",function(){
+  calculos();
+});
+jQuery("#form_").on("blur, focusout, focusin",function(){
   calculos();
 });
 setTimeout(function(){ jQuery('#lugar').trigger("change"); },200);

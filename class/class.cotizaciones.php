@@ -311,6 +311,8 @@ class cotizaciones{
 			array ('system',	'cod.precio'),
 			array ('system',	'cod.finicio'),
 			array ('system',	'cod.ffin'),
+			array ('system',	'DATE_FORMAT(cod.finicio, "%d-%m-%Y") AS finicio1'),
+			array ('system',	'DATE_FORMAT(cod.ffin, "%d-%m-%Y") AS ffin1'),
 			array ('system',	'cod.ccotizacion'),
 			array ('system',	'cod.del'),
 			array ('system',	'cod.crea_user'),
