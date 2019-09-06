@@ -648,7 +648,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 				foreach ($data["content"] as $key => $datos){
 					$id=$datos['codigo'];
 					$cadena_acciones='
-					<button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light menu" data-toggle="tooltip" data-placement="top" title="DETALLES" data-menu="SERVICIOS" data-mod="CRUD_ODS" data-ref="CRUD_ODS_SUB" data-subref="NONE" data-acc="MODULO" data-id="'.$id.'"><i class="fas fa-arrow-right"></i></button>';					
+					<button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light menu" data-toggle="tooltip" data-placement="top" title="DETALLES" data-menu="SERVICIOS" data-mod="CRUD_ODS" data-ref="CRUD_ODS_SUB" data-subref="NONE" data-acc="MODULO" data-id="'.$id.'"><i class="fas fa-arrow-right"></i></button>';
 					$detalles=$cotizaciones->list_sub($datos['codigo'],$array_ods);
 					$sub_status = "";
 					$contador = 0;
@@ -674,6 +674,34 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$data["content"][$key]["sub_status"] = $sub_status;
 					$data["content"][$key]["code"] = formatRut($datos['code']);
 					$data["content"][$key]["class"] = $class;
+				}
+				$response["content"]=$data["content"];
+			}else{
+				$response["title"]="ERROR";
+				$response["content"]="NO EXISTE INFORMACION PARA MOSTRAR";
+			}
+		}elseif($accion=="refresh_ven"){
+			$arr = json_decode($_POST["stat"]);
+			$fstat = ($arr[0]=="-1") ? $array_cot_fac : json_decode($_POST["stat"]) ;
+			$ftipo = ($_POST["tipo"]=="-1") ? false : $_POST["tipo"];
+			$data=$cotizaciones->list_sub(false,$fstat,"<= 0",false,false,false,false,false,false,false,$ftipo);
+			if($data["title"]=="SUCCESS"){
+				$response["title"]="SUCCESS";
+				foreach ($data["content"] as $key => $datos){
+					$gar = ($datos["ctipo"]==5) ? '<span class="badge badge-pill font-medium badge-warning ml-2">URGENTE</span>' : '' ;
+					$id=$datos['codigo'];
+					$cadena_acciones='
+					<button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light menu" data-toggle="tooltip" data-placement="top" title="VER" data-menu="VENTAS" data-mod="CRUD_VENTAS" data-ref="FORM_ODS" data-subref="NONE" data-acc="EDIT" data-id="'.$id.'"><i class="fas fa-search"></i></button>';
+					if($datos['status']!="FAC"){
+						$cadena_acciones .= '<button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light open_modal" data-toggle="tooltip" data-placement="top" title="FACTURAR" data-menu="VENTAS" data-mod="CRUD_VENTAS" data-ref="FORM_ODS" data-subref="NONE" data-acc="EDIT" data-id="'.$id.'"><i class="fas fa-hands-helping"></i></button>';
+					}
+					$stats_color=color_status($datos['status'],"table",true);
+
+					$data["content"][$key]["status_"]=$array_status[$datos['status']];
+					$data["content"][$key]["gar"]=$gar;
+					$data["content"][$key]["boton"] = $cadena_acciones;
+					$data["content"][$key]["class"]=$stats_color;
+					$data["content"][$key]["code"]=formatRut($datos['code']);
 				}
 				$response["content"]=$data["content"];
 			}else{

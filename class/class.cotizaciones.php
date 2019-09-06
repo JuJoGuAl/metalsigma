@@ -519,7 +519,7 @@ class cotizaciones{
 	}
 	/** COTIZACIONES_SUB */
 	//LISTAR
-	public function list_sub($origen=false,$status=false,$times=false,$cliente=false,$finicio=false,$ffin=false,$cuentas=false,$notIn=false,$dias_old=false,$orden=false){
+	public function list_sub($origen=false,$status=false,$times=false,$cliente=false,$finicio=false,$ffin=false,$cuentas=false,$notIn=false,$dias_old=false,$orden=false,$tipo=false){
 		$data = array (); $cont=-1;
 		if($origen){
 			$cont++;
@@ -572,6 +572,12 @@ class cotizaciones{
 			$data[$cont]["row"]="co.corigen_gar";
 			$data[$cont]["operator"]="=";
 			$data[$cont]["value"]=0;
+		}
+		if($tipo){
+			$cont++;
+			$data[$cont]["row"]="co.ctipo";
+			$data[$cont]["operator"]="=";
+			$data[$cont]["value"]=$tipo;
 		}
 		$having = ($times) ? "restante $times" : "" ;
 		$having = ($cuentas) ? "cuenta > 0" : "" ;

@@ -292,45 +292,6 @@
 </div>
 <script>
   setTimeout(function(){ calculos(); },200);
-  jQuery('button').on('click', function(){
-    submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc"), assoc_id = jQuery(this).attr("data-id");
-    if(acc=="PROC"){ jQuery("#accion").val("proc"); }
-    if(acc=="CANC"){ jQuery("#accion").val("canc"); }
-    if(acc=="RECO"){ jQuery("#accion").val("reco"); }
-    if(acc=="PROC" || acc=="CANC" || acc=="RECO"){
-      clear_log();
-      var form = jQuery("#form_")[0];
-      var formdata = new FormData(form);
-      formdata.append('mod',mod);
-      formdata.append('submod',submod);
-      formdata.append('ref',ref);
-      formdata.append('subref',subref);
-      if(valform("#form_")){
-        jQuery.ajax({
-            type: "POST",
-            url: "./modules/controllers/"+mod.toLowerCase()+"/"+ref.toLowerCase()+".php",
-            data : formdata,
-            dataType:'json',
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function(data){
-                if(data.title=="SUCCESS"){
-                    dialog(data.content,data.title);
-                    GetModule(mod,submod,"NONE","NONE","SAVE",assoc_id);
-                }else if(data.content==-1){
-                    document.location.href="./?error=1";
-                }else{
-                    dialog(data.content,data.title);
-                }
-            },
-            error: function(x,err,msj){
-                Modal_error(x,err,msj);
-            }
-        });
-      }
-    }
-  });
   <!-- START BLOCK : val -->
   block_controls(true);
   <!-- END BLOCK : val -->

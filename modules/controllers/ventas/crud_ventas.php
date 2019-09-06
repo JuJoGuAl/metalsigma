@@ -64,7 +64,25 @@ if($action=="save_new"){
 				$tpl->assign("menu_ter","NONE");
 				$tpl->assign("menu_name","FACTURAS DE ODS");
 			}
-			$data=$data_class->list_sub(false,$array_cot_fac,"<= 0");
+			if(!empty($array_cot_fac)){
+				foreach ($array_cot_fac as $llave => $datos){
+					$tpl->newBlock("fstat_det");
+					$tpl->assign("code",$datos);
+					$tpl->assign("valor",$array_status[$datos]);
+					if($datos=="PRO"){
+						$tpl->assign("selected",$selected);
+					}
+				}
+			}
+			$tipo=$data_class->list_();
+			foreach ($tipo["content"] as $key => $value) {
+				$tpl->newBlock("tipo_det");
+				foreach ($tipo["content"][$key] as $key1 => $value1){
+					$tpl->assign($key1,$value1);
+				}
+			}
+			$array_temp = array('PRO');
+			$data=$data_class->list_sub(false,$array_temp,"<= 0");
 			if($data["title"]=="SUCCESS"){
 				foreach ($data["content"] as $llave => $datos) {
 					$tpl->newBlock("data");
@@ -89,6 +107,8 @@ if($action=="save_new"){
 						$value = (in_array($key, $array_numbers)) ? numeros($value,2) : $value ;
 						$tpl->assign($key,$value);
 					}
+					$gar = ($data["content"][$llave]["ctipo"]==5) ? '<span class="badge badge-pill font-medium badge-warning ml-2">URGENTE</span>' : '' ;
+					$tpl->assign("gar",$gar);
 					$tpl->assign("actions",$cadena_acciones);
 					$tpl->assign("estatus",$stats_color);
 				}
