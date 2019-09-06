@@ -176,7 +176,6 @@ class cotizaciones{
 			array ('system',	'pe.equipo'),
 			array ('system',	'pe.trabs'),
 			array ('system',	'co.status'),
-			array ('system',	'co.cfactura'),
 			array ('system',	'co.m_serv'),
 			array ('system',	'co.m_rep'),
 			array ('system',	'co.m_ins'),

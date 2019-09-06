@@ -512,7 +512,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$response["content"]="NO EXISTE INFORMACION PARA MOSTRAR";
 			}
 		}elseif($accion=="search_ods_plan"){
-			$data=$cotizaciones->list_sub(false,$array_cot_fac,">= 0");
+			$data=$cotizaciones->list_sub(false,$array_cot_ods,">= 0");
 			if($data["title"]=="SUCCESS"){
 				foreach ($data["content"] as $key => $value){
 					$table.='<tr><td class="_id"><input class="_fini" type="hidden" value="'.$value["llegada"].'"><input class="_ffin" type="hidden" value="'.$value["retiro"].'"><input class="_hr_to" type="hidden" value="'.$value["horas"].'"><input class="_hr_rest" type="hidden" value="'.$value["restante"].'"><input class="_hr_ocu" type="hidden" value="'.$value["ocupado"].'">'.$value["ods_full"].'</td><td class="_code">'.formatRut($value["code"]).'</td><td class="_nom">'.$value['data'].'</td><td>'.$value['restante'].'</td><td>'.$value['llegada'].'</td><td>'.$value['retiro'].'<input class="_cliente" type="hidden" value="'.$value["codigo_cliente"].'"><input class="_ods" type="hidden" value="'.$value["codigo"].'"><input class="_trabs" type="hidden" value="'.$value["trabs"].'"><input class="_lugar" type="hidden" value="'.$value["lugar"].'"><input class="_vehiculo" type="hidden" value="'.$value["transporte"].'"></td></tr>';

@@ -79,6 +79,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$tpl->assign("accion",'save_edit');
 				$tpl->assign("id",$_GET["id"]);
 				$cotiza=$data_class->get_sub($_GET["id"]);
+				//print_r($cotiza);
 				$cab=$cotiza["cab"];
 				$cab_cli=$cotiza["datos"];
 				$det=$cotiza["det"];
@@ -90,19 +91,23 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$tpl->assign("codigo_origen",$cab["origen"]);
 				$tpl->assign("id_tittle",$cab["cot_full"]);
 				$sub_ods = ($cab["codigo_ods"]=="N/A") ? "NUEVA" : $cab["ods_full"] ;
+				$style1 = ($cab["cot_gar_full"]=="N/A") ? 'style="display:none;"' : '' ;
+				$tpl->assign("hide1",$style1);
 				$tpl->assign("id_tittle2",$sub_ods);
 				$tpl->assign("status_color",color_status($cab['status'],"badge"));
 				$tpl->assign("hide",$style);
-				foreach ($cab as $key => $value){
-					$campos = array("m_serv","m_rep","m_ins","m_stt","m_tra","m_misc","m_subt","m_desc","m_neto","m_imp","m_bruto");
-					$value = (in_array($key, $campos)) ? numeros($value,0)." $" : $value ;
-					$tpl->assign($key,$value);
-					$tpl->assign($key."_",$value);
-				}
 				foreach ($cab_cli as $key => $value){
 					$value = ($key=="code") ? formatRut($value) : $value ;
 					$tpl->assign($key,$value);
 				}
+				foreach ($cab as $key => $value){
+					//$campos = array("m_serv","m_rep","m_ins","m_stt","m_tra","m_misc","m_subt","m_desc","m_neto","m_imp","m_bruto");
+					$value = (in_array($key, $array_numbers)) ? numeros($value,0)." $" : $value ;
+					$tpl->assign($key,$value);
+					$tpl->assign($key."_",$value);
+				}
+				$garantia = ($cab["cot_gar_full"]!="N/A") ? "COT: ".$cab["cot_full_gar"]." ODS: ".$cab["ods_full_gar"] : "" ;
+				$tpl->assign("ods_gar_full",$garantia);
 				if(!empty($array_status)){
 					foreach ($array_status as $llave => $datos){
 						if($llave==$cab["status"]){
@@ -121,14 +126,23 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				if(!empty($det)){
 					foreach ($det as $key => $value) {
 						$tpl->newBlock("co_det");
+						$parte = 		$value["parte"];
+						$pieza = 		$value["pieza"];
+						$articulo = 	$value["articulo"];
+						$hh_taller =	'<input name="hhtaller[]" id="hhtaller[]" type="hidden" class="ctrl sum_hh_ta" value="'.$value["hh_taller"].'">'.$value["hh_taller"];
+						$hh_terreno =	'<input name="hhterreno[]" id="hhterreno[]" type="hidden" class="ctrl sum_hh_te" value="'.$value["hh_terreno"].'">'.$value["hh_terreno"];
+						$dias_taller =	'<input name="dtaller[]" id="dtaller[]" type="hidden" class="sum_dtaller" value="'.$value["dias_taller"].'">'.$value["dias_taller"];
+						$finicio = 		'<input name="inicio[]" id="inicio[]" type="hidden" value="'.setDate($value["finicio"],"d-m-Y").'">'.setDate($value["finicio"],"d-m-Y");
+						$ffin = 		'<input name="fin[]" id="fin[]" type="hidden" value="'.setDate($value["ffin"],"d-m-Y").'">'.setDate($value["ffin"],"d-m-Y");
 						$tpl->assign("count",($key+1));
-						foreach ($value as $key1 => $value1) {
-							if($key1=="finicio" || $key1=="ffin"){
-								$tpl->assign($key1,setDate($value1,"d-m-Y"));
-							}else{
-								$tpl->assign($key1,$value1);
-							}
-						}
+						$tpl->assign("parte",$parte);
+						$tpl->assign("pieza",$pieza);
+						$tpl->assign("articulo",$articulo);
+						$tpl->assign("hh_taller",$hh_taller);
+						$tpl->assign("hh_terreno",$hh_terreno);
+						$tpl->assign("dias_taller",$dias_taller);
+						$tpl->assign("finicio",$finicio);
+						$tpl->assign("ffin",$ffin);
 					}
 				}
 				if(!empty($art)){

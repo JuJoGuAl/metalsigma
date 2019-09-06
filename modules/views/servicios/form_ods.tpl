@@ -49,7 +49,7 @@
           <div class="card-body">
             <h6>
               <p style="margin: .5rem 0;">CLIENTE: <strong>{code} / {data}</strong></p>
-              <p style="margin: .5rem 0;">EQUIPO: <strong>{equipo} {marca} {modelo}</strong></p>
+              <p style="margin: .5rem 0;">EQUIPO: <strong>{maquina} {marca} {modelo}</strong></p>
               <p style="margin: .5rem 0;">SERIAL: <strong>{serial}</strong></p>
             </h6>
             <div class="d-flex no-block align-items-center pb-3">
@@ -73,6 +73,15 @@
                           <input type="text" id="cotizat" name="cotizat" class="form-control" value="{tipo}" disabled>
                         </div>
                       </div>
+                      <div id="garantias" class="col-sm-6" {hide1}>
+                          <div class="form-group">
+                            <label for="ods_gar" class="control-label col-form-label">ODS</label>
+                            <div class="input-group">
+                              <input type="text" class="form-control" id="ods_gar" name="ods_gar" value="{ods_gar_full}" disabled> 
+                              <input type="hidden" id="cods_gar" name="cods_gar" value="{cot_gar_full}">
+                            </div>
+                          </div>
+                        </div>
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="lugar" class="control-label col-form-label">LUGAR</label>
@@ -235,8 +244,9 @@
   </div>
 </div>
 <script>
- <!-- START BLOCK : val -->
-block_controls(true);
-<!-- END BLOCK : val -->
+  setTimeout(function(){ calculos(); },200);
+  <!-- START BLOCK : val -->
+  block_controls(true);
+  <!-- END BLOCK : val -->
 </script>
 <!-- END BLOCK : module -->
