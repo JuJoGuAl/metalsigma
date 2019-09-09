@@ -499,7 +499,7 @@
     }
   });
   jQuery('#cotizat').change(function(){
-    jQuery("#table_det_cot tbody .datas").empty();
+    jQuery("#table_det_cot tbody .datas").remove();
     jQuery("#ods_gar").val("");
     jQuery("#cods_gar").val("");
     calculos();

@@ -1403,15 +1403,15 @@ function calculos(){
                 sum_dias+=parseFloat(this.value);
             }
         }
-        hh_terreno=parseFloat(sum_hh_te*hh_normal_terreno);
-        hh_taller=parseFloat(sum_hh_ta*hh_normal_taller);
-        valor_dia=parseFloat(sum_dias*arriendo);
     });
     jQuery("#table_det_cot tbody tr:last-child td:eq(1)").text(sum_hh_ta);
     jQuery("#table_det_cot tbody tr:last-child td:eq(2)").text(sum_hh_te);
     jQuery("#table_det_cot tbody tr:last-child td:eq(3)").text(sum_dias);
-
+    
     if(jQuery.inArray(jQuery("#stats").val(),array_status_calc_odc)!=-1){
+        hh_terreno=parseFloat(sum_hh_te*hh_normal_terreno);
+        hh_taller=parseFloat(sum_hh_ta*hh_normal_taller);
+        valor_dia=parseFloat(sum_dias*arriendo);
         sum_ins=sum_rep=sum_stt=0;
         jQuery('.add_ins, .add_rep, .add_ser').each(function(){
             let cant = jQuery(this).closest("tr").find("td:eq(3) input").val(), valor = jQuery(this).closest("tr").find("td:eq(4) input").val();
@@ -1465,44 +1465,48 @@ function calculos(){
 
 function check_datas_cot(){
     let valido = false;
-    jQuery('#table_det_cot .datas').each(function(){
-        if(jQuery(this).find("td:eq(0) input").length>0){
-            let date1 = jQuery(this).find(".dates:eq(0)").val(), date2 = jQuery(this).find(".dates:eq(1)").val(), vRegExp = /^([0-9]{2})(\-)([0-9]{2})(\-)([0-9]{4})$/;
-            let comp = jQuery(this).find("td:eq(2) input").val(), serv = jQuery(this).find("td:eq(3) input").val(), hta = jQuery(this).find("td:eq(4) input").val();
-            if(comp=="" || comp==0 || comp == null || comp == undefined){
-                valido = false;
-                jQuery(this).addClass("table-danger");
-                dialog("DEBE INDICAR UN COMPONENTE!","ERROR");
-            }else{
-                if(serv=="" || serv==0 || serv == null || serv == undefined){
+    if(jQuery('#table_det_cot .datas').length>0){
+        jQuery('#table_det_cot .datas').each(function(){
+            if(jQuery(this).find("td:eq(0) input").length>0){
+                let date1 = jQuery(this).find(".dates:eq(0)").val(), date2 = jQuery(this).find(".dates:eq(1)").val(), vRegExp = /^([0-9]{2})(\-)([0-9]{2})(\-)([0-9]{4})$/;
+                let comp = jQuery(this).find("td:eq(2) input").val(), serv = jQuery(this).find("td:eq(3) input").val(), hta = jQuery(this).find("td:eq(4) input").val();
+                if(comp=="" || comp==0 || comp == null || comp == undefined){
                     valido = false;
                     jQuery(this).addClass("table-danger");
-                    dialog("DEBE INDICAR UN SERVICIO A APLICAR!","ERROR");                
+                    dialog("DEBE INDICAR UN COMPONENTE!","ERROR");
                 }else{
-                    if(hta=="" || hta == null || hta == undefined){
+                    if(serv=="" || serv==0 || serv == null || serv == undefined){
                         valido = false;
                         jQuery(this).addClass("table-danger");
-                        dialog("DEBE INDICAR UNA CANTIDAD DE HORAS TALLER","ERROR");
+                        dialog("DEBE INDICAR UN SERVICIO A APLICAR!","ERROR");                
                     }else{
-                        if(date1.match(vRegExp)){
-                            if(date2.match(vRegExp)){
-                                valido = true;
-                                jQuery(this).removeClass("table-danger");
+                        if(hta=="" || hta == null || hta == undefined){
+                            valido = false;
+                            jQuery(this).addClass("table-danger");
+                            dialog("DEBE INDICAR UNA CANTIDAD DE HORAS TALLER","ERROR");
+                        }else{
+                            if(date1.match(vRegExp)){
+                                if(date2.match(vRegExp)){
+                                    valido = true;
+                                    jQuery(this).removeClass("table-danger");
+                                }else{
+                                    valido = false;
+                                    jQuery(this).addClass("table-danger");
+                                    dialog("LA FECHA DE FIN DEBE CONTENER UNA FECHA VALIDA!","ERROR");
+                                }
                             }else{
                                 valido = false;
                                 jQuery(this).addClass("table-danger");
-                                dialog("LA FECHA DE FIN DEBE CONTENER UNA FECHA VALIDA!","ERROR");
+                                dialog("LA FECHA DE INICIO DEBE CONTENER UNA FECHA VALIDA!","ERROR");
                             }
-                        }else{
-                            valido = false;
-                            jQuery(this).addClass("table-danger");
-                            dialog("LA FECHA DE INICIO DEBE CONTENER UNA FECHA VALIDA!","ERROR");
-                        }
-                    }                
+                        }                
+                    }
                 }
             }
-        }
-    });
+        });
+    }else{
+        dialog("DEBE SELECCIONAR AL MENOS UN <strong>COMPONENTE</strong>","ERROR");
+    }
     return valido;
 }
 function check_datas_odc(){
