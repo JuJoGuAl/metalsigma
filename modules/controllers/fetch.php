@@ -94,7 +94,7 @@ if (!isset($_SESSION['metalsigma_log'])){
                         foreach ($planes["content"][$key1] as $key2 => $value2){
                             $trabajos[$key1][$key2]=$value2;
                         }
-                        $trabajos_ = $cotizaciones->get_sub($planes["content"][$key1]["cordenservicio_sub"]);
+                        $trabajos_ = $cotizaciones->get_sub($planes["content"][$key1]["cordenservicio_sub"],true);
                         if($trabajos_["title"]=="SUCCESS"){
                             $cab=$trabajos_["cab"];
                             $det=$trabajos_["det"];

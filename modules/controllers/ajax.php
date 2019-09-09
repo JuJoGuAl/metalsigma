@@ -986,7 +986,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 								foreach ($planes["content"][$key1] as $key2 => $value2){
 									$trabajos[$key1][$key2]=$value2;
 								}
-								$trabajos_ = $cotizaciones->get_sub($planes["content"][$key1]["cordenservicio_sub"]);
+								$trabajos_ = $cotizaciones->get_sub($planes["content"][$key1]["cordenservicio_sub"],true);
 								if($trabajos_["title"]=="SUCCESS"){
 									$cab=$trabajos_["cab"];
 									$det=$trabajos_["det"];
@@ -1143,7 +1143,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 			$response = $geojson;
 		}else if ($accion=="search_ods_gar"){
 			if(isset($_POST["code"])){
-				$data=$cotizaciones->get_sub($_POST['code']);
+				$data=$cotizaciones->get_sub($_POST['code'],true);
 				if($data["title"]=="SUCCESS"){
 					//print_r($data);
 					$response["title"]="SUCCESS";

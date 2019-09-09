@@ -17,7 +17,7 @@ if($action=="imp"){
 	if($perm_val["title"]<>"SUCCESS"){
 		Report_MSJ("NO POSEES PERMISO PARA ESTE MODULO");
 	}else{
-		$cotiza=$data_class->get_sub($_GET["code"]);
+		$cotiza=$data_class->get_sub($_GET["code"],true);
 		if($cotiza["title"]<>"SUCCESS"){
 			Report_MSJ("TRANSACCION: ".$_GET['code']." NO ENCONTRADA!");
 		}elseif(in_array($cotiza["cab"]["status"], $array_cot_imp)!=1){

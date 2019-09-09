@@ -43,7 +43,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="del"){
 				$plan = ($_id==0) ? false : $_id ;
 				$horas_restantes = $colacion = $trabs_plan = $trabs_cot = 0;
 
-				$data = $cotizaciones->get_sub($_ods);
+				$data = $cotizaciones->get_sub($_ods,true);
 				if($data["cab"]["status"]!="PRO"){
 					$response["title"]="ERROR";
 					$response["content"]="LA PLANIFICACION AFECTA A UNA COTIZACION QUE NO PUEDE SER PLANIFICADA!";
@@ -201,7 +201,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="del"){
 				$hocu = 0;
 
 				if($variables[3]>0){
-					$data=$data_class->get_sub($variables[3]);
+					$data=$data_class->get_sub($variables[3],true);
 					if($data["title"]=="SUCCESS"){
 						$tpl->assign("nombre",$data["cab"]["data"]);
 						$tpl->assign("ods_name",$data["cab"]["ods_full"]);
@@ -292,7 +292,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="del"){
 							$tpl->assign("ctrab".$code,$value["codigo_trabajador"]);
 						}
 					}
-					$data=$data_class->get_sub($cab["cordenservicio_sub"]);
+					$data=$data_class->get_sub($cab["cordenservicio_sub"],true);
 					if(Evaluate_Mod($data)){
 						$tpl->assign("nombre",$data["cab"]["data"]);
 						$tpl->assign("ods_name",$data["cab"]["ods_full"]);

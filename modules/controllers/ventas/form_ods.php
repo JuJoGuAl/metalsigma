@@ -38,8 +38,8 @@ if($perm_val["title"]<>"SUCCESS"){
 		}
 		if($action=="edit"){
 			$tpl->assign("accion",'save_edit');
-			$tpl->assign("id",$_GET["id"]);
-			$cotiza=$data_class->get_sub($_GET["id"]);
+			$tpl->assign("id",$_GET["id"],true);
+			$cotiza=$data_class->get_sub($_GET["id"],true);
 			//print_r($cotiza);
 			$cab=$cotiza["cab"];
 			$cab_cli=$cotiza["datos"];

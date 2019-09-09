@@ -78,7 +78,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 			if($action=="edit"){
 				$tpl->assign("accion",'save_edit');
 				$tpl->assign("id",$_GET["id"]);
-				$cotiza=$data_class->get_sub($_GET["id"]);
+				$cotiza=$data_class->get_sub($_GET["id"],true);
 				//print_r($cotiza);
 				$cab=$cotiza["cab"];
 				$cab_cli=$cotiza["datos"];

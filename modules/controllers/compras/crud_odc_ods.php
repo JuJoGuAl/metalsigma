@@ -53,7 +53,7 @@ if($perm_val["title"]<>"SUCCESS"){
 				$tpl->assign("estatus",$stats_color);
 				$cuerpo = "SIN ODS!";
 				if($datos['ods_pad']!="N/A"){
-					$detalles=$cotizaciones->get_sub($datos['ods']);
+					$detalles=$cotizaciones->get_sub($datos['ods'],true);
 					if($detalles["title"]=="SUCCESS"){
 						$cab = $detalles["cab"];
 						$cuerpo = "COTIZACION: <strong>".$cab["cot_full"]."</strong><br>";

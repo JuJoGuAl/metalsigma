@@ -117,7 +117,7 @@ if($action=="save_new"){
 			}
 			if($action=="new"){
 				$tpl->assign("accion",'save_new');
-				$data=$data_class->get_sub($_GET["id"]);
+				$data=$data_class->get_sub($_GET["id"],true);
 				if($data["title"]=="SUCCESS"){
 					foreach ($data["cab"] as $key => $value){
 						$tpl->assign($key,$value);

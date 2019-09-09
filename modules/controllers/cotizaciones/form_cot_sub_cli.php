@@ -124,7 +124,7 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 			if($action=="edit"){
 				$tpl->assign("accion",'save_edit');
 				$tpl->assign("id",$_GET["id"]);
-				$cotiza=$data_class->get_sub($_GET["id"]);
+				$cotiza=$data_class->get_sub($_GET["id"],true);
 				$cab=$cotiza["cab"];
 				$cab_cli=$cotiza["datos"];
 				$det=$cotiza["det"];
