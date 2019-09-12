@@ -82,8 +82,6 @@ if($perm_val["title"]<>"SUCCESS"){
 				</div>
 				';
 				foreach ($data["content"][$llave] as $key => $value){
-					$campos = array("m_neto");
-					$value = (in_array($key, $campos)) ? numeros($value,0) : $value ;
 					$tpl->assign($key,$value);
 				}
 				$gar = ($data["content"][$llave]["ctipo"]==5) ? '<span class="badge badge-pill font-medium badge-warning ml-2">URGENTE</span>' : '' ;

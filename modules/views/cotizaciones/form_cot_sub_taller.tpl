@@ -1,19 +1,19 @@
 <!-- START BLOCK : module -->
 <div class="page-breadcrumb bg-white">
-    <div class="row">
-        <div class="col-lg-3 col-md-4 col-xs-12 align-self-center">
-            <h5 class="font-medium text-uppercase mb-0">{menu_name}</h5>
-        </div>
-        <div class="col-lg-9 col-md-8 col-xs-12 align-self-center">
-            <nav aria-label="breadcrumb" class="mt-2 float-md-right float-left">
-                <ol class="breadcrumb mb-0 justify-content-end p-0 bg-white">
-                    <li class="breadcrumb-item"><a class="menu" href="javascript:void(0)" data-menu="{mod}" data-mod="{submod}" data-acc="MODULO">{menu_pri}</a></li>
-                    <li class="breadcrumb-item"><a class="menu" href="javascript:void(0)" data-menu="{mod}" data-mod="{submod}" data-acc="MODULO">{menu_sec}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">SUB-COTIZACIONES</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
+  <div class="row">
+      <div class="col-lg-3 col-md-4 col-xs-12 align-self-center">
+          <h5 class="font-medium text-uppercase mb-0">{menu_name}</h5>
+      </div>
+      <div class="col-lg-9 col-md-8 col-xs-12 align-self-center">
+          <nav aria-label="breadcrumb" class="mt-2 float-md-right float-left">
+              <ol class="breadcrumb mb-0 justify-content-end p-0 bg-white">
+                  <li class="breadcrumb-item"><a class="menu" href="javascript:void(0)" data-menu="{mod}" data-mod="{submod}" data-acc="MODULO">{menu_pri}</a></li>
+                  <li class="breadcrumb-item"><a class="menu" href="javascript:void(0)" data-menu="{mod}" data-mod="{submod}" data-acc="MODULO">{menu_sec}</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">SUB-COTIZACIONES</li>
+              </ol>
+          </nav>
+      </div>
+  </div>
 </div>
 
 <div class="page-content container-fluid">
@@ -41,7 +41,6 @@
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab"><span class="hidden-xs-down">COTIZACION</span></a> </li>
               <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">ARTICULOS</span></a> </li>
-              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_3" role="tab"><span class="hidden-xs-down">SERVICIOS TERC</span></a> </li>
             </ul>
             <div class="tab-content tabcontent-border">
               <div class="tab-pane p-4 active" id="tab_1" role="tabpanel">
@@ -135,21 +134,25 @@
                     <div class="row">
                       <div class="col-lg-12">
                         <div class="table-responsive">
-                          <table class="table table-bordered table-hover" id="table_det_cot">
+                          <table class="table table-bordered table-hover table-m" id="table_det_cot">
                             <thead>
-                              <tr>
-                                <th>#</th>
-                                <th>SISTEMA</th>
-                                <th>COMPONENTE</th>
-                                <th>SERVICIO</th>
-                                <th>HH TA</th>
-                                <th>HH TE</th>
-                                <th>DIAS TA</th>
-                                <th>INICIO</th>
-                                <th>FIN</th>
-                                <th>DEL</th>
-                              </tr>
-                            </thead>
+                                <tr>
+                                  <th rowspan="2" style="width: 26px;">#</th>
+                                  <th rowspan="2">SISTEMA</th>
+                                  <th rowspan="2">COMPONENTE</th>
+                                  <th rowspan="2">SERVICIO</th>
+                                  <th colspan="2" class="text-center">HORAS</th>
+                                  <th class="text-center">DIAS</th>
+                                  <th rowspan="2" class="text-center" style="width: 120px;">INICIO</th>
+                                  <th rowspan="2" class="text-center" style="width: 120px;">FIN</th>
+                                  <th rowspan="2" style="width: 60px;">OBS</th>
+                                </tr>
+                                <tr class="text-center">
+                                  <th rowspan="2" style="width: 90px;">TALLER</th>
+                                  <th rowspan="2" style="width: 90px;">TERRENO</th>
+                                  <th style="width: 60px;">TALLER</th>
+                                </tr>
+                              </thead>
                             <tbody>
                               <!-- START BLOCK : co_det -->
                               <tr class="datas">
@@ -333,7 +336,7 @@
                                 <td>{codigo2}</td>
                                 <td>{articulo}</td>
                                 <td width="100px;"><input name="cant[]" id="cant[{count}]" type="hidden" value="{cant}">{cant}</td>
-                                <td class="add_ser"><input name="precio[]" id="precio[{count}]" type="hidden" value="{precio}">{precio}</td>
+                                <td class="add_ser"><span class="number_cal">{precio}</span><input name="precio[]" id="precio[{count}]" type="hidden" value="{precio}"><input name="tipo_art[]" id="tipo_art[{count}]" type="hidden" value="stt"></td>
                                 <td>{origen}</td>
                               </tr>
                               <!-- END BLOCK : det_ser_ter -->
@@ -359,54 +362,94 @@
                         <tbody>
                           <tr>
                             <th>SERVICIO TECNICO</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_serv" name="_serv" class="form-control" value="{m_serv}">{m_serv_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_serv}</div>
+                                <span class="number_cal" id="_serv">{m_serv}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>REPUESTOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_rep" name="_rep" class="form-control" value="{m_rep}">{m_rep_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_rep}</div>
+                                <span class="number_cal" id="_rep">{m_rep}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>INSUMOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_ins" name="_ins" class="form-control" value="{m_ins}">{m_ins_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_ins}</div>
+                                <span class="number_cal" id="_ins">{m_ins}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>SERVICIOS TERCERIZADOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_stt" name="_stt" class="form-control" value="{m_stt}">{m_stt_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_stt}</div>
+                                <span class="number_cal" id="_stt">{m_stt}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>TRASLADOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_tras" name="_tras" class="form-control" value="{m_tra}">{m_tra_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_tra}</div>
+                                <span class="number_cal" id="_tras">{m_tra}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>MISCELANEOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_misc" name="_misc" class="form-control" value="{m_misc}">{m_misc_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_misc}</div>
+                                <span class="number_cal" id="_misc">{m_misc}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>SUB TOTAL</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_subt" name="_subt" class="form-control" value="{m_subt}">{m_subt_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_subt}</div>
+                                <span class="number_cal" id="_subt">{m_subt}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>DESC (%) </th>
                             <td width="150px" class="text-right" style="padding: .55rem;">
-                              <div class="input-group">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_descp}</div>
                                 <input type="text" id="desc" name="desc" maxlength="6" class="form-control numeric ctrl" style="height: '30px'" value="{m_descp}">
-                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none;">{porc_hist}</div>
                               </div>
                             </td>
-                            <td width="150px" class="text-right"><input type="hidden" id="_desc" name="_desc" class="form-control" value="{m_desc}">{m_desc_}</td>
+                            <td width="150px" class="text-right"><span class="number_cal" id="_desc">{m_desc}</span></td>
                           </tr>
                           <tr>
                             <th>VALOR NETO</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_neto" name="_neto" class="form-control" value="{m_neto}">{m_neto_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_neto}</div>
+                                <span class="number_cal" id="_neto">{m_neto}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>IMPUESTOS (%) </th>
-                            <td width="150px" class="text-right"><span id="imp">{m_impp}</span><input type="hidden" id="_impp" name="_impp" class="form-control" value="{m_impp}"></td>
-                            <td width="150px" class="text-right"><input type="hidden" id="_imp" name="_imp" class="form-control" value="{m_imp}">{m_imp_}</td>
+                            <td width="150px" class="text-right"><span id="imp_show">{m_impp}</span></td>
+                            <td width="150px" class="text-right"><span class="number_cal" id="_imp">{m_imp}</span></td>
                           </tr>
                           <tr>
                             <th>VALOR BRUTO</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_bruto" name="_bruto" class="form-control" value="{m_bruto}">{m_bruto}</td>
+                            <td colspan="2" class="text-right"><span class="number_cal" id="_bruto">{m_bruto}</span></td>
                           </tr>
                         </tbody>
                       </table>
@@ -436,16 +479,22 @@
                 <!-- START BLOCK : data_save -->
                 <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="PROC" data-id="{codigo}"><span class="btn-label"><i class="fas fa-cogs"></i></span> PROCESAR</button>
                 <!-- END BLOCK : data_save -->
+                <button class="btn btn-outline-secondary waves-effect waves-light" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="IMP" data-id="0"><span class="btn-label"><i class="fas fa-print"></i></span> IMPRIMIR</button>
                 <button class="btn btn-outline-secondary waves-effect waves-light menu" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="CLOSE" data-id="0"><span class="btn-label"><i class="fas fa-sign-out-alt"></i></span> CERRAR</button>
-                <!-- START BLOCK : dats -->
-                <script>
-                  var hh_normal_taller = {hh_taller}, hh_normal_terreno = {hh_terreno}, trabs = {trabs}, arriendo = {valor_dia}, misce = {valor_misc}, cli_gas = {pag_gasto}, cli_mar = {pag_marg}, mar_ins = {mar_ins}, mar_rep = {mar_rep}, mar_stt = {mar_stt}, imp = {imp}, submod='{submod}';
-                  var tras=sal=costo_km=sum_hh_te=sum_hh_ta=hh_terreno=hh_taller=valor_dia=sum_dias=sum_ins=sum_rep=sum_stt=0;
-                  var misc=valor_mo=valor_gf_mo=valor_serv=valor_gf_ins=valor_gf_rep=valor_gf_stt=valor_subtotal=0;
-                  jQuery("#imp").text(imp+" %");
-                  jQuery("#_impp").val(imp);
-                </script>
-                <!-- END BLOCK : dats -->
+                
+                <input type="hidden" id="hh_taller" name="hh_taller" value="{hh_taller_}">
+                <input type="hidden" id="hh_terreno" name="hh_terreno" value="{hh_terreno_}">
+                <input type="hidden" id="trabs" name="trabs" value="{trabs}">
+                <input type="hidden" id="valor_dia" name="valor_dia" value="{valor_dia}">
+                <input type="hidden" id="valor_misc" name="valor_misc" value="{valor_misc}">
+                <input type="hidden" id="imp" name="imp" value="{imp}">
+                <input type="hidden" id="pag_gasto" name="pag_gasto" value="{pag_gasto}">
+                <input type="hidden" id="pag_marg" name="pag_marg" value="{pag_marg}">
+                <input type="hidden" id="mar_ins" name="mar_ins" value="{mar_ins}">
+                <input type="hidden" id="mar_rep" name="mar_rep" value="{mar_rep}">
+                <input type="hidden" id="mar_stt" name="mar_stt" value="{mar_stt}">
+                <input type="hidden" id="sal" name="sal" value="0">
+                <input type="hidden" id="costo_km" name="costo_km" value="0">
               </div>
             </div>
           </div>
@@ -455,6 +504,18 @@
   </div>
 </div>
 <script>
+  var submod='{submod}';
+  jQuery("#imp_show").text(jQuery("#imp").val()+" %");
+  setTimeout(function(){
+    jQuery('#lugar').trigger("change");
+    jQuery('a[data-toggle="tab"]').each(function(){
+      let tab = jQuery(this).attr("href");
+      let alert = jQuery(tab+" span.badge").length;
+      if(alert>0){
+        jQuery(this).append('<span class="badge badge-pill count badge-info"><i class="fas fa-star"></i></span>');
+      }
+    });
+  },200);
   jQuery('button').on('click', function(){
     submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc"), assoc_id = jQuery(this).attr("data-id");
     if(acc=="PROC"){
@@ -483,10 +544,9 @@
     }
   });
   jQuery('#cotizat').change(function(){
-    jQuery("#table_det_cot tbody .datas").empty();
+    jQuery("#table_det_cot tbody .datas").remove();
     jQuery("#ods_gar").val("");
     jQuery("#cods_gar").val("");
-    calculos();
     if((jQuery(this).val()*1)==5){
       jQuery('#garantias').fadeIn();
       jQuery("#ods_gar").addClass("validar");
@@ -500,12 +560,18 @@
   jQuery('#lugar, #vehiculo, #equipot, #coteq').change(function(){
     if(jQuery.inArray(jQuery("#stats").val(),array_status_calc_odc)!=-1){
       if((jQuery("#cotizat").val()*1)==5){
-        sal               = 0;
-        costo_km          = 0;
-        hh_normal_taller  = 0;
-        hh_normal_terreno = 0;
-        trabs             = 0;
-        arriendo          = 0;
+        jQuery("#hh_taller").val(0);
+        jQuery("#hh_terreno").val(0);
+        jQuery("#trabs").val(0);
+        jQuery("#valor_dia").val(0);
+        jQuery("#valor_misc").val(0);
+        jQuery("#pag_gasto").val(0);
+        jQuery("#pag_marg").val(0);
+        jQuery("#mar_ins").val(0);
+        jQuery("#mar_rep").val(0);
+        jQuery("#mar_stt").val(0);
+        jQuery("#sal").val(0);
+        jQuery("#costo_km").val(0);
       }else{
         jQuery(".preloader").fadeIn();
         jQuery.ajax({
@@ -515,12 +581,20 @@
           dataType:'json',
           success: function(data){
             if(data.title=="SUCCESS"){
-              sal=data.content.salida;
-              costo_km=data.content.costo_km;
-              hh_normal_taller=data.content.hh_taller;
-              hh_normal_terreno=data.content.hh_terreno;
-              trabs=data.content.trabs;
-              arriendo=data.content.valor_peso_dia;
+              let valores = data.content;
+              jQuery("#hh_taller").val(valores.hh_taller);
+              jQuery("#hh_terreno").val(valores.hh_terreno);
+              jQuery("#trabs").val(valores.trabs);
+              jQuery("#valor_dia").val(valores.valor_dia);
+              jQuery("#valor_misc").val(valores.valor_misc);
+              jQuery("#pag_gasto").val(valores.pag_gasto);
+              jQuery("#pag_marg").val(valores.pag_marg);
+              jQuery("#mar_ins").val(valores.mar_ins);
+              jQuery("#mar_rep").val(valores.mar_rep);
+              jQuery("#mar_stt").val(valores.mar_stt);
+              jQuery("#sal").val(valores.sal);
+              jQuery("#costo_km").val(valores.costo_km);
+              calculos();
               jQuery(".preloader").fadeOut();
             }else{
               jQuery(".preloader").fadeOut();
@@ -539,19 +613,14 @@
     }else{
       jQuery('#terreno').fadeOut();
     }
+  });
+  jQuery("#form_").on("change, keypress, keyup",function(){
     calculos();
   });
   jQuery("#form_").on("blur, focusout, focusin",function(){
     calculos();
   });
-  setTimeout(function(){ jQuery('#lugar').trigger("change"); },200);
-  jQuery('.dates').datepicker().on('changeDate', function(){
-    calculos();
-  });
-  setTimeout(function(){ jQuery('#lugar').trigger("change"); },200);
-  jQuery('.dates').datepicker().on('changeDate', function(){
-    calculos();
-  });
+  
   <!-- START BLOCK : val -->
   block_controls(true);
   setTimeout(function(){ jQuery(".dates").datepicker("destroy"); },100);

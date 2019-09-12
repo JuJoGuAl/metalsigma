@@ -38217,3 +38217,10 @@ CUSTOM CSS
 .calendar-events{
     cursor: pointer;
 }
+.table thead tr th{
+    vertical-align: middle;
+}
+.table-m td,
+.table-m th {
+    padding: .5rem
+}

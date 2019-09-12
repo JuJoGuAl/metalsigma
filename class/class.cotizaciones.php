@@ -251,6 +251,20 @@ class cotizaciones{
 			array ('public',	'm_impp'),
 			array ('public',	'm_imp'),
 			array ('public',	'm_bruto'),
+			//VALORES DE VARIABLES
+			array ('public',	'hh_taller'),
+			array ('public',	'hh_terreno'),
+			array ('public',	'trabs'),
+			array ('public',	'valor_dia'),
+			array ('public',	'valor_misc'),
+			array ('public',	'pag_gasto'),
+			array ('public',	'pag_marg'),
+			array ('public',	'mar_ins'),
+			array ('public',	'mar_rep'),
+			array ('public',	'mar_stt'),
+			array ('public',	'sal'),
+			array ('public',	'costo_km'),
+
 			array ('public',	'notas'),
 			array ('public',	'corigen_gar'),
 			array ('public_i',	'corigen'),			
@@ -404,8 +418,15 @@ class cotizaciones{
 		$this->db14 = new database($this->table14, $this->tId14);
 		$this->db14->fields = array (
 			array ('system',	"LPAD(".$this->tId14."*1,"._PAD_CEROS_.",'0') AS codigo"),
+			array ('system',	'hcs.m_serv'),
+			array ('system',	'hcs.m_rep'),
+			array ('system',	'hcs.m_ins'),
+			array ('system',	'hcs.m_stt'),
+			array ('system',	'hcs.m_tra'),
+			array ('system',	'hcs.m_misc'),
+			array ('system',	'hcs.m_subt'),
 			array ('system',	'hcs.m_descp'),
-			array ('system',	'hcs.m_desc'),
+			array ('system',	'hcs.m_neto'),
 			array ('system',	'hcs.user'),
 			array ('system',	'hcs.date')
 		);
@@ -882,10 +903,9 @@ class cotizaciones{
 		//VACIO LOS CAMPOS DE LA TABLA PARA SOLO SETEAR 3
 		$this->db3->fields=array();
 		$this->db3->fields[0]=array ('public_u',	'status');
-		$this->db3->fields[1]=array ('public_u',	'notas');
-		$this->db3->fields[2]=array ('public_u',	'archivo');
-		$this->db3->fields[3]=array ('public_u',	'notas_user');
-		$this->db3->fields[4]=array ('public_u',	'mod_user');
+		$this->db3->fields[1]=array ('public_u',	'archivo');
+		$this->db3->fields[2]=array ('public_u',	'notas_user');
+		$this->db3->fields[3]=array ('public_u',	'mod_user');
 		$data[]=$_SESSION['metalsigma_log'];
 		return $this->db3->updateRecord($id,$data);
 	}
@@ -941,7 +961,7 @@ class cotizaciones{
 		LEFT JOIN (SELECT ir.calmacen, ir.carticulo, SUM(ir.cant) AS cant FROM inv_reservas ir WHERE ir.status = 1 GROUP BY '.$f_alm3.'ir.carticulo) ir2 ON ir2.carticulo = ia.carticulo '.$f_alm4.'
 
 		LEFT JOIN (SELECT imd.carticulo, SUM(imd.cant*imu.mul) AS cant FROM inv_movimientos im INNER JOIN inv_movimientos_det imd USING(cmovimiento_key) INNER JOIN inv_multiplicador imu ON im.tipo=imu.tipo WHERE (im.tipo IN ("COM","DCO","AJE","AJS","SI","CSM","DCS","COI","DCI","TRE","TRS") || (im.tipo="NTE" && im.corigen=0)) AND im.status = "PRO" '.$f_alm.' GROUP BY imd.carticulo) imm ON imm.carticulo=ia.carticulo
-		WHERE cda.carticulo > 0
+		WHERE cda.carticulo > 0 AND cda.del<>1
 		';
 		if($cotizacion){
 			$sql .= ' AND cda.ccotizacion = '.$cotizacion;

@@ -5,7 +5,7 @@
       title: '<div style="font-size: 12px;">SUB COTIZACIONES: <strong>'+jQuery(this).attr("data-count")+'</strong></div>',
       content: '<div style="font-size: 12px;">'+jQuery(this).attr("data-cuerpo")+'</div>',
       trigger: 'hover',
-      placement: 'top',
+      placement: 'left',
       container: 'body',
       html: true
     });
@@ -32,10 +32,6 @@
     <div class="col-12">
       <div class="material-card card">
         <div class="card-body">
-          <h4 class="card-title">{mod_name}</h4>
-          <div class="button-group">
-          </div>
-          <br>
           <div class="table-responsive">
             <table class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
               <thead>

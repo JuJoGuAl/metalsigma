@@ -173,6 +173,7 @@ function GetModule(mod,submod,ref,subref,acc,id){
                     jQuery('[data-toggle="popover"]').popover('dispose');
                     jQuery('.popover').remove();
                     jQuery('[data-toggle="popover"]').popover({ container: "body", trigger: "hover", placement: 'left', html : true });
+                    jQuery(".number_cal").formatCurrency();
                     if(submod!="REP_COTIZACIONES" && submod!="REP_PLAN"){ jQuery(".preloader").fadeOut(); }                    
                 });
             }
@@ -609,11 +610,11 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                 <button class="btn btn-outline-secondary waves-effect waves-light btn-sm pieza ctrl" type="button" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`" data-acc="search_componente" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span></button></td>
                 <td><input name="cservi[]" id="cservi[`+count+`]" type="hidden" value="">
                 <button class="btn btn-outline-secondary waves-effect waves-light btn-sm servicio ctrl" type="button" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`" data-acc="search_servicio_propio" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span></button></td>
-                <td><input name="hhtaller[]" id="hhtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_ta" style="width: 60px" maxlength="5" value=""></td>
-                <td><input name="hhterreno[]" id="hhterreno[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_te" style="width: 60px" maxlength="5" value="0"></td>
+                <td><input name="hhtaller[]" id="hhtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_ta" style="width: 70px" maxlength="5" value=""></td>
+                <td><input name="hhterreno[]" id="hhterreno[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_te" style="width: 70px" maxlength="5" value="0"></td>
                 <td><input name="dtaller[]" id="dtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_dtaller" style="width: 50px" maxlength="2" value="0"></td>
-                <td><input name="inicio[]" id="inicio[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:100px;" autocomplete="off" value=""></td>
-                <td><input name="fin[]" id="fin[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:100px;" autocomplete="off" value=""></td>
+                <td><input name="inicio[]" id="inicio[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:110px;" autocomplete="off" value=""></td>
+                <td><input name="fin[]" id="fin[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:110px;" autocomplete="off" value=""></td>
                 <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
                 </tr>`;
                 jQuery("#table_det_cot tbody tr:last").before(tr);
@@ -693,7 +694,7 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                         </tr>`;
                         jQuery("#table_add_ser tbody").append(tr);
                         jQuery.each(data.det, function(key,value){
-                            let price = parseFloat(value.costou), new_price= ((mar_stt * price)/100)+price;
+                            let price = parseFloat(value.costou), new_price= parseFloat(((jQuery("#mar_stt").val() * price)/100)+price);
                             tbl_det="table_ser_ter";
                             var count = (jQuery("#"+tbl_det+" tbody tr").length)+1;
                             tr_det=`<tr>
@@ -703,7 +704,7 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                             <td>`+value.codigo2+`</td>
                             <td>`+value.articulo+`</td>
                             <td><input name="cant[]" id="cant[`+count+`]" type="hidden" value="`+value.cant+`">`+value.cant+`</td>
-                            <td class="add_ser"><input name="precio[]" id="precio[`+count+`]" type="hidden" value="`+new_price+`">`+new_price+`</td>
+                            <td class="add_ser"><span class="number_cal">`+new_price+`</span><input name="precio[]" id="precio[`+count+`]" type="hidden" value="`+new_price+`"><input name="tipo_art[]" id="tipo_art[`+count+`]" type="hidden" value="stt"></td>
                             <td>`+datos.codigo+`</td>
                             </tr>`;
                             jQuery("#"+tbl_det+" tbody").append(tr_det);
@@ -732,14 +733,15 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
         }else if(acc=="add_ins" || acc=="add_rep" || acc=="add_ser"){
             var count = (jQuery("#table_"+acc+" tbody tr").length)+1;
             let precio=table.find('._pri').text()*1,cod2=table.find('._code').text();
-            let margen = (acc=="add_ins") ? mar_ins : (acc=="add_rep") ? mar_rep : (acc=="add_ser") ? mar_stt : 0 ;
+            let margen = (acc=="add_ins") ? jQuery("#mar_ins").val() : (acc=="add_rep") ? jQuery("#mar_rep").val() : (acc=="add_ser") ? jQuery("#mar_stt").val() : 0 ;
+            let tipo = (acc=="add_ins") ? "ins" : (acc=="add_rep") ? "rep" : (acc=="add_ser") ? "stt" : 0 ;
             let new_price = ((margen * precio)/100)+precio;
             tr=`<tr>
             <td><input name="c_det_art[]" id="c_det_art[`+count+`]" type="hidden" value="0"><input name="carticulo[]" id="carticulo[`+count+`]" type="hidden" value="`+code+`">`+code+`</td>
             <td>`+cod2+`</td>
             <td>`+nombre+`</td>
             <td><input name="cant[]" id="cant[`+count+`]" type="text" class="form-control numeric ctrl" value="1"></td>
-            <td class="`+acc+`"><input name="precio[]" id="precio[`+count+`]" type="hidden" value="`+new_price+`">`+new_price+`</td>
+            <td class="`+acc+`"><span class="number_cal">`+new_price+`</span><input name="precio[]" id="precio[`+count+`]" type="hidden" value="`+new_price+`"><input name="tipo_art[]" id="tipo_art[`+count+`]" type="hidden" value="`+tipo+`"></td>
             <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
             </tr>`;
             jQuery("#table_"+acc+" tbody").append(tr);
@@ -1177,11 +1179,11 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                             <td><input name="cparte[]" id="cparte[`+count+`]" type="hidden" value="`+value.cparte+`">`+value.parte+`</td>
                             <td><input name="cpieza[]" id="cpieza[`+count+`]" type="hidden" value="`+value.cpieza+`">`+value.pieza+`</td>
                             <td><input name="cservi[]" id="cservi[`+count+`]" type="hidden" value="`+value.cservicio+`">`+value.articulo+`</td>
-                            <td><input name="hhtaller[]" id="hhtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_ta" style="width: 60px" maxlength="5"></td>
-                            <td><input name="hhterreno[]" id="hhterreno[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_te" style="width: 60px" maxlength="5"></td>
+                            <td><input name="hhtaller[]" id="hhtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_ta" style="width: 70px" maxlength="5"></td>
+                            <td><input name="hhterreno[]" id="hhterreno[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_te" style="width: 70px" maxlength="5"></td>
                             <td><input name="dtaller[]" id="dtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_dtaller" style="width: 50px" maxlength="2"></td>
-                            <td><input name="inicio[]" id="inicio[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:100px;" autocomplete="off"></td>
-                            <td><input name="fin[]" id="fin[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:100px;" autocomplete="off"></td>
+                            <td><input name="inicio[]" id="inicio[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:110px;" autocomplete="off"></td>
+                            <td><input name="fin[]" id="fin[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:110px;" autocomplete="off"></td>
                             <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
                             </tr>`;
                             jQuery("#table_det_cot tbody tr:last").before(tr);
@@ -1381,8 +1383,28 @@ jQuery(document).on("click", '.bt_del', function (e){
         });
     }
 });
-/** Calculos para las Cotizaciones */
+/** Redondeo de numeros usado por la LEY de CHILE:
+ * si el numero termina entre 1 - 5 se redondea a la decima anterior
+ * si el numero termina entre 6 - 9 se redondea a la decima superior
+ * los Decimales se eliminan por lo anterior
+ * @param numero: el Numero a redondear
+ */
+function redondeo(numero){
+    let new_number = 0;
+    if(numero>=0.5){
+        new_number = Math.round(numero);
+        new_number = Math.round((new_number-1) / 10) * 10
+    }
+    return new_number;
+    
+}
+/** Calculos de Cotizaciones usado para calcular los montos de la Cotizacion
+ */
 function calculos(){
+    var sum_hh_te=sum_hh_ta=hh_terreno=hh_taller=valor_dia=sum_dias=sum_ins=sum_rep=sum_stt=0;
+    var misc=valor_mo=valor_gf_mo=valor_mg_gasto=valor_serv=valor_gf_ins=valor_gf_rep=valor_gf_stt=valor_subtotal=valor_ins=valor_rep=valor_stt=0;
+    var desc = 0, desc_t = jQuery("#desc").val(), vRegExp = /^\d+(\.\d+)?$/;
+
     if(jQuery('input[name="inicio[]"]').val()!=""){
         minDate = jQuery('input[name="inicio[]"]').minDate();
     }
@@ -1392,7 +1414,6 @@ function calculos(){
     jQuery("#table_det_cot tbody tr:last-child td:eq(4)").text(minDate);
     jQuery("#table_det_cot tbody tr:last-child td:eq(5)").text(maxDate);
 
-    sum_hh_te=sum_hh_ta=sum_dias=0;
     jQuery('.sum_hh_ta, .sum_hh_te, .sum_dtaller').each(function(){
         if (!isNaN(this.value) && this.value.length != 0) {
             if(jQuery(this).hasClass("sum_hh_ta")){
@@ -1404,15 +1425,16 @@ function calculos(){
             }
         }
     });
+
     jQuery("#table_det_cot tbody tr:last-child td:eq(1)").text(sum_hh_ta);
     jQuery("#table_det_cot tbody tr:last-child td:eq(2)").text(sum_hh_te);
     jQuery("#table_det_cot tbody tr:last-child td:eq(3)").text(sum_dias);
     
     if(jQuery.inArray(jQuery("#stats").val(),array_status_calc_odc)!=-1){
-        hh_terreno=parseFloat(sum_hh_te*hh_normal_terreno);
-        hh_taller=parseFloat(sum_hh_ta*hh_normal_taller);
-        valor_dia=parseFloat(sum_dias*arriendo);
-        sum_ins=sum_rep=sum_stt=0;
+        hh_terreno=parseFloat(sum_hh_te*jQuery("#hh_terreno").val());
+        hh_taller=parseFloat(sum_hh_ta*jQuery("#hh_taller").val());
+        valor_dia=parseFloat(sum_dias*jQuery("#valor_dia").val());
+
         jQuery('.add_ins, .add_rep, .add_ser').each(function(){
             let cant = jQuery(this).closest("tr").find("td:eq(3) input").val(), valor = jQuery(this).closest("tr").find("td:eq(4) input").val();
             if (!isNaN(valor) && valor.length != 0) {
@@ -1425,42 +1447,40 @@ function calculos(){
                 }
             }
         });
-        let valor_ins = valor_rep = valor_stt = 0;
-        let desc = 0, desc_t = jQuery("#desc").val(),vRegExp = /^\d+(\.\d+)?$/;
-        if(jQuery("#cotizat").val()*1==5){
-            tras            =   0;
-            misc            =   0;
-            valor_serv      =   0;
-            valor_subtotal  =   0;
-
-        }else{
-            tras            =   ((parseFloat(jQuery("#dist").val()*costo_km))*2)+parseFloat(sal)*jQuery("#viajes").val();
-            misc            =   (parseInt((((sum_hh_te+sum_hh_ta)/8.5)*trabs).toFixed(0))*misce)/2;
-            valor_mo        =   hh_terreno+hh_taller+valor_dia+tras+misc;
-            valor_gf_mo     =   ((valor_mo*cli_gas)/100)+((((valor_mo*cli_gas)/100)*cli_mar)/100);
-            valor_serv      =   valor_gf_mo+hh_terreno+hh_taller+valor_dia;
-            valor_ins       =   sum_ins;
-            valor_rep       =   sum_rep;
-            valor_stt       =   sum_stt;
-            valor_subtotal  =   valor_serv+valor_rep+valor_ins+valor_stt+tras+misc;
+        
+        if(jQuery("#cotizat").val()*1!=5){
+            tras            =   parseFloat(((jQuery("#dist").val()*jQuery("#costo_km").val())*2)+jQuery("#sal").val()*jQuery("#viajes").val());
+            misc            =   parseFloat((((sum_hh_te+sum_hh_ta)/8.5)*jQuery("#trabs").val())*(jQuery("#valor_misc").val()/2));
+            valor_mo        =   parseFloat(hh_terreno+hh_taller+valor_dia+tras+misc);
+            valor_mg_gasto  =   parseFloat((valor_mo*jQuery("#pag_gasto").val())/100);
+            valor_gf_mo     =   valor_mg_gasto+((valor_mg_gasto*jQuery("#pag_marg").val())/100);
+            //valor_gf_mo     =   parseFloat(((valor_mo*jQuery("#pag_gasto").val())/100)+((((valor_mo*jQuery("#pag_gasto").val())/100)*jQuery("#pag_marg").val())/100));
+            valor_serv      =   parseFloat(valor_gf_mo+hh_terreno+hh_taller+valor_dia);
+            valor_ins       =   parseFloat(sum_ins);
+            valor_rep       =   parseFloat(sum_rep);
+            valor_stt       =   parseFloat(sum_stt);
+            valor_subtotal  =   parseFloat(valor_serv+valor_rep+valor_ins+valor_stt+tras+misc);
             if(desc_t.match(vRegExp)){
-                desc        =   (desc_t*valor_subtotal)/100;
+                desc        =   parseFloat(((desc_t*valor_subtotal)/100)*-1);
             }
+
         }
 
-        let valor_neto = valor_subtotal-desc; imp_ = ((valor_neto*imp)/100), valor_bruto = (valor_neto+imp_);    
-        jQuery("#_serv").closest("td").html(valor_serv).formatCurrency().append('<input type="hidden" id="_serv" name="_serv" value="'+valor_serv+'">');
-        jQuery("#_tras").closest("td").html(tras).formatCurrency().append('<input type="hidden" id="_tras" name="_tras" value="'+tras+'">');
-        jQuery("#_misc").closest("td").html(misc).formatCurrency().append('<input type="hidden" id="_misc" name="_misc" value="'+misc+'">');
-        jQuery("#_rep").closest("td").html(valor_rep).formatCurrency().append('<input type="hidden" id="_rep" name="_rep" value="'+valor_rep+'">');
-        jQuery("#_ins").closest("td").html(valor_ins).formatCurrency().append('<input type="hidden" id="_ins" name="_ins" value="'+valor_ins+'">');
-        jQuery("#_stt").closest("td").html(valor_stt).formatCurrency().append('<input type="hidden" id="_stt" name="_stt" value="'+valor_stt+'">');
-        jQuery("#_subt").closest("td").html(valor_subtotal).formatCurrency().append('<input type="hidden" id="_subt" name="_subt" value="'+valor_subtotal+'">');
-        jQuery("#_desc").closest("td").html(desc*-1).formatCurrency().append('<input type="hidden" id="_desc" name="_desc" value="'+desc*-1+'">');
-        jQuery("#_neto").closest("td").html(valor_neto).formatCurrency().append('<input type="hidden" id="_neto" name="_neto" value="'+valor_neto+'">');
-        jQuery("#_imp").closest("td").html(imp_).formatCurrency().append('<input type="hidden" id="_imp" name="_imp" value="'+imp_+'">');
-        jQuery("#_bruto").closest("td").html(valor_bruto).formatCurrency().append('<input type="hidden" id="_bruto" name="_bruto" value="'+valor_bruto+'">');
-    }    
+        let valor_neto = parseFloat(valor_subtotal+desc); imp = parseFloat((valor_neto*jQuery("#imp").val())/100), valor_bruto = parseFloat(valor_neto+imp);  
+
+        jQuery("#_serv").text(valor_serv);
+        jQuery("#_rep").text(valor_rep);
+        jQuery("#_ins").text(valor_ins);
+        jQuery("#_stt").text(valor_stt);
+        jQuery("#_tras").text(tras);
+        jQuery("#_misc").text(misc);
+        jQuery("#_subt").text(valor_subtotal);
+        jQuery("#_desc").text(desc);
+        jQuery("#_neto").text(redondeo(valor_neto));
+        jQuery("#_imp").text(redondeo(imp));
+        jQuery("#_bruto").text(redondeo(valor_bruto));
+    }
+    jQuery(".number_cal").formatCurrency();
 }
 
 function check_datas_cot(){

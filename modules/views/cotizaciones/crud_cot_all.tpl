@@ -56,7 +56,7 @@
                 </div>
               </div>
             </div>
-          </div>          
+          </div>
           <br>
           <div class="table-responsive">
             <table class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>

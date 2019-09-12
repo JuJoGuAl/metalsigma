@@ -26,6 +26,9 @@
             <p style="margin: .5rem 0;">EQUIPO: <strong>{equipo} {marca} {modelo}</strong></p>
             <p style="margin: .5rem 0;">SERIAL: <strong>{serial}</strong></p>
           </h6>
+          <div class="d-flex no-block align-items-center pb-3">
+            <div>COTIZACION: <strong>{codigo}</strong></div>
+          </div>
           <hr>
           <div class="button-group">
               <button class="btn btn-outline-secondary waves-effect waves-light menu" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="NONE" data-subref="{subref}" data-acc="MODULO" data-id="0"><span class="btn-label"><i class="fas fa-arrow-left"></i></span> VOLVER</button>
@@ -52,7 +55,7 @@
                   <td>{tipo}{gar}</td>
                   <td>{lugar}</td>
                   <td>{equipo}</td>
-                  <td>{m_neto}</td>
+                  <td class="number_cal">{m_neto}</td>
                   <td>{crea_user}</td>
                   <td>{estatus_}</td>
                   <td>{actions}</td>

@@ -65,9 +65,7 @@ if($perm_val["title"]<>"SUCCESS"){
 				$tpl->assign($key,$value);
 			}
 			foreach ($cab as $key => $value){
-				$value = (in_array($key, $array_numbers)) ? numeros($value,0)." $" : $value ;
 				$tpl->assign($key,$value);
-				$tpl->assign($key."_",$value);
 			}
 			$garantia = ($cab["cot_gar_full"]!="N/A") ? "COT: ".$cab["cot_full_gar"]." ODS: ".$cab["ods_full_gar"] : "" ;
 			$tpl->assign("ods_gar_full",$garantia);
@@ -139,27 +137,6 @@ if($perm_val["title"]<>"SUCCESS"){
 						$tpl->assign("clasificacion","SERVICIOS TERCERIZADOS");
 					}
 				}
-			}
-			$data_mo=$param->list_vh($csegmento,$cequipo);
-			$data_eq=$param->get_e($cequipo);
-			$data_ar=$param->list_a($csegmento2);
-			$data_VE=$param->get_v($cvehiculo);
-			//CALCULO COSTO ARRIENDO DIARIO
-			$arriendot=constant("ARRIENDO TALLER (EN UF)");
-			$naves=constant("N° NAVES");
-			$factor=constant("FACTOR DE UTILIZACION (%)");
-			$uf=constant("VALOR UF");
-			$costo_mes_nave=(($arriendot/$naves)*100)/$factor;
-			$costo_dia_nave=$costo_mes_nave/30;
-			$espacio=$data_ar["content"][0]["espacio"];
-			$mar_uf=$data_ar["content"][0]["mar_uf"];
-			$costo_uf=$costo_dia_nave*$espacio;
-			$valor_uf_dia=(($costo_uf*$mar_uf)/100)+$costo_uf;
-			$valor_peso_dia=$valor_uf_dia*$uf;
-			$data_cli=$clientes->get_pag($cpago);
-			$data_seg=$clientes->get_s($csegmento);
-			if($cab["status"]!="PEN"){
-				$tpl->newBlock("val");
 			}
 		}
 	}

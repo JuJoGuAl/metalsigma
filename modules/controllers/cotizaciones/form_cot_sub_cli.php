@@ -30,7 +30,7 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 					$status_cot="CAN";
 					break;
 				default:
-					$status_cot="NONES";
+					$status_cot="NON";
 					break;
 			}
 			$carpeta = "/../../../images/files/";
@@ -50,7 +50,6 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 				}
 			}
 			array_push($datos, $status_cot);
-			array_push($datos, $_notas);
 			array_push($datos, $file_name);
 			array_push($datos, $_notas_);
 
@@ -122,7 +121,7 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 				$tpl->assign("form_title","COTIZACION: ");
 			}
 			if($action=="edit"){
-				$tpl->assign("accion",'save_edit');
+				$tpl->assign("accion",'pro');
 				$tpl->assign("id",$_GET["id"]);
 				$cotiza=$data_class->get_sub($_GET["id"],true);
 				$cab=$cotiza["cab"];
@@ -140,25 +139,31 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 				$style2 = ($cab["ctipo"]==5) ? 'disabled="disabled" style="display:none;"' : '' ;
 				$style3 = ($cab["ctipo"]==5) ? 'validar' : '' ;
 				$tpl->assign("hide3",$style3);
-				$csegmento2 = ($cab["parte"]==0) ? 6 : $csegmento ;
-				$cpago=$cab_cli["cpago"];
-				$cequipo=$cab["cequipo"];
-				$cvehiculo=$cab["cvehiculo"];
+				
 				foreach ($cab as $key => $value){
-					$campos = array("m_serv","m_rep","m_ins","m_stt","m_tra","m_misc","m_subt","m_desc","m_neto","m_imp","m_bruto");
-					$value = (in_array($key, $campos)) ? numeros($value,0)." $" : $value ;
 					$tpl->assign($key,$value);
-					$tpl->assign($key."_",$value);
-					$porc="";
-					if($cab["ultima_edicion"]>0){
-						$cotiza_hist=$data_class->get_hcs($cab["ultima_edicion"]);
-						$historia=$cotiza_hist["content"][0];
-						if($cab["m_descp"]!=$historia["m_descp"]){
-							$porc='<span class="badge badge-pill count badge-info" data-content="Valor anterior: <strong>'.$historia["m_descp"].'</strong><br>Cambiado por: <strong>'.$historia["user"].'</strong><br>Fecha: <strong>'.setDate($historia["date"],"d/m/Y H:i:s").'</strong>" rel="popover" data-placement="top" data-toggle="popover"><i class="fas fa-star"></i></span>';
-						}
-					}
-					$tpl->assign("porc_hist",$porc);
 				}
+
+				$hist_array = array();
+				$hist_array["m_serv"]	=	"";
+				$hist_array["m_rep"]	=	"";
+				$hist_array["m_ins"]	=	"";
+				$hist_array["m_stt"]	=	"";
+				$hist_array["m_tra"]	=	"";
+				$hist_array["m_misc"]	=	"";
+				$hist_array["m_subt"]	=	"";
+				$hist_array["m_descp"]	=	"";
+				$hist_array["m_neto"]	=	"";
+
+				if($cab["ultima_edicion"]>0){
+					$cotiza_hist=$data_class->get_hcs($cab["ultima_edicion"]);
+					$historia=$cotiza_hist["content"][0];
+					foreach ($hist_array as $key => $value) {
+						$hist_array[$key] = ($cab[$key]!=$historia[$key]) ? '<span class="badge badge-pill count badge-info" data-content="Valor anterior: <strong>'.numeros($historia[$key]).'</strong><br>Cambiado por: <strong>'.$historia["user"].'</strong><br>Fecha: <strong>'.setDate($historia["date"],"d/m/Y H:i:s").'</strong>" rel="popover" data-placement="top" data-toggle="popover"><i class="fas fa-star"></i></span>' : "" ;
+						$tpl->assign("hist_".$key,$hist_array[$key]);
+					}
+				}
+				
 				$garantia = ($cab["cot_gar_full"]!="N/A") ? "COT: ".$cab["cot_full_gar"]." ODS: ".$cab["ods_full_gar"] : "" ;
 				$tpl->assign("ods_gar_full",$garantia);
 				foreach ($cab_cli as $key => $value){
@@ -173,56 +178,10 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 						}
 					}
 				}
-				$tipo=$data_class->list_();
-				foreach ($tipo["content"] as $key => $value) {
-					$tpl->newBlock("tipo_det");
-					if($value["codigo"]==$cab["ctipo"]){
-						$tpl->assign("selected",$selected);
-					}
-					foreach ($tipo["content"][$key] as $key1 => $value1){
-						$tpl->assign($key1,$value1);
-					}
-				}
-				$lugares=$param->list_l();
-				foreach ($lugares["content"] as $key => $value) {
-					$tpl->newBlock("lugar_det");
-					if($value["codigo"]==$cab["clugar"]){
-						$tpl->assign("selected",$selected);
-					}
-					foreach ($lugares["content"][$key] as $key1 => $value1){
-						$tpl->assign($key1,$value1);
-					}
-				}
-				$vehiculos=$param->list_v();
-				foreach ($vehiculos["content"] as $key => $value) {
-					$tpl->newBlock("veh_det");
-					if($value["codigo"]==$cab["cvehiculo"]){
-						$tpl->assign("selected",$selected);
-					}
-					foreach ($vehiculos["content"][$key] as $key1 => $value1){
-						$tpl->assign($key1,$value1);
-					}
-				}
 				if(!empty($array_opcion)){
 					foreach ($array_opcion as $llave => $datos){
-						$tpl->newBlock("cot_equipo");
 						if($llave==$cab["parte"]){
-							$tpl->assign("selected",$selected);
-						}
-						$tpl->assign("code",$llave);
-						$tpl->assign("valor",$datos);
-					}
-				}
-				$equipost=$param->list_e();
-				if(!empty($equipost)){
-					foreach ($equipost["content"] as $llave => $datos){
-						$tpl->newBlock("equipo_det");
-						if($datos["codigo"]==$cab["cequipo"]){
-							$cequipo=$datos["codigo"];
-							$tpl->assign("selected",$selected);
-						}
-						foreach ($equipost["content"][$llave] as $key => $value){
-							$tpl->assign($key,$value);
+							$tpl->assign("coteq",$datos);
 						}
 					}
 				}

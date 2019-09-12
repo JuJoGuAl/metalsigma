@@ -40,7 +40,7 @@
             <h6 class="card-subtitle"></h6>
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab"><span class="hidden-xs-down">COTIZACION</span></a> </li>
-              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">INSUMOS</span></a> </li>
+              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">INS / REPS / SERV</span></a> </li>
               <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_3" role="tab"><span class="hidden-xs-down">RESUMEN</span></a> </li>
               <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_4" role="tab"><span class="hidden-xs-down">APROBACION</span></a> </li>
             </ul>
@@ -53,31 +53,22 @@
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="cotizat" class="control-label col-form-label">TIPO DE COTIZACION</label>
-                          <select class="form-control validar list ctrl" id="cotizat" name="cotizat">
-                            <option value="-1">SELECCIONE...</option>
-                            <!-- START BLOCK : tipo_det -->
-                            <option value="{codigo}" {selected}>{tipo}</option>
-                            <!-- END BLOCK : tipo_det -->
-                          </select>
+                          <input type="text" id="cotizat" name="cotizat" class="form-control" value="{tipo}" disabled>
                         </div>
                       </div>
                       <div id="garantias" class="col-sm-6" {hide1}>
-                        <div class="form-group">
-                          <label for="ods_gar" class="control-label col-form-label">ODS</label>
-                          <div class="input-group">
-                            <input type="text" class="form-control {hide3}" id="ods_gar" name="ods_gar" placeholder="SELECCIONE UNA ODS" value="{ods_gar_full}" readonly> 
-                            <input type="hidden" id="cods_gar" name="cods_gar" value="{cot_gar_full}">
+                          <div class="form-group">
+                            <label for="ods_gar" class="control-label col-form-label">ODS</label>
+                            <div class="input-group">
+                              <input type="text" class="form-control" id="ods_gar" name="ods_gar" value="{ods_gar_full}" disabled> 
+                              <input type="hidden" id="cods_gar" name="cods_gar" value="{cot_gar_full}">
+                            </div>
                           </div>
                         </div>
-                      </div>
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="lugar" class="control-label col-form-label">LUGAR</label>
-                          <select class="form-control validar list ctrl" id="lugar" name="lugar">
-                            <!-- START BLOCK : lugar_det -->
-                            <option value="{codigo}" {selected}>{lugar}</option>
-                            <!-- END BLOCK : lugar_det -->
-                          </select>
+                          <input type="text" id="lugar" name="lugar" class="form-control" value="{lugar}" disabled>
                         </div>
                       </div>
                     </div>
@@ -85,23 +76,19 @@
                       <div class="col-sm-4">
                         <div class="form-group">
                           <label for="vehiculo" class="control-label col-form-label">VEHICULO</label>
-                          <select class="form-control validar list ctrl" id="vehiculo" name="vehiculo">
-                            <!-- START BLOCK : veh_det -->
-                            <option value="{codigo}" {selected}>{vehiculo}</option>
-                            <!-- END BLOCK : veh_det -->
-                          </select>
+                          <input type="text" id="vehiculo" name="vehiculo" class="form-control" value="{vehiculo}" disabled>
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
                           <label for="dist" class="control-label col-form-label">DIST A TALLER</label>
-                          <input type="text" id="dist" name="dist" class="form-control numeric ctrl" value="{dist}">
+                          <input type="text" id="dist" name="dist" class="form-control" value="{dist}" disabled>
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
                           <label for="viajes" class="control-label col-form-label">VIAJES</label>
-                          <input type="text" id="viajes" name="viajes" class="form-control numeric ctrl" value="{viajes}">
+                          <input type="text" id="viajes" name="viajes" class="form-control" value="{viajes}" disabled>
                         </div>
                       </div>
                     </div>
@@ -109,21 +96,13 @@
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="coteq" class="control-label col-form-label">PARTE</label>
-                          <select class="form-control validar list ctrl" id="coteq" name="coteq">
-                            <!-- START BLOCK : cot_equipo -->
-                            <option value="{code}" {selected}>{valor}</option>
-                            <!-- END BLOCK : cot_equipo -->
-                          </select>
+                          <input type="text" id="coteq" name="coteq" class="form-control" value="{coteq}" disabled>
                         </div>
                       </div>
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="equipot" class="control-label col-form-label">EQUIPO DE TRAB</label>
-                          <select class="form-control validar list ctrl" id="equipot" name="equipot">
-                            <!-- START BLOCK : equipo_det -->
-                            <option value="{codigo}" {selected}>{equipo}</option>
-                            <!-- END BLOCK : equipo_det -->
-                          </select>
+                          <input type="text" id="equipot" name="equipot" class="form-control" value="{equipo}" disabled>
                         </div>
                       </div>                        
                     </div>
@@ -135,19 +114,22 @@
                     <div class="row">
                       <div class="col-lg-12">
                         <div class="table-responsive">
-                          <table class="table table-bordered table-hover" id="table_det_cot">
+                          <table class="table table-bordered table-hover table-m" id="table_det_cot">
                             <thead>
                               <tr>
-                                <th>#</th>
-                                <th>SISTEMA</th>
-                                <th>COMPONENTE</th>
-                                <th>SERVICIO</th>
-                                <th>HH TA</th>
-                                <th>HH TE</th>
-                                <th>DIAS TA</th>
-                                <th>INICIO</th>
-                                <th>FIN</th>
-                                <th>OBS</th>
+                                <th rowspan="2" style="width: 26px;">#</th>
+                                <th rowspan="2">SISTEMA</th>
+                                <th rowspan="2">COMPONENTE</th>
+                                <th rowspan="2">SERVICIO</th>
+                                <th colspan="2" class="text-center">HORAS</th>
+                                <th class="text-center">DIAS</th>
+                                <th rowspan="2" class="text-center" style="width: 100px;">INICIO</th>
+                                <th rowspan="2" class="text-center" style="width: 100px;">FIN</th>
+                              </tr>
+                              <tr class="text-center">
+                                <th rowspan="2" style="width: 60px;">TALLER</th>
+                                <th rowspan="2" style="width: 60px;">TERRENO</th>
+                                <th style="width: 60px;">TALLER</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -162,7 +144,6 @@
                                 <td>{dias_taller}</td>
                                 <td>{finicio}</td>
                                 <td>{ffin}</td>
-                                <td>{actions}</td>
                               </tr>
                               <!-- END BLOCK : co_det -->
                               <tr id="sumary">
@@ -172,7 +153,6 @@
                                 <td>0</td>
                                 <td></td>
                                 <td></td>
-                                <td>-</td>
                               </tr>
                             </tbody>
                           </table>
@@ -180,7 +160,7 @@
                         <div class="col-sm-12">
                           <div class="form-group">
                             <label for="notas" class="control-label col-form-label">NOTAS</label>
-                            <textarea class="form-control ctrl" rows="3" id="notas" name="notas" placeholder="DESCRIBA LAS OBSERVACIONES">{notas}</textarea>
+                            <textarea class="form-control" rows="3" id="notas" name="notas" disabled>{notas}</textarea>
                           </div>
                         </div>
                       </div>
@@ -189,40 +169,35 @@
                 </div>
               </div>
               <div class="tab-pane p-4" id="tab_2" role="tabpanel">
-                <div class="card border-dark">
-                  <div class="card-header bg-secondary"><h4 class="mb-0 text-white">INSUMOS</h4></div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <div class="table-responsive">
-                          <table class="table table-bordered table-hover" id="table_add_ins">
-                            <thead>
-                              <tr>
-                                <th>CODIGO</th>
-                                <th>COD. INT</th>
-                                <th>DESCRIPCION</th>
-                                <th width="100px;">CANT</th>
-                                <th>PRECIO</th>
-                                <th>TIPO</th>
-                                <th>OBS</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <!-- START BLOCK : articulos -->
-                              <tr>
-                                <td>{codigo}</td>
-                                <td>{codigo2}</td>
-                                <td>{nombre}</td>
-                                <td width="100px;">{cant}</td>
-                                <td>{precio}</td>
-                                <td>{clasificacion}</td>
-                                <td>{actions}</td>
-                              </tr>
-                              <!-- END BLOCK : articulos -->
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-hover" id="table_add_ins">
+                        <thead>
+                          <tr>
+                            <th>CODIGO</th>
+                            <th>COD. INT</th>
+                            <th>DESCRIPCION</th>
+                            <th width="100px;">CANT</th>
+                            <th>PRECIO</th>
+                            <th>TIPO</th>
+                            <th>OBS</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <!-- START BLOCK : articulos -->
+                          <tr>
+                              <td>{codigo}</td>
+                              <td>{codigo2}</td>
+                              <td>{nombre}</td>
+                              <td width="100px;">{cant}</td>
+                              <td><span class="number_cal">{precio}</span></td>
+                              <td>{clasificacion}</td>
+                              <td>{actions}</td>
+                          </tr>
+                          <!-- END BLOCK : articulos -->
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -241,54 +216,94 @@
                         <tbody>
                           <tr>
                             <th>SERVICIO TECNICO</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_serv" name="_serv" class="form-control" value="{m_serv}">{m_serv_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_serv}</div>
+                                <span class="number_cal" id="_serv">{m_serv}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>REPUESTOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_rep" name="_rep" class="form-control" value="{m_rep}">{m_rep_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_rep}</div>
+                                <span class="number_cal" id="_rep">{m_rep}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>INSUMOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_ins" name="_ins" class="form-control" value="{m_ins}">{m_ins_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_ins}</div>
+                                <span class="number_cal" id="_ins">{m_ins}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>SERVICIOS TERCERIZADOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_stt" name="_stt" class="form-control" value="{m_stt}">{m_stt_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_stt}</div>
+                                <span class="number_cal" id="_stt">{m_stt}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>TRASLADOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_tras" name="_tras" class="form-control" value="{m_tra}">{m_tra_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_tra}</div>
+                                <span class="number_cal" id="_tras">{m_tra}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>MISCELANEOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_misc" name="_misc" class="form-control" value="{m_misc}">{m_misc_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_misc}</div>
+                                <span class="number_cal" id="_misc">{m_misc}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>SUB TOTAL</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_subt" name="_subt" class="form-control" value="{m_subt}">{m_subt_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_subt}</div>
+                                <span class="number_cal" id="_subt">{m_subt}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>DESC (%) </th>
                             <td width="150px" class="text-right" style="padding: .55rem;">
-                              <div class="input-group">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_descp}</div>
                                 <input type="text" id="desc" name="desc" maxlength="6" class="form-control numeric ctrl" style="height: '30px'" value="{m_descp}">
-                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none;">{porc_hist}</div>
                               </div>
                             </td>
-                            <td width="150px" class="text-right"><input type="hidden" id="_desc" name="_desc" class="form-control" value="{m_desc}">{m_desc_}</td>
+                            <td width="150px" class="text-right"><span class="number_cal" id="_desc">{m_desc}</span></td>
                           </tr>
                           <tr>
                             <th>VALOR NETO</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_neto" name="_neto" class="form-control" value="{m_neto}">{m_neto_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_neto}</div>
+                                <span class="number_cal" id="_neto">{m_neto}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>IMPUESTOS (%) </th>
-                            <td width="150px" class="text-right"><span id="imp">{m_impp}</span><input type="hidden" id="_impp" name="_impp" class="form-control" value="{m_impp}"></td>
-                            <td width="150px" class="text-right"><input type="hidden" id="_imp" name="_imp" class="form-control" value="{m_imp}">{m_imp_}</td>
+                            <td width="150px" class="text-right"><span id="imp_show">{m_impp} %</span></td>
+                            <td width="150px" class="text-right"><span class="number_cal" id="_imp">{m_imp}</span></td>
                           </tr>
                           <tr>
                             <th>VALOR BRUTO</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_bruto" name="_bruto" class="form-control" value="{m_bruto}">{m_bruto}</td>
+                            <td colspan="2" class="text-right"><span class="number_cal" id="_bruto">{m_bruto}</span></td>
                           </tr>
                         </tbody>
                       </table>
@@ -347,7 +362,16 @@
   </div>
 </div>
 <script>
-  setTimeout(function(){ calculos(); },200);
+  setTimeout(function(){
+    jQuery('#lugar').trigger("change");
+    jQuery('a[data-toggle="tab"]').each(function(){
+      let tab = jQuery(this).attr("href");
+      let alert = jQuery(tab+" span.badge").length;
+      if(alert>0){
+        jQuery(this).append('<span class="badge badge-pill count badge-info"><i class="fas fa-star"></i></span>');
+      }
+    });
+  },200);
   jQuery('button').on('click', function(){
     submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc"), assoc_id = jQuery(this).attr("data-id");
     if(acc=="PROC"){ jQuery("#accion").val("proc"); }

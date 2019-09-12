@@ -40,7 +40,7 @@
             <h6 class="card-subtitle"></h6>
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab"><span class="hidden-xs-down">COTIZACION</span></a> </li>
-              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">DETALLES</span></a> </li>
+              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">INS / REPS / SERV</span></a> </li>
               <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_3" role="tab"><span class="hidden-xs-down">RESUMEN</span></a> </li>
             </ul>
             <div class="tab-content tabcontent-border">
@@ -113,20 +113,24 @@
                         <div class="row">
                           <div class="col-lg-12">
                             <div class="table-responsive">
-                              <table class="table table-bordered table-hover" id="table_det_cot">
+                              <table class="table table-bordered table-hover table-m" id="table_det_cot">
                                 <thead>
-                                  <tr>
-                                    <th>#</th>
-                                    <th>SISTEMA</th>
-                                    <th>COMPONENTE</th>
-                                    <th>SERVICIO</th>
-                                    <th>HH TA</th>
-                                    <th>HH TE</th>
-                                    <th>DIAS TA</th>
-                                    <th>INICIO</th>
-                                    <th>FIN</th>
-                                  </tr>
-                                </thead>
+                                    <tr>
+                                      <th rowspan="2" style="width: 26px;">#</th>
+                                      <th rowspan="2">SISTEMA</th>
+                                      <th rowspan="2">COMPONENTE</th>
+                                      <th rowspan="2">SERVICIO</th>
+                                      <th colspan="2" class="text-center">HORAS</th>
+                                      <th class="text-center">DIAS</th>
+                                      <th rowspan="2" class="text-center" style="width: 100px;">INICIO</th>
+                                      <th rowspan="2" class="text-center" style="width: 100px;">FIN</th>
+                                    </tr>
+                                    <tr class="text-center">
+                                      <th rowspan="2" style="width: 60px;">TALLER</th>
+                                      <th rowspan="2" style="width: 60px;">TERRENO</th>
+                                      <th style="width: 60px;">TALLER</th>
+                                    </tr>
+                                  </thead>
                                 <tbody>
                                   <!-- START BLOCK : co_det -->
                                   <tr class="datas">
@@ -169,14 +173,15 @@
                       <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="table_add_ins">
                           <thead>
-                            <tr>
-                              <th>CODIGO</th>
-                              <th>COD. INT</th>
-                              <th>ARTICULO</th>
-                              <th width="100px;">CANT</th>
-                              <th>TIPO</th>
-                            </tr>
-                          </thead>
+                              <tr>
+                                <th>CODIGO</th>
+                                <th>COD. INT</th>
+                                <th>DESCRIPCION</th>
+                                <th width="100px;">CANT</th>
+                                <th>PRECIO</th>
+                                <th>TIPO</th>
+                              </tr>
+                            </thead>
                           <tbody>
                             <!-- START BLOCK : articulos -->
                             <tr>
@@ -184,6 +189,7 @@
                               <td>{codigo2}</td>
                               <td>{articulo}</td>
                               <td width="100px;">{cant}</td>
+                              <td><span class="number_cal">{precio}</span></td>
                               <td>{clasificacion}</td>
                             </tr>
                             <!-- END BLOCK : articulos -->
@@ -207,54 +213,94 @@
                         <tbody>
                           <tr>
                             <th>SERVICIO TECNICO</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_serv" name="_serv" class="form-control" value="{m_serv}">{m_serv_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_serv}</div>
+                                <span class="number_cal" id="_serv">{m_serv}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>REPUESTOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_rep" name="_rep" class="form-control" value="{m_rep}">{m_rep_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_rep}</div>
+                                <span class="number_cal" id="_rep">{m_rep}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>INSUMOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_ins" name="_ins" class="form-control" value="{m_ins}">{m_ins_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_ins}</div>
+                                <span class="number_cal" id="_ins">{m_ins}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>SERVICIOS TERCERIZADOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_stt" name="_stt" class="form-control" value="{m_stt}">{m_stt_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_stt}</div>
+                                <span class="number_cal" id="_stt">{m_stt}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>TRASLADOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_tras" name="_tras" class="form-control" value="{m_tra}">{m_tra_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_tra}</div>
+                                <span class="number_cal" id="_tras">{m_tra}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>MISCELANEOS</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_misc" name="_misc" class="form-control" value="{m_misc}">{m_misc_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_misc}</div>
+                                <span class="number_cal" id="_misc">{m_misc}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>SUB TOTAL</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_subt" name="_subt" class="form-control" value="{m_subt}">{m_subt_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_subt}</div>
+                                <span class="number_cal" id="_subt">{m_subt}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>DESC (%) </th>
                             <td width="150px" class="text-right" style="padding: .55rem;">
-                              <div class="input-group">
-                                <input type="hidden" id="desc" name="desc" maxlength="6" value="{m_descp}"><span style="height: '30px'">{m_descp} %</span>
-                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none;">{porc_hist}</div>
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_descp}</div>
+                                <input type="text" id="desc" name="desc" maxlength="6" class="form-control numeric ctrl" style="height: '30px'" value="{m_descp}">
                               </div>
                             </td>
-                            <td width="150px" class="text-right"><input type="hidden" id="_desc" name="_desc" class="form-control" value="{m_desc}">{m_desc_}</td>
+                            <td width="150px" class="text-right"><span class="number_cal" id="_desc">{m_desc}</span></td>
                           </tr>
                           <tr>
                             <th>VALOR NETO</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_neto" name="_neto" class="form-control" value="{m_neto}">{m_neto_}</td>
+                            <td colspan="2" class="text-right">
+                              <div class="input-group pull-right" style="width: auto;">
+                                <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_neto}</div>
+                                <span class="number_cal" id="_neto">{m_neto}</span>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <th>IMPUESTOS (%) </th>
-                            <td width="150px" class="text-right"><span id="imp">{m_impp} %</span><input type="hidden" id="_impp" name="_impp" class="form-control" value="{m_impp}"></td>
-                            <td width="150px" class="text-right"><input type="hidden" id="_imp" name="_imp" class="form-control" value="{m_imp}">{m_imp_}</td>
+                            <td width="150px" class="text-right"><span id="imp_show">{m_impp} %</span></td>
+                            <td width="150px" class="text-right"><span class="number_cal" id="_imp">{m_imp}</span></td>
                           </tr>
                           <tr>
                             <th>VALOR BRUTO</th>
-                            <td colspan="2" class="text-right"><input type="hidden" id="_bruto" name="_bruto" class="form-control" value="{m_bruto}">{m_bruto}</td>
+                            <td colspan="2" class="text-right"><span class="number_cal" id="_bruto">{m_bruto}</span></td>
                           </tr>
                         </tbody>
                       </table>

@@ -72,6 +72,10 @@ class inventario{
 	private $db17;
 	public $table17;
 	public $Id17;
+	//INVENTARIO UND
+	private $db18;
+	public $table18;
+	public $Id18;
 	public function __construct(){
 		include_once('class.bd_transsac.php');
 		//ARTICULOS
@@ -456,6 +460,18 @@ class inventario{
 		$this->db17->fields = array (
 			array ('system',	"LPAD(".$this->tId17."*1,"._PAD_CEROS_.",'0') AS codigo"),
 			array ('public_u',	"status"),
+			array ('public_u',	'mod_user')
+		);
+		//INVENTARIO UND
+		$this->table18 = "inv_unidades";
+		$this->tId18 = "cunidad";
+		$this->db18 = new database($this->table18, $this->tId18);
+		$this->db18->fields = array (
+			array ('system',	"LPAD(".$this->tId18."*1,"._PAD_CEROS_.",'0') AS codigo"),
+			array ('public',	"unidad"),
+			array ('public',	"multiplicador"),
+			array ('public',	"status"),
+			array ('public_i',	'crea_user'),
 			array ('public_u',	'mod_user')
 		);
 	}
@@ -1264,6 +1280,19 @@ class inventario{
 		}
 		$resultado=$result;
 		return $resultado;
+	}
+	/** UNIDADES */
+	//LISTAR
+	public function list_und($status=false){
+		$data = array ();
+		$cont=-1;
+		if($status){
+			$cont++;
+			$data[$cont]["row"]="status";
+			$data[$cont]["operator"]="=";
+			$data[$cont]["value"]=$status;
+		}
+		return $this->db18->getRecords(false,$data);
 	}
 }
 ?>

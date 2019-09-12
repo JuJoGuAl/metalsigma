@@ -349,49 +349,93 @@ if (!isset($_SESSION['metalsigma_log'])){
 			}
 		}elseif($accion=="calculos_"){
 			$valores=array();
-			$salida=$costo_km=$hh_taller=$hh_terreno=$trabs=$valor_peso_dia=0;
+			$hh_taller=$hh_terreno=$trabs=$valor_dia=$valor_misc=$pag_gasto=$pag_marg=$mar_ins=$mar_rep=$mar_stt=$sal=$costo_km=0;
+
 			$arriendot=constant("ARRIENDO TALLER (EN UF)");
 			$naves=constant("N° NAVES");
 			$factor=constant("FACTOR DE UTILIZACION (%)");
 			$uf=constant("VALOR UF");
-			$data_VE=$admin->get_v($_POST["vehiculo"]);
-			if($data_VE["title"]=="SUCCESS"){
-				$salida=$data_VE["content"]["salida"]*1;
-				$costo_km=$data_VE["content"]["costo_km"]*1;
-			}
-			$data_mo=$admin->list_vh($_POST["csegmento"],$_POST["equipot"]);
-			if($data_mo["title"]=="SUCCESS"){
-				$hh_taller=$data_mo["content"][0]["hh_normal_taller"]*1;
-				$hh_terreno=$data_mo["content"][0]["hh_normal_terreno"]*1;
-			}
-			$data_eq=$admin->get_e($_POST["equipot"]);
-			if($data_eq["title"]=="SUCCESS"){
-				$trabs=$data_eq["content"]["trabs"]*1;
-			}
-			$segmento = ($_POST['coteq']==0) ? 6 :$_POST['csegmento'] ;
-			$data_ar=$admin->list_a($segmento);
-			if($data_ar["title"]=="SUCCESS"){
-				$costo_mes_nave=(($arriendot/$naves)*100)/$factor;
-				$costo_dia_nave=$costo_mes_nave/30;
-				$espacio=$data_ar["content"][0]["espacio"];
-				$mar_uf=$data_ar["content"][0]["mar_uf"];
-				$costo_uf=$costo_dia_nave*$espacio;
-				$valor_uf_dia=(($costo_uf*$mar_uf)/100)+$costo_uf;
-				$valor_peso_dia=$valor_uf_dia*$uf;
-			}
-			if($data_VE["title"]=="ERROR" || $data_mo["title"]=="ERROR" || $data_eq["title"]=="ERROR" || $data_ar["title"]=="ERROR"){
-				$response["title"]="ERROR";
-				$response["content"]="ERROR AL OBTENER LOS DATOS DE LA BASE DE DATOS";
-			}else{
-				$valores["salida"]=$salida;
-				$valores["costo_km"]=$costo_km;
-				$valores["hh_taller"]=$hh_taller;
-				$valores["hh_terreno"]=$hh_terreno;
-				$valores["trabs"]=$trabs;
-				$valores["valor_peso_dia"]=$valor_peso_dia;
 
-				$response["title"]="SUCCESS";
-				$response["content"]=$valores;
+			$data=$admin->list_vh($_POST["csegmento"],$_POST["equipot"]);
+			if($data["title"]=="ERROR"){
+				$response["title"]="ERROR";
+				$response["content"]=$data["content"];
+			}else if($data["title"]=="SUCCESS"){
+				$hh_taller=$data["content"][0]["hh_normal_taller"];
+				$hh_terreno=$data["content"][0]["hh_normal_terreno"];
+
+				$data=$admin->get_e($_POST["equipot"]);
+				if($data["title"]=="ERROR"){
+					$response["title"]="ERROR";
+					$response["content"]=$data["content"];
+				}else if($data["title"]=="SUCCESS"){
+					$trabs=$data["content"]["trabs"];
+
+					$segmento = ($_POST['coteq']==0) ? 6 :$_POST['csegmento'] ;
+					$data=$admin->list_a($segmento);
+					if($data["title"]=="ERROR"){
+						$response["title"]="ERROR";
+						$response["content"]=$data["content"];
+					}else if($data["title"]=="SUCCESS"){
+						$costo_mes_nave=(($arriendot/$naves)*100)/$factor;
+						$costo_dia_nave=$costo_mes_nave/30;
+						$espacio=$data["content"][0]["espacio"];
+						$mar_uf=$data["content"][0]["mar_uf"];
+						$costo_uf=$costo_dia_nave*$espacio;
+						$valor_uf_dia=(($costo_uf*$mar_uf)/100)+$costo_uf;
+						$valor_dia=$valor_uf_dia*$uf;
+
+						$data=$clientes->get_pag($_POST["ccredito"]);
+						if($data["title"]=="ERROR"){
+							$response["title"]="ERROR";
+							$response["content"]=$data["content"];
+						}else if($data["title"]=="SUCCESS"){
+							$pag_gasto = $data["content"]["gastos"];
+							$pag_marg = $data["content"]["margen"];
+
+							$data=$clientes->get_s($_POST["csegmento"]);
+							if($data["title"]=="ERROR"){
+								$response["title"]="ERROR";
+								$response["content"]=$data["content"];
+							}else if($data["title"]=="SUCCESS"){
+								$mar_ins = $data["content"]["mar_ins"];
+								$mar_rep = $data["content"]["mar_rep"];
+								$mar_stt = $data["content"]["mar_stt"];
+
+								$data=$admin->get_v($_POST["vehiculo"]);
+								if($data["title"]=="ERROR"){
+									$response["title"]="ERROR";
+									$response["content"]=$data["content"];
+								}else if($data["title"]=="SUCCESS"){
+									$sal = ($_POST["lugar"]*1==2) ? $data["content"]["salida"] : 0 ;
+									$costo_km = ($_POST["lugar"]*1==2) ? $data["content"]["costo_km"] : 0 ;
+
+									$func = function($valor) {
+										return $valor * 1;
+									};
+
+									$valores["hh_taller"]= $hh_taller;
+									$valores["hh_terreno"]= $hh_terreno;
+									$valores["trabs"]= $trabs;
+									$valores["valor_dia"]= $valor_dia;
+									$valores["valor_misc"]= constant("MISCELANEOS");
+									$valores["pag_gasto"]= $pag_gasto;
+									$valores["pag_marg"]= $pag_marg;
+									$valores["mar_ins"]= $mar_ins;
+									$valores["mar_rep"]= $mar_rep;
+									$valores["mar_stt"]= $mar_stt;
+									$valores["sal"]= $sal;
+									$valores["costo_km"]= $costo_km;
+
+									$valores = array_map($func, $valores);
+
+									$response["title"]="SUCCESS";
+									$response["content"]=$valores;
+								}
+							}
+						}
+					}
+				}
 			}
 		}else if($accion=="add_ins" || $accion=="add_rep" || $accion=="add_ser"){
 			switch ($accion) {
@@ -1103,7 +1147,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$response["content"]="ERROR AL OBTENER LOS DATOS LA REQUISICION SELECCIONADA";
 				}
 			}else{
-				$data=$inventario->list_req('PRO',false,$almacenes);
+				$data=$inventario->list_req('PRO',$almacenes,false);
 				if($data["title"]=="SUCCESS"){
 					foreach ($data["content"] as $key => $value){
 						$table.='<tr><td class="_id">'.$value["codigo"].'</td><td class="_almdes">'.$value["alm_des"].'</td><td class="_almori">'.$value['alm_ori'].'</td><td>'.$value['fecha'].'</td></tr>';

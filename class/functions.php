@@ -317,3 +317,89 @@ function date_excel($_date){
 	$date_new = "DATE(".$date[2].",".$date[1].",".$date[0].")";
 	return $date_new;
 }
+
+/** Redondeo de numeros usado por la LEY de CHILE:
+ * si el numero termina entre 1 - 5 se redondea a la decima anterior
+ * si el numero termina entre 6 - 9 se redondea a la decima superior
+ * los Decimales se eliminan por lo anterior
+ * * @param numero: el Numero a redondear
+ */
+function redondeo($numero){
+	$new_number = 0;
+	if($numero>=0.5){
+		$new_number = round($numero,0);
+		$new_number = (round((($numero-1)/10),0))*10;
+	}
+	return $new_number;
+}
+
+/** Calcula los montos en las Cotizaciones
+ * @param valores: Array que posee los parametros Administrativos necesarios para los Calculos
+ * Retorna un Array con los resultados (que deben ser insertados)
+ */
+function calculos_cotizacion($valores=array()){
+	$sum_hh_ta=$sum_hh_te=$sum_dias=$hh_ter=$hh_tal=$valor_d=$sum_ins=$sum_rep=$sum_stt=$valor_mo=$valor_gf_mo=$valor_mg_gasto=0;
+	//VARIALBES QUE RETORNO
+	$resultados=array();
+	$_serv=$_rep=$_ins=$_stt=$_tras=$_misc=$_subt=$_desc=$_neto=$_imp=$_bruto=0;
+	//CHEQUEO LAS HORAS Y DIAS
+	if(!empty($_GET['cparte'])){
+		for ($i=0; $i<sizeof($_GET['cparte']); $i++){
+			$sum_hh_ta = $sum_hh_ta + $_GET['hhtaller'][$i];
+			$sum_hh_te = $sum_hh_te + $_GET['hhterreno'][$i];
+			$sum_dias = $sum_dias + $_GET['dtaller'][$i];
+		}
+	}
+	$hh_tal = $sum_hh_ta * $valores["hh_taller"];
+	$hh_ter = $sum_hh_te * $valores["hh_terreno"];
+	$valor_d = $sum_dias * $valores["valor_dia"];
+	if(!empty($_GET['tipo_art'])){
+		for ($i=0; $i<sizeof($_GET['tipo_art']); $i++){
+			switch ($_GET['tipo_art'][$i]) {
+				case 'ins':
+					$sum_ins = $sum_ins + ($_GET['cant'][$i]*$_GET['precio'][$i]);
+					break;
+				case 'rep':
+					$sum_rep = $sum_rep + ($_GET['cant'][$i]*$_GET['precio'][$i]);
+					break;
+				case 'stt':
+					$sum_stt = $sum_stt + ($_GET['cant'][$i]*$_GET['precio'][$i]);
+					break;
+			}
+		}
+	}
+	if($_GET['cotizat']*1!=5){
+		$distancia_		=	(($_GET["dist"])>0) ? $_GET["dist"] : 0 ;
+		$viajes_		= 	(($_GET["viajes"])>0) ? $_GET["viajes"] : 0 ;
+		$descuento_		=	(($_GET["desc"])>0) ? $_GET["desc"] : 0 ;
+		
+		$_tras			=	((($distancia_*$valores["costo_km"])*2)+($valores["sal"]*$viajes_));
+		$_misc			=	(((($sum_hh_ta+$sum_hh_te)/8.5)*$valores["trabs"])*($valores["valor_misc"]/2));
+		$valor_mo		=	($hh_tal+$hh_ter+$valor_d+$_tras+$_misc);
+		$valor_mg_gasto	=	(($valor_mo*$valores["pag_gasto"])/100);
+		$valor_gf_mo	=	($valor_mg_gasto+(($valor_mg_gasto*$valores["pag_marg"])/100));
+		$_serv			=	($valor_gf_mo+$hh_tal+$hh_ter+$valor_d);
+		$_ins			=	$sum_ins;
+		$_rep			=	$sum_rep;
+		$_stt			=	$sum_stt;
+		$_subt			=	($_serv+$_ins+$_rep+$_stt+$_tras+$_misc);
+		$_desc			=	($descuento_>0) ? ((($_subt*$descuento_)/100)*-1) : 0 ;
+		$_neto			=	$_subt+$_desc;
+		$_imp			=	(($_neto*$valores["imp"])/100);
+		$_bruto			=	($_neto+$_imp);
+	}
+	$resultados["serv"]	=	round($_serv,2);
+	$resultados["rep"]	=	round($_rep,2);
+	$resultados["ins"]	=	round($_ins,2);
+	$resultados["stt"]	=	round($_stt,2);
+	$resultados["tras"]	=	round($_tras,2);
+	$resultados["misc"]	=	round($_misc,2);
+	$resultados["sub"]	=	round($_subt,2);
+	$resultados["desc"]	=	round($_desc,2);
+	$resultados["net"]	=	round(redondeo($_neto),2);
+	$resultados["imp_"]	=	round($valores["imp"],2);
+	$resultados["imp"]	=	round(redondeo($_imp),2);
+	$resultados["brut"]	=	round(redondeo($_bruto),2);
+
+	return $resultados;
+}

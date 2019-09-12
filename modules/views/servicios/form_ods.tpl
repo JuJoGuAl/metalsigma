@@ -59,7 +59,7 @@
             <h6 class="card-subtitle"></h6>
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab"><span class="hidden-xs-down">COTIZACION</span></a> </li>
-              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">DETALLES</span></a> </li>
+              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">INS / REPS / SERV</span></a> </li>
             </ul>
             <div class="tab-content tabcontent-border">
               <div class="tab-pane p-4 active" id="tab_1" role="tabpanel">
@@ -121,7 +121,7 @@
                           <label for="equipot" class="control-label col-form-label">EQUIPO DE TRAB</label>
                           <input type="text" id="equipot" name="equipot" class="form-control" value="{equipo}" disabled>
                         </div>
-                      </div>                        
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -131,18 +131,22 @@
                     <div class="row">
                       <div class="col-lg-12">
                         <div class="table-responsive">
-                          <table class="table table-bordered table-hover" id="table_det_cot">
+                          <table class="table table-bordered table-hover table-m" id="table_det_cot">
                             <thead>
                               <tr>
-                                <th>#</th>
-                                <th>SISTEMA</th>
-                                <th>COMPONENTE</th>
-                                <th>SERVICIO</th>
-                                <th>HH TA</th>
-                                <th>HH TE</th>
-                                <th>DIAS TA</th>
-                                <th>INICIO</th>
-                                <th>FIN</th>
+                                <th rowspan="2" style="width: 26px;">#</th>
+                                <th rowspan="2">SISTEMA</th>
+                                <th rowspan="2">COMPONENTE</th>
+                                <th rowspan="2">SERVICIO</th>
+                                <th colspan="2" class="text-center">HORAS</th>
+                                <th class="text-center">DIAS</th>
+                                <th rowspan="2" class="text-center" style="width: 100px;">INICIO</th>
+                                <th rowspan="2" class="text-center" style="width: 100px;">FIN</th>
+                              </tr>
+                              <tr class="text-center">
+                                <th rowspan="2" style="width: 60px;">TALLER</th>
+                                <th rowspan="2" style="width: 60px;">TERRENO</th>
+                                <th style="width: 60px;">TALLER</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -186,27 +190,29 @@
                   <div class="col-lg-12">
                     <div class="table-responsive">
                       <table class="table table-bordered table-hover" id="table_add_ins">
-                        <thead>
-                          <tr>
-                            <th>CODIGO</th>
-                            <th>COD. INT</th>
-                            <th>ARTICULO</th>
-                            <th width="100px;">CANT</th>
-                            <th>TIPO</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <!-- START BLOCK : articulos -->
-                          <tr>
-                            <td>{codigo}</td>
-                            <td>{codigo2}</td>
-                            <td>{articulo}</td>
-                            <td width="100px;">{cant}</td>
-                            <td>{clasificacion}</td>
-                          </tr>
-                          <!-- END BLOCK : articulos -->
-                        </tbody>
-                      </table>
+                          <thead>
+                            <tr>
+                              <th>CODIGO</th>
+                              <th>COD. INT</th>
+                              <th>DESCRIPCION</th>
+                              <th width="100px;">CANT</th>
+                              <th>PRECIO</th>
+                              <th>TIPO</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <!-- START BLOCK : articulos -->
+                            <tr>
+                                <td>{codigo}</td>
+                                <td>{codigo2}</td>
+                                <td>{articulo}</td>
+                                <td width="100px;">{cant}</td>
+                                <td><span class="number_cal">{precio}</span></td>
+                                <td>{clasificacion}</td>
+                            </tr>
+                            <!-- END BLOCK : articulos -->
+                          </tbody>
+                        </table>
                     </div>
                   </div>
                 </div>
