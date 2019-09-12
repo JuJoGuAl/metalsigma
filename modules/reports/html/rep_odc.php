@@ -43,7 +43,8 @@ $telefono = ($cab['tel_fijo']=="") ? "+56 9 ".$cab['tel_movil'] : "+56 2 ".$cab[
     <table style="width: 100%;" class="table_dets" align="center" cellpadding="0" cellspacing="0">
         <tr bgcolor="#ffc000">
             <td style="width: 5%; text-align: center; ">#</td>
-            <td style="width: 45%; text-align: center; ">ITEM</td>
+            <td style="width: 15%; text-align: center; ">CODIGO</td>
+            <td style="width: 30%; text-align: center; ">ITEM</td>
             <td style="width: 10%; text-align: center; ">CANT</td>
             <td style="width: 10%; text-align: center; ">COSTO U</td>
             <td style="width: 10%; text-align: center; ">IMP (%)</td>
@@ -60,7 +61,8 @@ $telefono = ($cab['tel_fijo']=="") ? "+56 9 ".$cab['tel_movil'] : "+56 2 ".$cab[
                 $imp = $imp + $value["imp_m"];
                 echo '<tr class="row_dets">
                 <td style="width: 5%;">'.$count.'</td>
-                <td style="width: 45%;">'.$value["articulo"].'</td>
+                <td style="width: 15%;">'.$value["codigo2"].'</td>
+                <td style="width: 30%;">'.$value["articulo"].'</td>
                 <td style="width: 10%; text-align: center; ">'.numeros($value["cant"],0).'</td>
                 <td style="width: 10%; text-align: center; ">'.numeros($value["costou"],0).'</td>
                 <td style="width: 10%; text-align: center; ">'.numeros($value["imp_p"],0).' % </td>
@@ -70,13 +72,13 @@ $telefono = ($cab['tel_fijo']=="") ? "+56 9 ".$cab['tel_movil'] : "+56 2 ".$cab[
                 ';
             }
             echo '<tr class="row_dets" style="text-align: right;">
-            <td colspan="6" style="padding-right: 5px; border: 0px;"><strong>TOTAL NETO</strong></td><td style="text-align: center; ">'.numeros($subtotal,0).'</td>
+            <td colspan="7" style="padding-right: 5px; border: 0px;"><strong>TOTAL NETO</strong></td><td style="text-align: center; ">'.numeros($subtotal,0).'</td>
             </tr>';
             echo '<tr class="row_dets" style="text-align: right;">
-            <td colspan="6" style="padding-right: 5px; border: 0px;"><strong>TOTAL IMP</strong></td><td style="text-align: center; ">'.numeros($imp,0).'</td>
+            <td colspan="7" style="padding-right: 5px; border: 0px;"><strong>TOTAL IMP</strong></td><td style="text-align: center; ">'.numeros($imp,0).'</td>
             </tr>';
             echo '<tr class="row_dets" style="text-align: right;">
-            <td colspan="6" style="padding-right: 5px; border: 0px;"><strong>TOTAL</strong></td><td style="text-align: center; ">'.numeros($total,0).'</td>
+            <td colspan="7" style="padding-right: 5px; border: 0px;"><strong>TOTAL</strong></td><td style="text-align: center; ">'.numeros($total,0).'</td>
             </tr>';
         }
         ?>
