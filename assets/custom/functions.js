@@ -10,6 +10,22 @@ var array_status_print_odc = ["PRO","UTI"];
 //Array para Calculas COT
 var array_status_calc_odc = ["PCO","PEN","PAC","PAT"];
 
+outdatedBrowserRework({
+    fullscreen: false,
+    browserSupport: {
+        'Chrome': 40,
+        'Edge': 12,
+        'Safari': 7.2,
+        'Firefox': 30,
+        'Opera': 25,
+        'IE': false,
+        'Mobile Safari': false,
+        'Samsung Browser': 5,
+    },
+    requireChromeOnAndroid: false,
+    isUnknownBrowserOK: false, 
+})
+
 $.extend( true, $.fn.dataTable.defaults, {
     "language": {
         "sProcessing":     "Procesando...",
@@ -279,6 +295,26 @@ function Modal_error(x,err,msj){
         response="REQUEST TIME OUT.";
     }else {
         response="UNKNOW ERROR.\n"+x.responseText
+    }
+    dialog(response,"ERROR");
+}
+/** Funcion de Error para AXIOS
+* @param error: objeto con la informacion
+*/
+function axios_Error(error){
+    var response="";
+    if(error.response){
+        if(error.response.status==404){
+            response="LA URL NO EXISTE!";
+        }else if(error.response.status==500){
+            response="ERROR INTERNO DEL SERVIDOR";
+        }else{
+            response="ERROR DESCONOCIDO:<br>"+error.message.toUpperCase();
+        }
+    }else{
+        if(error.request){
+            response="ERROR DE CONEXION!<br>VERIFIQUE SU CONEXION!";
+        }
     }
     dialog(response,"ERROR");
 }

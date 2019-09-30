@@ -15,6 +15,7 @@
     <link href="./assets/fullcalendar/css/calendar.css" rel="stylesheet">
     <link href="./assets/jquery-confirm/css/jquery-confirm.css" rel="stylesheet">
     <link href="./assets/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet">
+    <link href="./assets/outdatedbrowser/outdatedbrowser.css" rel="stylesheet">
     <link href="{style}" rel="stylesheet">
     <!-- jQuery -->
     <script src="./assets/jquery/jquery.min.js"></script>
@@ -141,7 +142,9 @@
             <footer class="footer text-center">Todos los derechos reservados. Diseñado y Desarrollado por <a href="http://ipas-ig.com/" target="_blank">IPAS-IG</a>.</footer>
         </div>
     </div>
+    <div id="outdated"></div>
     <!-- jQuery -->
+    <script src="./assets/axios/axios.min.js"></script>
     <script src="./assets/jquery/jquery-ui.min.js"></script>
     <script src="./assets/jquery/jquery.formatCurrency-1.4.0.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
@@ -169,6 +172,7 @@
     <script src="./assets/jquery-confirm/js/jquery-confirm.js"></script>
     <!-- Echarts -->
     <script src="./assets/echarts/echarts-en.min.js"></script>
+    <script src="./assets/outdatedbrowser/outdatedbrowser.js"></script>
     <!--Custom JavaScript -->
     <script src="{custom}"></script>
     <script src="{functions}"></script>

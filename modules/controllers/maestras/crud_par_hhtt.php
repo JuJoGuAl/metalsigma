@@ -4,9 +4,8 @@ if($perm_val["title"]<>"SUCCESS"){
 	alerta("NO POSEES PERMISO PARA ESTE MODULO","ERROR");
 }else{
 	include_once("./class/class.par_admin.php");
-	include_once("./class/class.parameter.php");
+	include_once("./class/functions.php");
 	$data_class = new paradm;
-	$parametros = new parametros();
 	$modulo = $perm->get_module($_GET['submod']);
 	if(Evaluate_Mod($modulo)){
 		$tpl->newBlock("module");
@@ -29,13 +28,12 @@ if($perm_val["title"]<>"SUCCESS"){
 			$tpl->assign("mod_name","VALOR HORA HOMBRE");
 		}
 		$data=$data_class->list_();
-		$par=$parametros->get_(9); //COSTO ADIC HORA EXTRA
 		if(Evaluate_Mod($data)){
 			foreach ($data["content"] as $llave => $datos) {
 				$tpl->newBlock("data");
 				$id=$datos['codigo'];
 				$costo_hh_normal=$datos['costo_hh_normal'];
-					$costo_hh_extra=(($costo_hh_normal*$par['content']["valor"])/100)+$costo_hh_normal;
+					$costo_hh_extra=(($costo_hh_normal*constant("VALOR_HH_EX"))/100)+$costo_hh_normal;
 					$margen_hh_normal=$datos['mar_normal'];
 					$margen_hh_extra=$datos['mar_extra'];
 					$valor_hh_normal=(($costo_hh_normal*$margen_hh_normal)/100)+$costo_hh_normal;

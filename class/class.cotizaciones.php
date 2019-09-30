@@ -79,6 +79,7 @@ class cotizaciones{
 		$this->table1 .= "INNER JOIN eq_marcas em ON eq.cmarca=em.cmarca INNER JOIN eq_segmentos es ON es.csegmento=eq.csegmento ";
 		$this->table1 .= "LEFT JOIN cli_pagos pa ON c.cpago=pa.cpago ";
 		$this->table1 .= "LEFT JOIN co_cotizacion_sub cb ON cp.ccotizacion=cb.corigen ";
+		/*$this->table1 .= "LEFT JOIN co_cotizacion_sub cb1 ON cp.ccotizacion=cb1.corigen ";*/
 		//AUDITORIA
 		$this->table1 .= " LEFT JOIN adm_usuarios u1 ON cp.crea_user=u1.cusuario LEFT JOIN nom_trabajadores t1 ON u1.ctrabajador=t1.ctrabajador LEFT JOIN data_entes d1 ON t1.cdata=d1.cdata LEFT JOIN nom_cargos c1 ON t1.ccargo=c1.ccargo";
 		$this->table1 .= " LEFT JOIN adm_usuarios u2 ON cp.mod_user=u2.cusuario LEFT JOIN nom_trabajadores t2 ON u2.ctrabajador=t2.ctrabajador LEFT JOIN data_entes d2 ON t2.cdata=d2.cdata LEFT JOIN nom_cargos c2 ON t2.ccargo=c2.ccargo";
@@ -87,7 +88,7 @@ class cotizaciones{
 		$this->db1->fields = array (
 			array ('system',	"LPAD(".$this->tId1."*1,"._PAD_CEROS_.",'0') AS codigo"),
 			array ('system',	"IF(cp.cordenservicio=0, 'N/A', LPAD(cp.cordenservicio*1,"._PAD_CEROS_.",'0')) AS codigo_ods"),
-			array ('system',	"IF(cb.cordenservicio_sub>0, CONCAT(LPAD(cp.cordenservicio*1,"._PAD_CEROS_.",'0'), '-',cb.cordenservicio_sub*1),'N/A') AS ods_pad"),
+			//array ('system',	"IF(cb.cordenservicio_sub>0, CONCAT(LPAD(cp.cordenservicio*1,"._PAD_CEROS_.",'0'), '-',cb.cordenservicio_sub*1),'N/A') AS ods_pad"),
 			array ('system',	"(d.code) AS code"),
 			array ('system',	'd.data'),
 			array ('system',	'd.data2'),

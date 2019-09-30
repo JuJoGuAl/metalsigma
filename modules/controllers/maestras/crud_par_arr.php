@@ -3,10 +3,9 @@ $perm_val = $perm->val_mod($_SESSION['metalsigma_log'],$_GET['submod']);
 if($perm_val["title"]<>"SUCCESS"){
 	alerta("NO POSEES PERMISO PARA ESTE MODULO","ERROR");
 }else{
+	include_once("./class/functions.php");
 	include_once("./class/class.par_admin.php");
-	include_once("./class/class.parameter.php");
 	$data_class = new paradm;
-	$parametros = new parametros();
 	$modulo = $perm->get_module($_GET['submod']);
 	if(Evaluate_Mod($modulo)){
 		$tpl->newBlock("module");
@@ -29,10 +28,10 @@ if($perm_val["title"]<>"SUCCESS"){
 			$tpl->assign("mod_name","ARRIENDO DEL TALLER SEGUN SEGMENTO");
 		}
 		$data=$data_class->list_a();
-		$par=$parametros->list_all();
-		$arriendot=$par["content"][5]["valor"];
-		$naves=$par["content"][6]["valor"];
-		$factor=$par["content"][7]["valor"];
+		$par=$parametros->list_parametros(0);
+		$arriendot=constant("ARR_TAL_1");
+		$naves=constant("NAVES_TAL_1");
+		$factor=constant("FAC_UTI");
 		$costo_mes_nave=(($arriendot/$naves)*100)/$factor;
 		$costo_dia_nave=$costo_mes_nave/30;
 		if(Evaluate_Mod($data)){

@@ -60,6 +60,7 @@ class database {
         $group = $group_str ? "GROUP BY $group_str" : "" ;
         $having = $having_str ? "HAVING $having_str" : "" ;
         $query .= " $group $having $order $limit";
+        //echo $query;
         return $this->validateOperation($query,$values);        
     }
     /** Obtiene un registro de la BD segun su ID

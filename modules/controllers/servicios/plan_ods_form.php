@@ -4,10 +4,8 @@ if($action=="save_new" || $action=="save_edit" || $action=="del"){
 	include_once("../../../class/functions.php");
 	include_once("../../../class/class.planificacion.php");
 	include_once("../../../class/class.cotizaciones.php");
-	include_once("../../../class/class.parameter.php");
 	$data_class = new planificaciones;
 	$cotizaciones = new cotizaciones();
-	$parametros = new parametros();
 	session_start();
 	$response=array();
 	if(isset($_SESSION["metalsigma_log"])){
@@ -30,8 +28,6 @@ if($action=="save_new" || $action=="save_edit" || $action=="del"){
 					$response['title']=$resultado["title"];
 					$response["content"]=$resultado["content"];
 				}
-				// echo json_encode($response);
-				// exit;
 			}else{
 				$datos = $trabajadores = array();
 
@@ -58,8 +54,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="del"){
 					}
 					$trabs_cot = ($data["title"]=="SUCCESS") ? $data["cab"]["trabs"]*1 : 0 ;
 					$lugar = $data["cab"]["clugar"];
-					$col_data = $parametros->get_(20);
-					$colacion = ($col_data["title"]=="SUCCESS") ? ($col_data["content"]["valor"])/60 : 0 ;
+					$colacion = constant("DUR_COL")/60;
 					//VERIFICO SI EL HORARIO ELEGIDO ESTA EN RANGO COLACION
 					if( (setDate($_hora_ini, "H:i") < "15:00") && (setDate($_hora_fin, "H:i") > "12:00")){
 						//DE SER ASI LE RESTO LA COLACION A LA PLANIFICACION
@@ -158,6 +153,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="del"){
 	if($perm_val["title"]<>"SUCCESS"){
 		alerta("NO POSEES PERMISO PARA ESTE MODULO","ERROR");
 	}else{
+		include_once("./class/functions.php");
 		include_once("./class/class.cotizaciones.php");
 		include_once("./class/class.planificacion.php");
 		$data_class = new cotizaciones();
@@ -183,11 +179,11 @@ if($action=="save_new" || $action=="save_edit" || $action=="del"){
 				$tpl->assign("menu_ter","NONE");
 				$tpl->assign("menu_name","PLANIFICACION DE ODS");
 			}
-			$param=$parametros->list_all();
-			$colacion		=	$param["content"][16]["valor"];
-			$inicio			=	$param["content"][17]["valor"];
-			$fin			=	$param["content"][18]["valor"];
-			$dias_pasado	=	$param["content"][20]["valor"];
+			$colacion		=	constant("DUR_COL");
+			$inicio			=	constant("H_INI");
+			$fin			=	constant("H_FIN");
+			$dias_pasado	=	constant("DIAS_PAST");
+
 			$tpl->assign("fecha_past",setDate(date("d-m-Y"),"d-m-Y H:i","-P".$dias_pasado."D"));
 
 			$tpl->assign("colacion",$colacion);

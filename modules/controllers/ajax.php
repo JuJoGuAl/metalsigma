@@ -29,15 +29,24 @@ $admin = new paradm;
 $compras = new compras;
 $cotizaciones = new cotizaciones;
 $planificaciones = new planificaciones;
-
+if(isset($_POST["mod"])){
+	$modulo = strtoupper($_POST["mod"]);
+	$accion = (isset($_POST['accion'])?$_POST['accion']:'');
+	extract($_POST, EXTR_PREFIX_ALL, "");
+}else{
+	$data = json_decode(file_get_contents("php://input"), true);
+	extract($data, EXTR_PREFIX_ALL, "");
+	$modulo = strtoupper($data['mod']);
+	$accion = strtolower($data["accion"]);
+}
 if (!isset($_SESSION['metalsigma_log'])){
 	$response['title']="ERROR";
 	$response["content"]="ACCESO DENEGADO: <strong>SU SESION HA EXPIRADO!</strong>";
 }else{
-	if($_POST["mod"]=="noperm"){
+	if($modulo=="NOPERM"){
 		$perm_val["title"]="SUCCESS";
 	}else{
-		$perm_val = $perm->val_mod($_SESSION['metalsigma_log'],$_POST['mod']);
+		$perm_val = $perm->val_mod($_SESSION['metalsigma_log'],$modulo);
 	}
 	if($perm_val["title"]<>"SUCCESS"){
 		$response['title']="ERROR";
@@ -48,7 +57,6 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$almacenes[] .= $perm_val["content"][0]["alm"][$key]["calmacen"];
 			}
 		}
-		$accion=(isset($_REQUEST['accion'])?$_REQUEST['accion']:'');
 		switch ($accion){
 			case 'add_eqs':
 			$titles='<tr><th>CODIGO</th><th>EQUIPO</th><th>MARCA</th><th>MODELO</th><th>SEGMENTO</th></tr>';
@@ -131,7 +139,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$response["content"]="NO EXISTE INFORMACION PARA MOSTRAR";
 			}
 		}else if($accion=="rut_cliente"){
-			$data=$clientes->get_rut($_POST["rut"]);
+			$data=$clientes->get_rut($_rut);
 			if($data["title"]=="SUCCESS"){
 				if($data["content"]["cliente"]>0){
 					$response["title"]="ERROR";
@@ -146,7 +154,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$response["content"]=1;
 			}
 		}else if($accion=="rut_proveedor"){
-			$data=$proveedores->get_rut($_POST["rut"]);
+			$data=$proveedores->get_rut($_rut);
 			if($data["title"]=="SUCCESS"){
 				if($data["content"]["proveedor"]>0){
 					$response["title"]="ERROR";
@@ -268,13 +276,13 @@ if (!isset($_SESSION['metalsigma_log'])){
 				if($data["title"]=="SUCCESS"){
 					$response["title"]="SUCCESS";
 					$response["content"]=$data["content"];
-					$response["imp"]=constant("IMPUESTOS");
+					$response["imp"]=constant("VALOR_IMP");
 				}else{
 					$response["title"]="ERROR";
 					$response["content"]="ERROR AL OBTENER LOS DATOS DEL ITEM SELECCIONADO";
 				}
 			}else{
-				if($_POST["mod"]=="CRUD_INV_REQ"){
+				if($modulo=="CRUD_INV_REQ"){
 					$clasif	= array (2);
 				}else{
 					$clasif = ($accion=="add_art_cot") ? false : array(3) ;
@@ -283,7 +291,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$data=$inventario->list_($clasif,$tipo,json_decode($_POST["not"]));
 				if($data["title"]=="SUCCESS"){
 					foreach ($data["content"] as $key => $value){
-						$table.='<tr><td class="_id"><input class="_imp" type="hidden" value="'.constant("IMPUESTOS").'">'.$value["codigo"].'</td><td class="_code">'.$value["codigo2"].'</td><td class="_nom">'.$value['articulo'].'</td><td class="_clas">'.$value['clasificacion'].'</td></tr>';
+						$table.='<tr><td class="_id"><input class="_imp" type="hidden" value="'.constant("VALOR_IMP").'">'.$value["codigo"].'</td><td class="_code">'.$value["codigo2"].'</td><td class="_nom">'.$value['articulo'].'</td><td class="_clas">'.$value['clasificacion'].'</td></tr>';
 					}
 					$table.="</tbody></table></div>";
 					$response=$table;
@@ -351,10 +359,10 @@ if (!isset($_SESSION['metalsigma_log'])){
 			$valores=array();
 			$hh_taller=$hh_terreno=$trabs=$valor_dia=$valor_misc=$pag_gasto=$pag_marg=$mar_ins=$mar_rep=$mar_stt=$sal=$costo_km=0;
 
-			$arriendot=constant("ARRIENDO TALLER (EN UF)");
-			$naves=constant("N° NAVES");
-			$factor=constant("FACTOR DE UTILIZACION (%)");
-			$uf=constant("VALOR UF");
+			$arriendot=constant("ARR_TAL_1");
+			$naves=constant("NAVES_TAL_1");
+			$factor=constant("FAC_UTI");
+			$uf=constant("VALOR_UF");
 
 			$data=$admin->list_vh($_POST["csegmento"],$_POST["equipot"]);
 			if($data["title"]=="ERROR"){
@@ -418,7 +426,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 									$valores["hh_terreno"]= $hh_terreno;
 									$valores["trabs"]= $trabs;
 									$valores["valor_dia"]= $valor_dia;
-									$valores["valor_misc"]= constant("MISCELANEOS");
+									$valores["valor_misc"]= constant("VALOR_MISC");
 									$valores["pag_gasto"]= $pag_gasto;
 									$valores["pag_marg"]= $pag_marg;
 									$valores["mar_ins"]= $mar_ins;
@@ -469,7 +477,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$response["cab"]=$data["cab"];
 					$response["det"]=$data["det"];
 					$response["mov"]=$data["mov"];
-					$response["imp"]=constant("IMPUESTOS");
+					$response["imp"]=constant("VALOR_IMP");
 				}else{
 					$response["title"]="ERROR";
 					$response["content"]="ERROR AL OBTENER LOS DATOS LA ODC SELECCIONADA";
@@ -494,7 +502,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$response["title"]="SUCCESS";
 					$response["cab"]=$data["cab"];
 					$response["det"]=$data["det"];
-					$response["imp"]=constant("IMPUESTOS");
+					$response["imp"]=constant("VALOR_IMP");
 				}else{
 					$response["title"]="ERROR";
 					$response["content"]="ERROR AL OBTENER LOS DATOS LA ODC SELECCIONADA";
@@ -519,7 +527,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$response["title"]="SUCCESS";
 					$response["cab"]=$data["cab"];
 					$response["det"]=$data["det"];
-					$response["imp"]=constant("IMPUESTOS");
+					$response["imp"]=constant("VALOR_IMP");
 				}else{
 					$response["title"]="ERROR";
 					$response["content"]="ERROR AL OBTENER LOS DATOS LA ODC SELECCIONADA";
@@ -527,7 +535,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 			}else{
 				$data=$inventario->list_(false,1,json_decode($_POST["not"]));
 				if($data["title"]=="SUCCESS"){
-					$table .= ($_POST["mod"]=="KARDEX") ? '<tr><td class="_id">-1</td><td class="_id2">0</td><td class="_nom">TODOS...</td><td>-</td></tr>' : '' ;
+					$table .= ($modulo=="KARDEX") ? '<tr><td class="_id">-1</td><td class="_id2">0</td><td class="_nom">TODOS...</td><td>-</td></tr>' : '' ;
 					foreach ($data["content"] as $key => $value){
 						$table.='<tr><td class="_id">'.$value["codigo"].'</td><td class="_id2">'.$value["codigo2"].'</td><td class="_nom">'.$value['articulo'].'</td><td>'.$value['clasificacion'].'</td></tr>';
 					}
@@ -607,13 +615,13 @@ if (!isset($_SESSION['metalsigma_log'])){
 					foreach ($dataExcel as $key => $value) {
 						if($value["codigo"]!=""){
 							//SI ESTOY EN MAESTRAS/ARTICULOS TOMO EL COSTO DE RESTO LO DEJO EN 0
-							$costo = (strtolower($_POST["mod"])=="crud_articulos") ? $value["costo"] : 0 ;
+							$costo = ($modulo=="CRUD_ARTICULOS") ? $value["costo"] : 0 ;
 							$data[0][$key] = $value["codigo"];
 							$data[1][$key] = $value["articulo"];
 							$data[2][$key] = $value["descripcion"];
 							$data[3][$key] = $value["categoria"];
 							$data[4][$key] = $costo;
-							if(strtolower($_POST["mod"])!="crud_articulos"){
+							if($modulo!="CRUD_ARTICULOS"){
 								$precios["cant"][$key] = $value["cant"];
 								$precios["precio"][$key] = $value["costo"];
 							}
@@ -621,14 +629,14 @@ if (!isset($_SESSION['metalsigma_log'])){
 					}
 					$result = $inventario->setArticulos($data);
 					if($result["title"]=="SUCCESS"){
-						if(strtolower($_POST["mod"])!="crud_articulos"){
+						if($modulo!="CRUD_ARTICULOS"){
 							foreach ($result["content"] as $key => $value) {
 								$result["content"][$key]["cant_"] = $precios["cant"][$key];
 								$result["content"][$key]["precio_"] = $precios["precio"][$key];
 							}
 						}						
 						$response = $result;
-						$response["imp"]=constant("IMPUESTOS");;
+						$response["imp"]=constant("VALOR_IMP");;
 					}else{
 						$response = $result;
 					}
@@ -640,11 +648,12 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$response["content"]=$e->getMessage();
 			}
 		}elseif($accion=="refresh_cotizaciones"){
-			$arr = json_decode($_POST["stat"]);
-			$fstat = ($arr[0]=="-1") ? false : json_decode($_POST["stat"]);
-			$ftipo = ($_POST["tipo"]=="-1") ? false : $_POST["tipo"];
+			$arr = json_decode($_stat);
+			$fstat = ($arr[0]=="-1") ? false : json_decode($_stat);
+			$ftipo = ($_tipo=="-1") ? false : $_tipo;
 			$data=$cotizaciones->list_all($fstat,false,$ftipo);
 			if($data["title"]=="SUCCESS"){
+				//print_r($data["content"]);
 				$response["title"]="SUCCESS";
 				foreach ($data["content"] as $key => $datos){
 					$data["content"][$key]["code"]=formatRut($data["content"][$key]["code"]);
@@ -652,30 +661,30 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$cadena_acciones='
 					<button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light menu" data-menu="COTIZACIONES" data-mod="CRUD_COT_ALL" data-ref="CRUD_COT_SUB_ALL" data-subref="NONE" data-acc="MODULO" data-id="'.$id.'"><i class="fas fa-arrow-right"></i></button>
 					';
-					$detalles=$cotizaciones->list_sub($datos['codigo'],$array_cot_all);
-					$sub_status = "";
-					$contador = 0;
-					$class = "";
-					if($detalles["title"]=="SUCCESS"){
-						foreach ($detalles["content"] as $llave1 => $datos1) {
-							$contador++;
-							$clas_="";
-							if($arr[0]!="-1"){
-								$clas_ .= ($datos1["status"]==$fstat[0]) ? "font-weight-bold" : "" ;
-							}
-							$estatus_=$array_status[$datos1["status"]];
-							if($_POST["tipo"]!="-1"){
-								$estatus_ .= ($datos1["ctipo"]==$_POST["tipo"]) ? " <strong>(".$datos1["tipo"].")</strong>" : "" ;
-							}
-							$class = ($datos1["ctipo"]==5) ? "table-warning" : $class ;
-							$sub_status .= "<span class='".$clas_."'>".$datos1["correlativo"].": ".$estatus_."</span><br>";
-						}
+					// $detalles=$cotizaciones->list_sub($datos['codigo'],$array_cot_all);
+					// $sub_status = "";
+					// $contador = 0;
+					// $class = "";
+					// if($detalles["title"]=="SUCCESS"){
+					// 	foreach ($detalles["content"] as $llave1 => $datos1) {
+					// 		$contador++;
+					// 		$clas_="";
+					// 		if($arr[0]!="-1"){
+					// 			$clas_ .= ($datos1["status"]==$fstat[0]) ? "font-weight-bold" : "" ;
+					// 		}
+					// 		$estatus_=$array_status[$datos1["status"]];
+					// 		if($_tipo!="-1"){
+					// 			$estatus_ .= ($datos1["ctipo"]==$_tipo) ? " <strong>(".$datos1["tipo"].")</strong>" : "" ;
+					// 		}
+					// 		$class = ($datos1["ctipo"]==5) ? "table-warning" : $class ;
+					// 		$sub_status .= "<span class='".$clas_."'>".$datos1["correlativo"].": ".$estatus_."</span><br>";
+					// 	}
 
-					}
+					// }
 					$data["content"][$key]["boton"] = $cadena_acciones;
-					$data["content"][$key]["cuentas"] = $contador;
-					$data["content"][$key]["class"] = $class;
-					$data["content"][$key]["sub_status"] = $sub_status;
+					//$data["content"][$key]["cuentas"] = $contador;
+					//$data["content"][$key]["class"] = $class;
+					//$data["content"][$key]["sub_status"] = $subb_status;
 				}
 				$response["content"]=$data["content"];
 			}else{
@@ -1098,7 +1107,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 			$data=$cotizaciones->list_art_ods($_POST["code"],$f_alm);
 			if($data["title"]=="SUCCESS"){
 				$response["title"]="SUCCESS";
-				$response["imp"]=constant("IMPUESTOS");
+				$response["imp"]=constant("VALOR_IMP");
 				if($_POST['mod']=="CRUD_ODC_ODS"){
 					foreach ($data["content"] as $key => $value) {
 						$art_comp=$compras->get_art_odc_used($value["codigo"],$_POST["code"]);
@@ -1117,7 +1126,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$response["title"]="SUCCESS";
 					$response["cab"]=$data["cab"];
 					$response["det"]=$data["det"];
-					$response["imp"]=constant("IMPUESTOS");
+					$response["imp"]=constant("VALOR_IMP");
 				}else{
 					$response["title"]="ERROR";
 					$response["content"]="ERROR AL OBTENER LOS DATOS LA COTIZACION SELECCIONADA";
@@ -1202,7 +1211,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 				}
 			}else{
 				$status_ = array("FAC");
-				$data=$cotizaciones->list_sub($_POST["codigo"],$status_,false,false,false,false,false,false,constant("MAX_DIAS_GAR"));
+				$data=$cotizaciones->list_sub($_POST["codigo"],$status_,false,false,false,false,false,false,constant("MAX_GAR_DIAS"));
 				if($data["title"]=="SUCCESS"){
 					foreach ($data["content"] as $key => $value){
 						$table.='<tr><td><input class="_ods" type="hidden" value="'.$value["codigo"].'">'.$value["cot_full"].'</td><td>'.$value["ods_full"].'</td><td>'.$value['cfactura'].'</td><td>'.$value['fecha_fac'].'</td><td>'.$value['tipo'].'</td><td>'.$value['lugar'].'</td><td>'.$value['equipo'].'</td></tr>';
@@ -1215,6 +1224,24 @@ if (!isset($_SESSION['metalsigma_log'])){
 				}
 			}
 
+		}else if ($accion=="get_cot_status"){
+			$data=$cotizaciones->list_sub($_POST["code"],$array_cot_all);
+			if($data["title"]=="SUCCESS"){
+				$response["title"]="SUCCESS";
+				foreach ($data["content"] as $key => $value){
+					$data["content"][$key]["estatus_"]=$array_status[$value["status"]];
+				}
+				$response["content"]=$data["content"];
+			}
+		}else if ($accion=="get_cot_all_childs"){
+			$data=$cotizaciones->list_sub($_code,$array_cot_all);
+			if($data["title"]=="SUCCESS"){
+				$response["title"]="SUCCESS";
+				foreach ($data["content"] as $key => $value){
+					$data["content"][$key]["estatus_"]=$array_status[$value["status"]];
+				}
+				$response["content"]=$data["content"];
+			}
 		}
 	}
 }

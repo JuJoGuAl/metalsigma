@@ -324,6 +324,10 @@ class planificaciones{
 			$data[$cont]["operator"]="<>";
 			$data[$cont]["value"]=$plan;
 		}
+		$cont++;
+		$data[$cont]["row"]="pc.status";
+		$data[$cont]["operator"]="=";
+		$data[$cont]["value"]=1;
 		return $this->db3->getRecords(false,$data);
 	}
 	//CHEQUEAR DISPONIBILIDAD DE VEHICULO

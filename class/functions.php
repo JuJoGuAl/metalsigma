@@ -13,11 +13,13 @@ include_once("class.permission.php");
 include_once("class.parameter.php");
 $perm = new permisos;
 $parametros = new parametros();
-$par=$parametros->list_all();
-foreach ($par["content"] as $key => $value) {
-	if(!defined($value["parametro"])){
-        define($value["parametro"], $value["valor"]);
-    }
+$par=$parametros->list_parametros();
+if($par["title"]=="SUCCESS"){
+	foreach ($par["content"] as $key => $value) {
+		if(!defined($value["parametro"])){
+			define($value["parametro"], $value["valor"]);
+		}
+	}
 }
 $selected = 'selected="selected"';
 //BOOLEANS

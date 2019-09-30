@@ -24,10 +24,10 @@ if($action=="proc"){
 				//VARIABLES PARA CALCULOS
 				$hh_taller=$hh_terreno=$trabs=$valor_dia=$valor_misc=$pag_gasto=$pag_marg=$mar_ins=$mar_rep=$mar_stt=$sal=$costo_km=0;
 
-				$arriendot=constant("ARRIENDO TALLER (EN UF)");
-				$naves=constant("N° NAVES");
-				$factor=constant("FACTOR DE UTILIZACION (%)");
-				$uf=constant("VALOR UF");
+				$arriendot=constant("ARR_TAL_1");
+				$naves=constant("NAVES_TAL_1");
+				$factor=constant("FAC_UTI");
+				$uf=constant("VALOR_UF");
 
 				$data=$admin->list_vh($_GET["csegmento"],$_GET["equipot"]);
 				if($data["title"]=="ERROR"){
@@ -88,10 +88,10 @@ if($action=="proc"){
 										$valores["hh_terreno"]= $hh_terreno;
 										$valores["trabs"]= $trabs;
 										$valores["valor_dia"]= $valor_dia;
-										$valores["valor_misc"]= constant("MISCELANEOS");
+										$valores["valor_misc"]= constant("VALOR_MISC");
 										$valores["pag_gasto"]= $pag_gasto;
 										$valores["pag_marg"]= $pag_marg;
-										$valores["imp"]= constant("IMPUESTOS");
+										$valores["imp"]= constant("VALOR_IMP");
 										$valores["mar_ins"]= $mar_ins;
 										$valores["mar_rep"]= $mar_rep;
 										$valores["mar_stt"]= $mar_stt;
@@ -285,10 +285,10 @@ if($action=="proc"){
 				$data_ar=$param->list_a($csegmento2);
 				$data_VE=$param->get_v($cvehiculo);
 				//CALCULO COSTO ARRIENDO DIARIO
-				$arriendot=constant("ARRIENDO TALLER (EN UF)");
-				$naves=constant("N° NAVES");
-				$factor=constant("FACTOR DE UTILIZACION (%)");
-				$uf=constant("VALOR UF");
+				$arriendot=constant("ARR_TAL_1");
+				$naves=constant("NAVES_TAL_1");
+				$factor=constant("FAC_UTI");
+				$uf=constant("VALOR_UF");
 				$costo_mes_nave=(($arriendot/$naves)*100)/$factor;
 				$costo_dia_nave=$costo_mes_nave/30;
 				$espacio=$data_ar["content"][0]["espacio"];
@@ -303,8 +303,8 @@ if($action=="proc"){
 				$tpl->assign("hh_terreno_",$data_mo["content"][0]["hh_normal_terreno"]);
 				$tpl->assign("trabs",$data_eq["content"]["trabs"]);
 				$tpl->assign("valor_dia",$valor_peso_dia);
-				$tpl->assign("valor_misc",constant("MISCELANEOS"));
-				$tpl->assign("imp",constant("IMPUESTOS"));
+				$tpl->assign("valor_misc",constant("VALOR_MISC"));
+				$tpl->assign("imp",constant("VALOR_IMP"));
 				$tpl->assign("pag_gasto",$data_cli["content"]["gastos"]);
 				$tpl->assign("pag_marg",$data_cli["content"]["margen"]);
 				$tpl->assign("mar_ins",$data_seg["content"]["mar_ins"]);

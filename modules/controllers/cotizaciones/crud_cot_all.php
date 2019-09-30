@@ -57,22 +57,22 @@ if($perm_val["title"]<>"SUCCESS"){
 				}
 				$tpl->assign("actions",$cadena_acciones);
 
-				$detalles=$data_class->list_sub($datos['codigo'],$array_cot_all);
-				$sub_status = "";
-				$contador = 0;
-				$class = "";
-				if($detalles["title"]=="SUCCESS"){
-					foreach ($detalles["content"] as $llave1 => $datos1) {
-						$contador++;
-						$gar = ($datos1["ctipo"]==5) ? " (GARANTIA)" : "" ;
-						$class = ($datos1["ctipo"]==5 && ($datos1["status"]!="CAN" || $datos1["status"]!="FAC")) ? "table-warning" : $class ;
-						$sub_status .= $datos1["correlativo"].": ".$array_status[$datos1["status"]].$gar."<br>";
-					}
+				//$detalles=$data_class->list_sub($datos['codigo'],$array_cot_all);
+				// $sub_status = "";
+				// $contador = 0;
+				// $class = "";
+				// if($detalles["title"]=="SUCCESS"){
+				// 	foreach ($detalles["content"] as $llave1 => $datos1) {
+				// 		$contador++;
+				// 		$gar = ($datos1["ctipo"]==5) ? " (GARANTIA)" : "" ;
+				// 		$class = ($datos1["ctipo"]==5 && ($datos1["status"]!="CAN" || $datos1["status"]!="FAC")) ? "table-warning" : $class ;
+				// 		$sub_status .= $datos1["correlativo"].": ".$array_status[$datos1["status"]].$gar."<br>";
+				// 	}
 
-				}
-				$tpl->assign("cuentas",$contador);
-				$tpl->assign("sub_status",$sub_status);
-				$tpl->assign("class",$class);
+				// }
+				//$tpl->assign("cuentas",$contador);
+				// $tpl->assign("sub_status",$sub_status);
+				// $tpl->assign("class",$class);
 			}
 		}
 		$ins=$perm_val["content"][0]["ins"];

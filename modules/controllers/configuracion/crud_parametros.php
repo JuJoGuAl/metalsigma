@@ -25,30 +25,22 @@ if($perm_val["title"]<>"SUCCESS"){
 			$tpl->assign("menu_ter","NONE");
 			$tpl->assign("menu_name",$value['modulo']);
 		}
-		$data=$data_class->list_();
+		$data=$data_class->list_parametros(0);
 		if($data["title"]=="SUCCESS"){
+			$upt=$perm_val["content"][0]["upt"];
 			foreach ($data["content"] as $llave => $datos) {
 				$tpl->newBlock("data");
-				$id=$datos['codigo'];				
-				$cadena_acciones='
-				<button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light menu" data-toggle="tooltip" data-placement="top" title="VER" data-menu="'.$var_array_nav["mod"].'" data-mod="'.$var_array_nav["submod"].'" data-ref="'.$var_array_nav["ref"].'" data-subref="'.$var_array_nav["subref"].'" data-acc="EDIT" data-id="'.$id.'"><i class="fas fa-search"></i></button>
-				';
-				$boton_1 ='<button class="btn btn-outline-secondary waves-effect waves-light" data-acc="DWN_1" type="button"><span class="btn-label"><i class="fas fa-download"></i></span> BAJAR DEMO</button>';
+				$id=$datos['codigo'];
+				$cadena_acciones = ($upt==1) ? '<button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light menu" data-toggle="tooltip" data-placement="top" title="VER" data-menu="'.$var_array_nav["mod"].'" data-mod="'.$var_array_nav["submod"].'" data-ref="'.$var_array_nav["ref"].'" data-subref="'.$var_array_nav["subref"].'" data-acc="EDIT" data-id="'.$id.'"><i class="fas fa-search"></i></button>' : '<h4><span class="badge badge-danger">NO POSEE PERMISOS</span></h4>';
+				$boton_1 ='<button class="btn btn-outline-secondary waves-effect waves-light" data-acc="DWN_1" type="button"><span class="btn-label"><i class="fas fa-download"></i></span> BAJAR DEMO</button>';				
 				$tpl->assign("actions",$cadena_acciones);
 				$tpl->assign("codigo",$data["content"][$llave]["codigo"]);
-				$tpl->assign("parametro",$data["content"][$llave]["parametro"]);
-				$campos = array(5,6,10);
-				$valor = (in_array($data["content"][$llave]["codigo"],$campos)) ? numeros($data["content"][$llave]["valor"]) : $data["content"][$llave]["valor"] ;
+				$tpl->assign("parametro",$data["content"][$llave]["descripcion"]);
+				$campos = array(2,16,17,18,19,20,21,22,23,24,25,26);
+				$valor = (!in_array($data["content"][$llave]["codigo"],$campos)) ? numeros($data["content"][$llave]["valor"]) : $data["content"][$llave]["valor"] ;
 				$valor = ($data["content"][$llave]["codigo"]==23) ? $boton_1 : $valor ;
 				$tpl->assign("valor",$valor);
 			}			
-		}
-		$ins=$perm_val["content"][0]["ins"];
-		if($ins==1){
-			$tpl->newBlock("data_new");
-			foreach ($var_array_nav as $key_ => $value_) {
-				$tpl->assign($key_,$value_);
-			}
 		}
 	}
 }

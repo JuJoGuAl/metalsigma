@@ -38,11 +38,6 @@
     <div class="col-12">
       <div class="material-card card">
         <div class="card-body">
-          <div class="button-group">
-              <!-- START BLOCK : data_new -->
-              <button class="btn btn-outline-secondary waves-effect waves-light menu" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="NEW" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> NUEVO</button>
-              <!-- END BLOCK : data_new -->
-          </div>
           <br>
           <div class="table-responsive">
             <table class="table table-bordered table-hover datatables">

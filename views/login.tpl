@@ -9,6 +9,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{ico}">
     <title>MetalSigma - Inicie Seccion</title>
     <link href="./assets/jquery-confirm/css/jquery-confirm.css" rel="stylesheet">
+    <link href="./assets/outdatedbrowser/outdatedbrowser.css" rel="stylesheet">
     <link href="{style}" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -63,7 +64,9 @@
             </div>
         </div>
     </div>
+    <div id="outdated"></div>
     <script src="./assets/jquery/jquery.min.js"></script>
+    <script src="./assets/axios/axios.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="./assets/popper.js/popper.min.js"></script>
     <script src="./assets/bootstrap/js/bootstrap.min.js"></script>
@@ -72,12 +75,13 @@
     <script src="./assets/jquery-confirm/js/jquery-confirm.js"></script>
     <!--DataTable -->
     <script src="./assets/datatables/datatables.js"></script>
+    <script src="./assets/outdatedbrowser/outdatedbrowser.js"></script>
     <script src="{functions}"></script>
     <script>
-    $('[data-toggle="tooltip"]').tooltip();
     $(".preloader").fadeOut();
     $(document).ready(function(){            
-            $("#loginform").submit(function(){                
+            $("#loginform").submit(function(e){
+                e.preventDefault();             
                 clear_log();
                 var username = $('#user').val(), pass = $('#pass').val();
                 if (username==''){
@@ -90,23 +94,27 @@
                     dialog("DEBE DE INGRESAR LA CLAVE","ERROR");
                 }
                 else{
-                    $.ajax({
-                        type: "GET",
-                        url: "./modules/controllers/configuracion/form_usuarios.php",
-                        data: "username=" + username + "&pass=" + pass + "&accion=val_log",
-                        dataType:'json',
-                        success: function(data){
-                            if(data.title=="SUCCESS"){
-                                //document.location.reload();
-                                document.location.href="./";
-                            }else{
-                                dialog(data.content,data.title);
-                            }
-                        },
-                        error: function(x,err,msj){
-                            Modal_error(x,err,msj);
+                    axios.get('./modules/controllers/configuracion/form_usuarios.php',{
+                        params:{
+                            username: username,
+                            pass :pass,
+                            accion: 'val_log'
                         }
-                    });
+                    }).then(function (data) {
+                        let repuesta = data.data
+                        if(repuesta.title=="SUCCESS"){
+                            document.location.href="./";
+                        }else{
+                            dialog(repuesta.content,repuesta.title);
+                        }
+                    }).catch(function (error) {
+                        axios_Error(error);
+                       
+                    });/*
+                    .finally(function () {
+                        // always executed
+                        console.log("finally")
+                    });*/
                 }
                 return false;
             });

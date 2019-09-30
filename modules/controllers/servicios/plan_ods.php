@@ -4,12 +4,11 @@ $perm_val = $perm->val_mod($_SESSION['metalsigma_log'],$_GET['submod']);
 if($perm_val["title"]<>"SUCCESS"){
 	alerta("NO POSEES PERMISO PARA ESTE MODULO","ERROR");
 }else{
+	include_once("./class/functions.php");
 	include_once("./class/class.cotizaciones.php");
 	include_once("./class/class.planificacion.php");
-	include_once("./class/class.parameter.php");
 	$data_class = new cotizaciones;
 	$planificaciones = new planificaciones;
-	$parametros = new parametros();
 	$modulo = $perm->get_module($_GET['submod']);
 	if(Evaluate_Mod($modulo)){
 		$tpl->newBlock("module");
@@ -31,16 +30,15 @@ if($perm_val["title"]<>"SUCCESS"){
 			$tpl->assign("menu_name","PLANIFICACION DE ODS");
 			$tpl->assign("mod_name","ORDENES DE SERVICIO");
 		}
-
-		$param=$parametros->list_all();
-		$colacion = $param["content"][16]["valor"];
-		$inicio = $param["content"][17]["valor"];
-		$fin = $param["content"][18]["valor"];
+		$colacion		=	constant("DUR_COL");
+		$inicio			=	constant("H_INI");
+		$fin			=	constant("H_FIN");
+		$dias_pasado	=	constant("DIAS_PAST");
 
 		$tpl->assign("inicio",$inicio.":00");
 		$tpl->assign("fin",$fin.":00");
-		$tpl->assign("fecha_past",setDate(date("d-m-Y"),"d-m-Y H:i","-P".$param["content"][20]["valor"]."D"));
-		$tpl->assign("fin_cola",setDate($param["content"][18]["valor"],"H:i","PT".setDate("00:".$param["content"][16]["valor"],"i")."M"));
+		$tpl->assign("fecha_past",setDate(date("d-m-Y"),"d-m-Y H:i","-P".$dias_pasado."D"));
+		$tpl->assign("fin_cola",setDate($fin,"H:i","PT".setDate("00:".$colacion,"i")."M"));
 
 		$data=$data_class->list_all($array_cot_fac,"DISTINCT((d.code)) AS code");
 		if($data["title"]=="SUCCESS"){

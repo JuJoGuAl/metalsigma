@@ -11,26 +11,25 @@ class parametros{
 		$this->db = new database($this->table, $this->tId);
 		$this->db->fields = array (
 			array ("system",	"parametro"),
-			array ("public",	"valor"),
+			array ("system",	"descripcion"),
 			array ("system",	"block"),
+			array ("public",	"valor"),
 			array ("public_i",	"crea_user"),
 			array ("public_u",	"mod_user"),
 			array ("system",	"LPAD($this->tId,10,0) AS codigo")
 		);
 	}
-	public function list_(){
+	public function list_parametros($privados=false){
 		$data = array ();
-		$data[0]["row"]="block";
-		$data[0]["operator"]="=";
-		$data[0]["value"]=0;
-		$resultado = false;
+		if($privados!==false){
+			$data[0]["row"]="block";
+			$data[0]["operator"]="=";
+			$data[0]["value"]=$privados;
+		}
 		return $this->db->getRecords(false,$data);
 	}
-	public function list_all(){
-		return $this->db->getRecords();
-	}
 	//OBTENER
-	public function get_($id){
+	public function get_parametro($id){
 		$result=array();
 		$result=$this->db->getRecord($id);
 		if($result["title"]=="SUCCESS"){
@@ -39,8 +38,8 @@ class parametros{
 		return $result;
 	}
 	//ACTUALIZAR
-	public function edit_($id,$data){
-		$data[]=$_SESSION['user_log'];
+	public function edit_parametro($id,$data){
+		$data[]=$_SESSION['metalsigma_log'];
 		return $this->db->updateRecord($id,$data);
 	}
 }

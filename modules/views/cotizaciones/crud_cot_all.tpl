@@ -81,12 +81,13 @@
                   <td>{equipo} {marca} {modelo}<br><span style="font-size: 11px">S/N: {serial}</span></td>
                   <td>{segmento}</td>
                   <td>{crea}</td>
-                  <td align="center"><h3><span class="badge badge-secondary _stats" data-count="{cuentas}" data-cuerpo="{sub_status}">{cuentas}</span></h3></td>
+                  <td align="center"><h3><span class="badge badge-secondary" data-count="{cuentas}" data-id="{codigo}">{cuentas}</span></h3></td>
                   <td>{actions}</td>
                 </tr>
                 <!-- END BLOCK : data -->
               </tbody>
             </table>
+            <div id="sub_cotizaciones" style="display:none;"></div>
           </div>
         </div>
       </div>
@@ -94,15 +95,51 @@
   </div>
 </div>
 <script>
-  jQuery("._stats").each(function(){
-    jQuery(this).popover({
-      title: '<div style="font-size: 12px;">SUB COTIZACIONES: <strong>'+jQuery(this).attr("data-count")+'</strong></div>',
-      content: '<div style="font-size: 12px;">'+jQuery(this).attr("data-cuerpo")+'</div>',
-      trigger: 'hover',
-      placement: 'left',
-      container: 'body',
-      html: true
-    });
+  jQuery(document).mouseup(e => {
+    if (!jQuery('span.badge').is(e.target) // if the target of the click isn't the container...
+    && jQuery('span.badge').has(e.target).length === 0) // ... nor a descendant of the container
+    { jQuery('.popover').popover('dispose'); }
+  });
+  jQuery(document).ready(function(){
+    let call;
+    const once = (config = {}) => {
+      if (call) {
+        call.cancel();
+      }
+      call = axios.CancelToken.source();
+      config.cancelToken = call.token
+      return axios(config);
+    }
+    //jQuery("span.badge").click(function(){
+    jQuery(document).on("click", "span.badge", function(){
+      jQuery('.popover').popover('dispose');
+      code = jQuery(this).data("id");
+      let options = {
+        title: '<div style="font-size: 12px;">SUB COTIZACIONES: <strong>'+jQuery(this).data("count")+'</strong></div>',
+        content: '<div style="font-size: 12px;" class="content-pop">ESPERE...</div>',
+        placement: 'left',
+        container: 'body',
+        html: true
+      }
+      jQuery(this).popover(options)
+      jQuery(this).popover("show");
+      once({
+        method: "post",
+        url: "./modules/controllers/ajax.php",
+        data: { accion: 'get_cot_all_childs', code: code, mod: 'crud_cot_all' }
+      }).then(response => {
+        let repuesta = response.data
+        if(repuesta.title=="SUCCESS"){
+          let contenido = repuesta.content; texto = "";
+          contenido.forEach(function(element){
+            texto = texto + element.correlativo+": "+element.estatus_+"<br>";
+          });
+          jQuery(".content-pop").html(texto);
+        }else{
+            dialog(repuesta.content,repuesta.title);
+        }
+      }).catch(error => {});
+    })
   });
   jQuery('.filtros').change(function(){
     let sta = new Array();
@@ -119,7 +156,7 @@
         if(data.title=="SUCCESS"){
           jQuery(data.content).each(function(index,value){
             let equi_ = value.equipo+' '+value.marca+' '+value.modelo+'<br><span style="font-size: 11px">S/N: '+value.serial+'</span>';
-            let stat_ = '<h3><span class="badge badge-secondary _stats" data-count="'+value.cuentas+'" data-cuerpo="'+value.sub_status+'">'+value.cuentas+'</span></h3>';
+            let stat_ = '<h3><span class="badge badge-secondary" data-count="'+value.cuentas+'" data-id="'+value.codigo+'">'+value.cuentas+'</span></h3>';
             var rowNode = table.row.add([
               value.codigo,
               value.code,
@@ -131,17 +168,7 @@
               value.boton
             ]).draw().node();
             jQuery(rowNode).find("td:eq(6)").attr("align","center");
-            jQuery(rowNode).addClass(value.class);
-          });
-          jQuery("._stats").each(function(){
-            jQuery(this).popover({
-              title: '<div style="font-size: 12px;">SUB COTIZACIONES: <strong>'+jQuery(this).attr("data-count")+'</strong></div>',
-              content: '<div style="font-size: 12px;">'+jQuery(this).attr("data-cuerpo")+'</div>',
-              trigger: 'hover',
-              placement: 'left',
-              container: 'body',
-              html: true
-            });
+            //jQuery(rowNode).addClass(value.class);
           });
         }else if(data.content==-1){
           document.location.href="./?error=1";
