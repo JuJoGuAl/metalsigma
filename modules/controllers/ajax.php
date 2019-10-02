@@ -1234,7 +1234,10 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$response["content"]=$data["content"];
 			}
 		}else if ($accion=="get_cot_all_childs"){
-			$data=$cotizaciones->list_sub($_code,$array_cot_all);
+			$arr = json_decode($_stat);
+			$fstat = ($arr[0]=="-1") ? false : json_decode($_stat);
+			$ftipo = ($_tipo=="-1") ? false : $_tipo;
+			$data=$cotizaciones->list_sub($_code,$fstat,false,false,false,false,false,false,false,false,$ftipo);
 			if($data["title"]=="SUCCESS"){
 				$response["title"]="SUCCESS";
 				foreach ($data["content"] as $key => $value){

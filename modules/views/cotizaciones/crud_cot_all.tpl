@@ -59,7 +59,7 @@
           </div>
           <br>
           <div class="table-responsive">
-            <table class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
+            <table id="cot_all" class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
               <thead>
                 <tr>
                   <th>COTIZACION</th>
@@ -110,8 +110,7 @@
       config.cancelToken = call.token
       return axios(config);
     }
-    //jQuery("span.badge").click(function(){
-    jQuery(document).on("click", "span.badge", function(){
+    jQuery("#cot_all").on("click", "span.badge", function(){
       jQuery('.popover').popover('dispose');
       code = jQuery(this).data("id");
       let options = {
@@ -123,10 +122,12 @@
       }
       jQuery(this).popover(options)
       jQuery(this).popover("show");
+      let sta = new Array();
+      sta.push(jQuery("#festatus").val());
       once({
         method: "post",
         url: "./modules/controllers/ajax.php",
-        data: { accion: 'get_cot_all_childs', code: code, mod: 'crud_cot_all' }
+        data: { accion: 'get_cot_all_childs', code: code, mod: 'crud_cot_all', stat: JSON.stringify(sta), tipo: jQuery("#ftipo").val() }
       }).then(response => {
         let repuesta = response.data
         if(repuesta.title=="SUCCESS"){
