@@ -519,7 +519,7 @@
       }
     });
   },200);
-  jQuery('button').on('click', function(){
+  jQuery('#form_').on('click', 'button', function(){
     submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc"), assoc_id = jQuery(this).attr("data-id");
     if(acc=="SAVE" || acc=="PROC"){
       if(count_row("table_det_cot","COMPONENTE")){

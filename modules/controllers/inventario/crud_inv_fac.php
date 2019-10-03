@@ -45,7 +45,6 @@ if($perm_val["title"]<>"SUCCESS"){
 				';
 				foreach ($data["content"][$llave] as $key => $value){
 					$value = ($key=="code") ? formatRut($value) : $value ;
-					$value = (in_array($key, $array_numbers)) ? numeros($value,2) : $value ;
 					$tpl->assign($key,$value);
 				}
 				$tpl->assign("actions",$cadena_acciones);

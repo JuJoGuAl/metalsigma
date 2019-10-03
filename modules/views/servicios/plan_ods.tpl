@@ -108,7 +108,6 @@
   ];
   !function($) {
     "use strict";
-
     var CalendarApp = function() {
       this.$calendar = $('#calendar'),
       this.$event = ('#calendar-events div.calendar-events'),
@@ -166,9 +165,9 @@
       this.enableDrag();
       var $this = this;
       $this.$calendarObj = $this.$calendar.fullCalendar({
-        slotDuration: '00:15:00',
+        slotDuration: '00:30:00',
         minTime: '{inicio}',
-        maxTime: '{fin}',
+        maxTime:  moment('2010-10-01 {fin}').add(1,'hours').format('HH:mm'),
         defaultView: 'month',
         handleWindowResize: true,
         header:{

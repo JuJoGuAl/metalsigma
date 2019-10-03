@@ -670,5 +670,35 @@ class compras{
 		$data[1]["value"]=$ods;
 		return $this->db10->getRecords(false,$data);
 	}
+	// ODC POR ARRAY (CAB Y DET)
+	public function get_odc_full($odc=false){
+		$data = array (); $count=-1; $resultado=array();
+		if($odc){
+			$count++;
+			$data[$count]["row"]="oc.corden";
+			$data[$count]["operator"]="IN";
+			$data[$count]["value"]=$odc;
+		}
+		$result=$this->db5->getRecords(false,$data,"oc.corden");
+		if($result["title"]=="SUCCESS"){
+			$resultado["title"]="SUCCESS";
+			foreach ($result["content"] as $key => $value) {
+				$data[0]["row"]="ocd.corden";
+				$data[0]["operator"]="=";
+				$data[0]["value"]=$result["content"][$key]["codigo"];
+				$result1 = $this->db6->getRecords(false,$data);
+				//print_r($result);
+				if($result1["title"]=="SUCCESS"){
+					$result["content"][$key]["dets"]=$result1["content"];
+				}else{
+					$result["content"][$key]["dets"]=NULL;
+				}
+			}
+			$resultado["content"]=$result["content"];
+		}else{
+			$resultado = $result;
+		}
+		return $resultado;
+	}
 }
 ?>

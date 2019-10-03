@@ -22,7 +22,7 @@
         <div class="card-body">
           <br>
           <div class="table-responsive">
-            <table class="table table-bordered table-hover datatables">
+            <table class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
               <thead>
                 <tr>
                   <th>ODC</th>
@@ -45,7 +45,7 @@
                   <td>{data}</td>
                   <td>{fecha_orden}</td>
                   <td>{articulos}</td>
-                  <td>{monto_total}</td>
+                  <td class="number_cal">{monto_total}</td>
                   <td>{ESTATUS}</td>
                   <td>{actions}</td>
                 </tr>

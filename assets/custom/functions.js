@@ -85,7 +85,7 @@ function SetCalendar(){
 }
 /** Rastreo el comportamiento de todos los botones (Enfasis en Dinamicos)
 */
-jQuery(document).on("click", "button", function(){
+jQuery(document).on("click", "#table_det_cot button", function(){
   submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc");
   if(acc=="search_componente"){
     codec = (jQuery(this).closest('td').parent()[0].sectionRowIndex), cpar=jQuery('#table_det_cot tbody tr:eq('+codec+') td:eq(1) input').val();
@@ -171,7 +171,7 @@ function GetModule(mod,submod,ref,subref,acc,id){
                     if(acc!="NEW" && acc!="EDIT"){
                         let table = jQuery(".datatables");
                         table.DataTable({
-                            "order" : table.is("[data-dt_order]") ? (table.data("dt_order") == false ? [] : table.data("dt_order")) : [[0, 'asc']],
+                            "order" : table.is("[data-dt_order]") ? (table.data("dt_order") == false ? [] : table.data("dt_order")) : [[0, 'desc']],
                             "pageLength" : table.is("[data-dt_page_lenght]") ? table.data("dt_page_lenght") : 10,
                         });
                     }
@@ -580,6 +580,7 @@ function modal_search(_title,_data,_type,_new=false,_sub=false){
                     jQuery(modal+" #add_new").hide();
                 }
                 jQuery(modal).css("z-index","2000");
+                if(acc=="add_odc_nte_pro"){ jQuery(modal+" #modal_ok").show(); }else{ jQuery(modal+" #modal_ok").hide(); }
                 jQuery(modal).modal({show:true,backdrop: 'static',keyboard: false});
                 jQuery(".pop").each(function(){
                     jQuery(this).parents("td").popover({
@@ -596,8 +597,10 @@ function modal_search(_title,_data,_type,_new=false,_sub=false){
                 jQuery(".preloader").fadeOut();
                 //Coloca en verde la fila seleccionada, luego cierra el Modal
                 jQuery(modal+" .datatables tbody").on( 'click', 'tr', function (){
-                    jQuery(this).addClass('seleccionado');
-                    jQuery(modal).modal('hide');
+                    if(acc!="add_odc_nte_pro"){
+                        jQuery(this).addClass('seleccionado');
+                        jQuery(modal).modal('hide');
+                    }
                 });
             }
         },
@@ -607,8 +610,9 @@ function modal_search(_title,_data,_type,_new=false,_sub=false){
         }
     });
 }
-/** Analiza el MODAL cerrado para tomar acciones
-*/
+/**
+ * ANALIZA EL MODAL CERRADO PARA TOMAR ACCIONES, EN FUNCION A LA ACCION
+ */
 jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
     if (jQuery(this).find('.datatables tbody tr').hasClass('seleccionado')) {
         table = jQuery(this).find(".datatables tbody tr.seleccionado");
@@ -685,6 +689,14 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
             jQuery("#direccion").val(dir);
             jQuery("#table_odc_nte tbody").empty();
             jQuery("#table_det_arts_nte tbody").empty();
+            if (submod=="CRUD_INV_NTE"){
+                acc="add_odc_nte_pro";
+                let non_det = new Array();
+                jQuery('#table_odc tbody tr td input[id^="corden"]').each(function(row, tr){
+                    non_det.push(jQuery(this).val());
+                });
+                modal_search("SELECCIONE UNA ODC A AGREGAR",'accion='+acc+'&mod='+submod+'&prov='+jQuery("#cproveedor").val()+'&not='+JSON.stringify(non_det)+'&cursor=on','POST',false,false);
+            }
         }else if(acc=="search_cliente"){
             let rut=table.find('._rut').text(), dir=table.find('._dir').val(), cre=table.find('._cre').val();
             let pag=table.find('._pag').val(), desc=table.find('._desc').val();
@@ -823,7 +835,7 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                         <td>`+cab.data+`</td>
                         <td>`+cab.fecha_orden+`</td>
                         <td>`+cab.articulos+`</td>
-                        <td>`+cab.monto_total+`</td>
+                        <td class="number_cal">`+cab.monto_total+`</td>
                         <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
                         </tr>`;
 
@@ -835,7 +847,10 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                                 <input name="codc[]" id="codc[`+count+`]" type="hidden" value="`+value.origen+`">
                                 <input name="codc_det[]" id="codc_det[`+count+`]" type="hidden" value="`+value.codigo+`">
                                 <input name="carticulo[]" id="carticulo[`+count+`]" type="hidden" value="`+value.codigo_art+`">
-                                <input name="cmov_det[]" id="cmov_det[`+count+`]" type="hidden" value="0">`;
+                                <input name="cmov_det[]" id="cmov_det[`+count+`]" type="hidden" value="0">
+                                <input name="costo[]" id="costo[`+count+`]" type="hidden" value="`+value.costou+`">
+                                <input name="imp_p[]" id="imp_p[`+count+`]" type="hidden" value="`+value.imp_p+`">
+                                `;
                                 if (submod=="CRUD_INV_FAC"){
                                   tr_det+=`
                                   <input name="cnte[]" id="cnte[`+count+`]" type="hidden" value="0">
@@ -854,8 +869,8 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                                 }
                                 tr_det+=`
                             </td>
-                            <td><input name="costo[]" id="costo[`+count+`]" type="hidden" value="`+value.costou+`">`+value.costou+`</td>
-                            <td><input name="imp_p[]" id="imp_p[`+count+`]" type="hidden" value="`+value.imp_p+`">`+value.imp_p+`</td>
+                            <td class="number_cal">`+value.costou+`</td>
+                            <td>`+value.imp_p+`</td>
                             <td>`+value.costot+`</td>
                             <td>`;
                                 if (submod=="CRUD_INV_FAC"){
@@ -881,7 +896,7 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                                     <td>`+cab.data+`</td>
                                     <td>`+mov[0].fecha_mov+`</td>
                                     <td>`+mov[0].articulos+`</td>
-                                    <td>`+mov[0].costot+`</td>
+                                    <td class="number_cal">`+mov[0].costot+`</td>
                                     <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
                                     </tr>`;
                                     jQuery("#"+tbl_nte+" tbody").append(tr_nte);
@@ -895,6 +910,8 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                                             <input name="cmov_det[]" id="cmov_det[`+count+`]" type="hidden" value="0">
                                             <input name="cnte[]" id="cnte[`+count+`]" type="hidden" value="`+value.codigo_cabecera+`">
                                             <input name="cnte_det[]" id="cnte_det[`+count+`]" type="hidden" value="`+value.codigo+`">
+                                            <input name="costo[]" id="costo[`+count+`]" type="hidden" value="`+value.costou+`">
+                                            <input name="imp_p[]" id="imp_p[`+count+`]" type="hidden" value="`+value.imp_p+`">
                                             `+value.codigo2+`
                                         </td>
                                         <td>`+value.articulo+`</td>
@@ -902,8 +919,8 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                                             `+value.cant+`
                                             <input name="cant[]" id="cant[`+count+`]" type="hidden" value="`+value.cant+`">
                                         </td>
-                                        <td><input name="costo[]" id="costo[`+count+`]" type="hidden" value="`+value.costou+`">`+value.costou+`</td>
-                                        <td><input name="imp_p[]" id="imp_p[`+count+`]" type="hidden" value="`+value.imp_p+`">`+value.imp_p+`</td>
+                                        <td class="number_cal">`+value.costou+`</td>
+                                        <td>`+value.imp_p+`</td>
                                         <td>`+value.costot+`</td>
                                         <td>NTE_`+mov[0].codigo_movimiento+`</td>
                                         </tr>`;
@@ -917,6 +934,7 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                         }else{
                             cal_nte();
                         }
+                        jQuery(".number_cal").formatCurrency();
                         jQuery(".preloader").fadeOut();
                     }else{
                         jQuery(".preloader").fadeOut();
@@ -1661,7 +1679,77 @@ jQuery(document).on("change", "#fecha1", function (e){
       }
     });
   });
-
+jQuery("#Modal_").on("click", '#add_odc_nte_pro_tbl tbody tr', function (e){
+    element = jQuery(this).find('input[type="checkbox"]');
+    jQuery(element).prop("checked",!jQuery(element).prop("checked"));
+    if(element==true){
+        jQuery(this).addClass("active");
+    }else{
+        jQuery(this).removeClass("active");
+    }
+});
+/**
+ * ANALIZA LA ACCION aceptar DEL MODAL PARA TOMAR ACCIONES
+ */
+jQuery("#Modal_").on("click", '#modal_ok', function (){
+    if(acc=="add_odc_nte_pro"){
+        if(checkbox("odcs_","UNA ORDEN DE COMPRA!")){
+          jQuery(".preloader").fadeIn();
+          jQuery("#table_odc tbody").empty();
+          jQuery("#table_art tbody").empty();
+          let odcs = new Array();
+          jQuery('input[name="odcs_[]"]:checked').each(function(){
+              odcs.push(jQuery(this).val());
+          });
+          axios.post('./modules/controllers/ajax.php',{
+            mod: 'CRUD_INV_NTE',
+            accion: 'get_odc_full',
+            odc: JSON.stringify(odcs)
+          }).then(function (response){
+            let repuesta = response.data
+            if(repuesta.title=="SUCCESS"){
+              jQuery(repuesta.content).each(function(index,value){
+                count = index+1;
+                tr_cab=`<tr>
+                <td><input name="corden[]" id="corden[`+count+`]" type="hidden" value="`+value.codigo+`">`+value.codigo+`</td>
+                <td>`+value.data+`</td>
+                <td>`+value.fecha_orden+`</td>
+                <td>`+value.articulos+`</td>
+                <td class="number_cal">`+value.monto_total+`</td>
+                <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
+                </tr>`;
+                jQuery(value.dets).each(function(index1,value1){
+                    let count = (jQuery("#table_art tbody tr").length)+1;
+                    tr_det=`<tr>
+                    <td>
+                        <input name="codc[]" id="codc[`+count+`]" type="hidden" value="`+value1.origen+`">
+                        <input name="codc_det[]" id="codc_det[`+count+`]" type="hidden" value="`+value1.codigo+`">
+                        <input name="carticulo[]" id="carticulo[`+count+`]" type="hidden" value="`+value1.codigo_art+`">
+                        <input name="cmov_det[]" id="cmov_det[`+count+`]" type="hidden" value="0">
+                        <input name="costo[]" id="costo[`+count+`]" type="hidden" value="`+value1.costou+`">
+                        <input name="imp_p[]" id="imp_p[`+count+`]" type="hidden" value="`+value1.imp_p+`">
+                        `;
+                        tr_det+=value1.codigo2+`
+                    </td>
+                    <td>`+value1.articulo+`</td>
+                    <td><input name="cant[]" id="cant[`+count+`]" type="text" style="width: 80px;" class="form-control cant numeric ctrl" value="`+value1.cant_rest+`"></td>
+                    <td class="number_cal">`+value1.costou+`</td>
+                    <td>`+value1.imp_p+`</td>
+                    <td>`+value1.costot+`</td>
+                    <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td></tr>`;
+                    jQuery("#table_art tbody").append(tr_det);
+                });
+                jQuery("#table_odc tbody").append(tr_cab);
+              });
+            }else{
+                dialog(repuesta.content,repuesta.title);
+            }
+          }).catch(function (error){
+            axios_Error(error);
+          }).finally(function (){ jQuery(".number_cal").formatCurrency(); jQuery("#Modal_").modal('hide'); jQuery(".preloader").fadeOut(); });
+        }
+    }
+});
 /** Obtiene los parametros por URL
 */
 var getUrlParameter = function getUrlParameter(sParam) {

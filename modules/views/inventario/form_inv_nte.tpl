@@ -110,7 +110,7 @@
                             <td>{data}</td>
                             <td>{fecha_orden}</td>
                             <td>{solicitados}</td>
-                            <td>{monto_total}</td>
+                            <td class="number_cal">{monto_total}</td>
                             <td>{actions}</td>
                           </tr>
                           <!-- END BLOCK : det_odc -->
@@ -147,14 +147,16 @@
                                 <input name="codc_det[]" id="codc_det[{count}]" type="hidden" value="{corden_det}">
                                 <input name="carticulo[]" id="carticulo[{count}]" type="hidden" value="{codigo_articulo}">
                                 <input name="cmov_det[]" id="cmov_det[{count}]" type="hidden" value="{codigo}">
+                                <input name="costo[]" id="costo[{count}]" type="hidden" value="{costou}">
+                                <input name="imp_p[]" id="imp_p[{count}]" type="hidden" value="{imp_p}">
                                 {codigo2}
                               </td>
                               <td>{articulo}</td>
                               <td>
                                 <input name="cant[]" id="cant[{count}]" type="text" style="width: 80px;" class="form-control cant numeric ctrl" value="{cant}">
                               </td>
-                              <td><input name="costo[]" id="costo[{count}]" type="hidden" value="{costou}">{costou}</td>
-                              <td><input name="imp_p[]" id="imp_p[{count}]" type="hidden" value="{imp_p}">{imp_p}</td>
+                              <td class="number_cal">{costou}</td>
+                              <td>{imp_p}</td>
                               <td>{costot} $</td>
                               <td>{actions}</td>
                             </tr>
@@ -218,7 +220,7 @@
     let cant = precio = bruto = impp = impm = total = all_sub = all_desc = all_total = 0, valido=true;
     if(jQuery('#table_art tbody tr').length>0){
       jQuery('#table_art tbody tr').each(function(index){
-        cant = parseFloat(jQuery(this).find('input[id^="cant"]').val()), precio = parseFloat(jQuery(this).find('td:eq(3)').text()), impp = parseFloat(jQuery(this).find('td:eq(4)').text()), art = jQuery(this).find('td:eq(1)').text();
+        cant = parseFloat(jQuery(this).find('input[id^="cant"]').val()), precio = parseFloat(jQuery(this).find('input[id^="costo"]').val()), impp = parseFloat(jQuery(this).find('input[id^="imp_p"]').val()), art = jQuery(this).find('td:eq(1)').text();
         if(cant<=0){
           dialog("LA CANTIDAD DEL ARTICULO <strong>"+art+"</strong> DEBE SER MAYOR A 0","ERROR");
           valido = valido && false;
@@ -241,7 +243,7 @@
   }
   jQuery(document).ready(function(){
     cal_nte();
-    jQuery('button').on('click', function(){
+    jQuery('#form_ button').on('click', function(){
       submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc");
       if(acc=="SAVE" || acc=="PROC"){
         if(validate("rut")){

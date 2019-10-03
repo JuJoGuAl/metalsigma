@@ -74,7 +74,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 			$titles='<tr><th>CODIGO</th><th>CODE</th><th>DESCRIPCION</th><th>CLASIFICACION</th></tr>';
 			break;
 			case 'search_proveedor':
-			$titles='<tr><th>CODIGO</th><th>CODE</th><th>PROVEEDOR</th></tr>';
+			$titles='<tr><th>CODIGO</th><th style="width: 90px">CODE</th><th>PROVEEDOR</th></tr>';
 			break;
 			case 'search_almacen_compra':
 			case 'search_almacen':
@@ -99,6 +99,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 			$titles='<tr><th>CODIGO</th><th>RUT</th><th>PROVEEDOR</th><th>FECHA</th><th>SERVS.</th><th>MONTO</th></tr>';
 			break;
 			case 'add_odc':
+			case 'add_odc_nte_pro';
 			$titles='<tr><th>CODIGO</th><th>PROVEEDOR</th><th>ART. PEND</th><th>MONTO ODC</th></tr>';
 			break;
 			case 'add_nte':
@@ -301,7 +302,9 @@ if (!isset($_SESSION['metalsigma_log'])){
 				}
 			}
 		}else if($accion=="search_proveedor"){
-			$data=$proveedores->list_p(1);
+			//$data=$compras->list_odc("PRO",true,$_POST["prov"],json_decode($_POST["not"]));
+			$withODC = ($modulo=="CRUD_INV_NTE") ? true : false ;
+			$data=$proveedores->list_p(1,$withODC);
 			if($data["title"]=="SUCCESS"){
 				foreach ($data["content"] as $key => $value){
 					$table.='<tr><td class="_id">'.$value["codigo"].'</td><td class="_rut">'.formatRut($value["code"]).'</td><td class="_nom">'.$value['data'].'<input class="_dir" type="hidden" value="'.$value["direccion"].'"></td></tr>';
@@ -469,7 +472,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$response["title"]="ERROR";
 				$response["content"]="NO EXISTE INFORMACION PARA MOSTRAR";
 			}
-		}elseif($accion=="add_odc"){
+		}elseif($accion=="add_odc" || $accion=="add_odc_nte_pro"){
 			if(isset($_POST['code'])){
 				$data=$compras->get_odc($_POST['code']);
 				if($data["title"]=="SUCCESS"){
@@ -486,7 +489,9 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$data=$compras->list_odc("PRO",true,$_POST["prov"],json_decode($_POST["not"]));
 				if($data["title"]=="SUCCESS"){
 					foreach ($data["content"] as $key => $value){
-						$table.='<tr><td class="_id">'.$value["codigo"].'</td><td class="_nom">'.$value['data'].'</td><td class="_art">'.($value['pendientes']).'</td><td class="_mon">'.($value['monto_total']).'</td></tr>';
+						$count = $key+1;
+						$codes = (isset($_cursor)) ? '<td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="custom_'.$count.'" value="'.$value['codigo'].'" name="odcs_[]"><label class="custom-control-label" for="custom_'.$count.'">'.$value['codigo'].'</label></div></td>' : '<td class="_id">'.$value["codigo"].'</td>';
+						$table.='<tr>'.$codes.'<td class="_nom">'.$value['data'].'</td><td class="_art">'.($value['pendientes']).'</td><td class="_mon">'.($value['monto_total']).'</td></tr>';
 					}
 					$table.="</tbody></table></div>";
 					$response=$table;
@@ -1243,6 +1248,19 @@ if (!isset($_SESSION['metalsigma_log'])){
 				foreach ($data["content"] as $key => $value){
 					$data["content"][$key]["estatus_"]=$array_status[$value["status"]];
 				}
+				$response["content"]=$data["content"];
+			}
+		}else if($accion=="get_odc_full"){
+			$data=$compras->get_odc_full(json_decode($_odc));
+			//print_r($data);
+			if($data["title"]=="SUCCESS"){
+				$response["title"]="SUCCESS";
+				$response["content"]=$data["content"];
+			}else if($data["title"]=="WARNING"){
+				$response["title"]="ERROR";
+				$response["content"]="NO EXISTEN DATOS PARA LAS ODCS SELECCIONADAS";
+			}else{
+				$response["title"]="ERROR";
 				$response["content"]=$data["content"];
 			}
 		}

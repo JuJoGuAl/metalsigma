@@ -27,7 +27,7 @@
           </div>
           <br>
           <div class="table-responsive">
-            <table class="table table-bordered table-hover datatables">
+            <table class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
               <thead>
                 <tr>
                   <th>CODIGO</th>
@@ -48,7 +48,7 @@
                   <td>{data}</td>
                   <td>{fecha}</td>
                   <td>{servicios}</td>
-                  <td>{monto_total}</td>
+                  <td class="number_cal">{monto_total}</td>
                   <td><span class="{class}" data-status="{stas_}" data-cuerpo="{cuerpo}">{ESTATUS}</span></td>
                   <td>{actions}</td>
                 </tr>
