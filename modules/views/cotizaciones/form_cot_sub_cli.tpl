@@ -372,7 +372,7 @@
       }
     });
   },200);
-  jQuery('button').on('click', function(){
+  jQuery('#form_ button').click(function(){
     submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc"), assoc_id = jQuery(this).attr("data-id");
     if(acc=="PROC"){ jQuery("#accion").val("proc"); }
     if(acc=="CANC"){ jQuery("#accion").val("canc"); }

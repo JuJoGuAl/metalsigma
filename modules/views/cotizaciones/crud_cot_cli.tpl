@@ -1,16 +1,4 @@
 <!-- START BLOCK : module -->
-<script>
-  jQuery("._stats").each(function(){
-    jQuery(this).popover({
-      title: '<div style="font-size: 12px;">SUB COTIZACIONES: <strong>'+jQuery(this).attr("data-count")+'</strong></div>',
-      content: '<div style="font-size: 12px;">'+jQuery(this).attr("data-cuerpo")+'</div>',
-      trigger: 'hover',
-      placement: 'left',
-      container: 'body',
-      html: true
-    });
-  });
-</script>
 <div class="page-breadcrumb bg-white">
     <div class="row">
         <div class="col-lg-3 col-md-4 col-xs-12 align-self-center">
@@ -33,7 +21,7 @@
       <div class="material-card card">
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
+            <table id="cot_all" class="table table-bordered table-hover datatables">
               <thead>
                 <tr>
                   <th>COTIZACION</th>
@@ -55,7 +43,7 @@
                   <td>{equipo} {marca} {modelo}<br><span style="font-size: 11px">S/N: {serial}</span></td>
                   <td>{segmento}</td>
                   <td>{crea}</td>
-                  <td align="center"><h3><span class="badge badge-secondary _stats" data-count="{cuentas}" data-cuerpo="{sub_status}">{cuentas}</span></h3></td>
+                  <td align="center"><h3><span class="badge badge-secondary" data-count="{cuentas}" data-id="{codigo}">{cuentas}</span></h3></td>
                   <td>{actions}</td>
                 </tr>
                 <!-- END BLOCK : data -->
@@ -67,4 +55,52 @@
     </div>
   </div>
 </div>
+<script>
+  jQuery(document).mouseup(e => {
+    if (!jQuery('span.badge').is(e.target) // if the target of the click isn't the container...
+    && jQuery('span.badge').has(e.target).length === 0) // ... nor a descendant of the container
+    { jQuery('.popover').popover('dispose'); }
+  });
+  jQuery(document).ready(function(){
+    let call;
+    const once = (config = {}) => {
+      if (call) {
+        call.cancel();
+      }
+      call = axios.CancelToken.source();
+      config.cancelToken = call.token
+      return axios(config);
+    }
+    jQuery("#cot_all").on("click", "span.badge", function(){
+      jQuery('.popover').popover('dispose');
+      code = jQuery(this).data("id");
+      let options = {
+        title: '<div style="font-size: 12px;">SUB COTIZACIONES: <strong>'+jQuery(this).data("count")+'</strong></div>',
+        content: '<div style="font-size: 12px;" class="content-pop">ESPERE...</div>',
+        placement: 'left',
+        container: 'body',
+        html: true
+      }
+      jQuery(this).popover(options)
+      jQuery(this).popover("show");
+      let sta = Array("-1");
+      once({
+        method: "post",
+        url: "./modules/controllers/ajax.php",
+        data: { accion: 'get_cot_all_childs', code: code, mod: 'crud_cot_cli', stat: JSON.stringify(sta), tipo: -1 }
+      }).then(response => {
+        let repuesta = response.data
+        if(repuesta.title=="SUCCESS"){
+          let contenido = repuesta.content; texto = "";
+          contenido.forEach(function(element){
+            texto = texto + element.correlativo+": "+element.estatus_+"<br>";
+          });
+          jQuery(".content-pop").html(texto);
+        }else{
+            dialog(repuesta.content,repuesta.title);
+        }
+      }).catch(error => { axios_Error(error); });
+    })
+  });
+</script>
 <!-- END BLOCK : module -->

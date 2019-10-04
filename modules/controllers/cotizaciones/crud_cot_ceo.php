@@ -40,23 +40,6 @@ if($perm_val["title"]<>"SUCCESS"){
 					$tpl->assign($key,$value);
 				}
 				$tpl->assign("actions",$cadena_acciones);
-
-				$detalles=$data_class->list_sub($datos['codigo'],$array_cot_adm);
-				$sub_status = "";
-				$contador = 0;
-				$class = "";
-				if($detalles["title"]=="SUCCESS"){
-					foreach ($detalles["content"] as $llave1 => $datos1) {
-						$contador++;
-						$gar = ($datos1["ctipo"]==5) ? " (GARANTIA)" : "" ;
-						$class = ($datos1["ctipo"]==5 && ($datos1["status"]=="PAC")) ? "table-warning" : $class ;
-						$sub_status .= $datos1["correlativo"].": ".$array_status[$datos1["status"]].$gar."<br>";
-					}
-
-				}
-				$tpl->assign("cuentas",$contador);
-				$tpl->assign("sub_status",$sub_status);
-				$tpl->assign("class",$class);
 			}			
 		}
 	}

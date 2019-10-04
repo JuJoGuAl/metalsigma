@@ -83,18 +83,6 @@ function SetCalendar(){
         }
     });
 }
-/** Rastreo el comportamiento de todos los botones (Enfasis en Dinamicos)
-*/
-jQuery("#table_det_cot").on("click", "button", function(){
-  submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc");
-  if(acc=="search_componente"){
-    codec = (jQuery(this).closest('td').parent()[0].sectionRowIndex), cpar=jQuery('#table_det_cot tbody tr:eq('+codec+') td:eq(1) input').val();
-    modal_search("SELECCIONE UN COMPONENTE",'accion='+acc+'&mod='+submod+'&part='+cpar,'POST',false,false);
-  }else if(acc=="search_servicio_propio"){
-    codec = (jQuery(this).closest('td').parent()[0].sectionRowIndex);
-    modal_search("SELECCIONE UN SERVICIO A APLICAR",'accion='+acc+'&mod='+submod,'POST',false,false);
-  }
-});
 /** Todos los inputs con la clase numeric, chequeo su keydown event
 */
 jQuery(document).on("keypress", ".numeric", function(e){
@@ -190,7 +178,7 @@ function GetModule(mod,submod,ref,subref,acc,id){
                     jQuery('.popover').remove();
                     jQuery('[data-toggle="popover"]').popover({ container: "body", trigger: "hover", placement: 'left', html : true });
                     jQuery(".number_cal").formatCurrency();
-                    if(submod!="REP_COTIZACIONES" && submod!="REP_PLAN"){ jQuery(".preloader").fadeOut(); }                    
+                    if(submod!="REP_COTIZACIONES" && submod!="REP_PLAN" && ref!="FORM_COT_SUB_ALL" && ref!="FORM_COT_SUB_TALLER" && ref!="FORM_COT_SUB_CEO"){ jQuery(".preloader").fadeOut(); }                    
                 });
             }
         })
@@ -303,20 +291,24 @@ function Modal_error(x,err,msj){
 */
 function axios_Error(error){
     var response="";
-    if(error.response){
-        if(error.response.status==404){
-            response="LA URL NO EXISTE!";
-        }else if(error.response.status==500){
-            response="ERROR INTERNO DEL SERVIDOR";
-        }else{
-            response="ERROR DESCONOCIDO:<br>"+error.message.toUpperCase();
-        }
+    if(error.message===undefined){
+        //Abortada
     }else{
-        if(error.request){
-            response="ERROR DE CONEXION!<br>VERIFIQUE SU CONEXION!";
+        if(error.response){
+            if(error.response.status==404){
+                response="LA URL NO EXISTE!";
+            }else if(error.response.status==500){
+                response="ERROR INTERNO DEL SERVIDOR";
+            }else{
+                response="ERROR DESCONOCIDO:<br>"+error.message.toUpperCase();
+            }
+        }else{
+            if(error.request){
+                response="ERROR DE CONEXION!<br>VERIFIQUE SU CONEXION!";
+            }
         }
+        dialog(response,"ERROR");
     }
-    dialog(response,"ERROR");
 }
 /** Muestra una notificacion
 * @param _msj: Mensaje a Mostrar

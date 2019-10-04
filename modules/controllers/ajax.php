@@ -707,31 +707,31 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$id=$datos['codigo'];
 					$cadena_acciones='
 					<button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light menu" data-toggle="tooltip" data-placement="top" title="DETALLES" data-menu="SERVICIOS" data-mod="CRUD_ODS" data-ref="CRUD_ODS_SUB" data-subref="NONE" data-acc="MODULO" data-id="'.$id.'"><i class="fas fa-arrow-right"></i></button>';
-					$detalles=$cotizaciones->list_sub($datos['codigo'],$array_ods);
-					$sub_status = "";
-					$contador = 0;
-					$class = "";
-					if($detalles["title"]=="SUCCESS"){
-						foreach ($detalles["content"] as $llave1 => $datos1) {
-							$contador++;
-							$clas_="";
-							if($arr[0]!="-1"){
-								$clas_ .= ($datos1["status"]==$fstat[0]) ? "font-weight-bold" : "" ;
-							}
-							$estatus_=$array_status[$datos1["status"]];
-							if($_POST["tipo"]!="-1"){
-								$estatus_ .= ($datos1["ctipo"]==$_POST["tipo"]) ? " <strong>(".$datos1["tipo"].")</strong>" : "" ;
-							}
-							$class = ($datos1["ctipo"]==5) ? "table-warning" : $class ;
-							$sub_status .= "<span class='".$clas_."'>".$datos1["correlativo"].": ".$estatus_."</span><br>";
-						}
+					// $detalles=$cotizaciones->list_sub($datos['codigo'],$array_ods);
+					// $sub_status = "";
+					// $contador = 0;
+					// $class = "";
+					// if($detalles["title"]=="SUCCESS"){
+					// 	foreach ($detalles["content"] as $llave1 => $datos1) {
+					// 		$contador++;
+					// 		$clas_="";
+					// 		if($arr[0]!="-1"){
+					// 			$clas_ .= ($datos1["status"]==$fstat[0]) ? "font-weight-bold" : "" ;
+					// 		}
+					// 		$estatus_=$array_status[$datos1["status"]];
+					// 		if($_POST["tipo"]!="-1"){
+					// 			$estatus_ .= ($datos1["ctipo"]==$_POST["tipo"]) ? " <strong>(".$datos1["tipo"].")</strong>" : "" ;
+					// 		}
+					// 		$class = ($datos1["ctipo"]==5) ? "table-warning" : $class ;
+					// 		$sub_status .= "<span class='".$clas_."'>".$datos1["correlativo"].": ".$estatus_."</span><br>";
+					// 	}
 
-					}
+					// }
 					$data["content"][$key]["boton"] = $cadena_acciones;
-					$data["content"][$key]["cuentas"] = $contador;
-					$data["content"][$key]["sub_status"] = $sub_status;
-					$data["content"][$key]["code"] = formatRut($datos['code']);
-					$data["content"][$key]["class"] = $class;
+					// $data["content"][$key]["cuentas"] = $contador;
+					// $data["content"][$key]["sub_status"] = $sub_status;
+					// $data["content"][$key]["code"] = formatRut($datos['code']);
+					// $data["content"][$key]["class"] = $class;
 				}
 				$response["content"]=$data["content"];
 			}else{
@@ -1243,6 +1243,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 			$fstat = ($arr[0]=="-1") ? false : json_decode($_stat);
 			$ftipo = ($_tipo=="-1") ? false : $_tipo;
 			$data=$cotizaciones->list_sub($_code,$fstat,false,false,false,false,false,false,false,false,$ftipo);
+			//print_r($data);
 			if($data["title"]=="SUCCESS"){
 				$response["title"]="SUCCESS";
 				foreach ($data["content"] as $key => $value){

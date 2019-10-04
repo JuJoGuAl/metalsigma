@@ -519,7 +519,7 @@
       }
     });
   },200);
-  jQuery('#form_').on('click', 'button', function(){
+  jQuery('#form_ button').click(function(){
     submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc"), assoc_id = jQuery(this).attr("data-id");
     if(acc=="SAVE" || acc=="PROC"){
       if(count_row("table_det_cot","COMPONENTE")){
@@ -634,6 +634,17 @@
   });
   jQuery("#form_").on("blur, focusout, focusin",function(){
     calculos();
+  });
+
+  jQuery("#table_det_cot").on("click", ".pieza, .servicio", function(){
+    submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc");
+    if(acc=="search_componente"){
+      codec = (jQuery(this).closest('td').parent()[0].sectionRowIndex), cpar=jQuery('#table_det_cot tbody tr:eq('+codec+') td:eq(1) input').val();
+      modal_search("SELECCIONE UN COMPONENTE",'accion='+acc+'&mod='+submod+'&part='+cpar,'POST',false,false);
+    }else if(acc=="search_servicio_propio"){
+      codec = (jQuery(this).closest('td').parent()[0].sectionRowIndex);
+      modal_search("SELECCIONE UN SERVICIO A APLICAR",'accion='+acc+'&mod='+submod,'POST',false,false);
+    }
   });
 
   <!-- START BLOCK : val -->

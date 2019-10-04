@@ -59,7 +59,7 @@
           </div>
           <br>
           <div class="table-responsive">
-            <table id="cot_all" class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
+            <table id="cot_all" class="table table-bordered table-hover datatables">
               <thead>
                 <tr>
                   <th>COTIZACION</th>
@@ -139,7 +139,7 @@
         }else{
             dialog(repuesta.content,repuesta.title);
         }
-      }).catch(error => {});
+      }).catch(error => { axios_Error(error); });
     })
   });
   jQuery('.filtros').change(function(){
