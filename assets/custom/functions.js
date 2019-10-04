@@ -85,7 +85,7 @@ function SetCalendar(){
 }
 /** Rastreo el comportamiento de todos los botones (Enfasis en Dinamicos)
 */
-jQuery(document).on("click", "#table_det_cot button", function(){
+jQuery("#table_det_cot").on("click", "button", function(){
   submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc");
   if(acc=="search_componente"){
     codec = (jQuery(this).closest('td').parent()[0].sectionRowIndex), cpar=jQuery('#table_det_cot tbody tr:eq('+codec+') td:eq(1) input').val();
@@ -951,7 +951,7 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
             jQuery.ajax({
                 type: "POST",
                 url: "./modules/controllers/ajax.php",
-                data : 'accion='+acc+'&code='+code+'&mod='+submod,
+                data : 'accion='+acc+'&code='+table.find('.transsa').val()+'&mod='+submod,
                 dataType:'json',
                 success: function(data){
                     if(data.title=="SUCCESS"){
@@ -1691,7 +1691,7 @@ jQuery("#Modal_").on("click", '#add_odc_nte_pro_tbl tbody tr', function (e){
 /**
  * ANALIZA LA ACCION aceptar DEL MODAL PARA TOMAR ACCIONES
  */
-jQuery("#Modal_").on("click", '#modal_ok', function (){
+jQuery("#modal_ok").click(function (){
     if(acc=="add_odc_nte_pro"){
         if(checkbox("odcs_","UNA ORDEN DE COMPRA!")){
           jQuery(".preloader").fadeIn();

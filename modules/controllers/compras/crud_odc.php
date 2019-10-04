@@ -26,7 +26,7 @@ if($perm_val["title"]<>"SUCCESS"){
 			$tpl->assign("menu_name","ORDENES DE COMPRAS");
 			$tpl->assign("mod_name","ORDENES DE COMPRAS");
 		}
-		$data=$data_class->list_odc();
+		$data=$data_class->list_odc(false,false,false,false,-1);
 		//print_r($data);
 		if($data["title"]=="SUCCESS"){
 			foreach ($data["content"] as $llave => $datos) {

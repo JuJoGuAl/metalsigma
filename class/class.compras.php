@@ -488,12 +488,12 @@ class compras{
 			$data[$cont]["operator"]="NOT IN";
 			$data[$cont]["value"]=$non;
 		}
-		if($ods){
+		if($ods===true){
 			$cont++;
 			$data[$cont]["row"]="oc.ods";
 			$data[$cont]["operator"]=">";
 			$data[$cont]["value"]=0;
-		}else{
+		}else if($ods===-1){
 			$cont++;
 			$data[$cont]["row"]="oc.ods";
 			$data[$cont]["operator"]="=";

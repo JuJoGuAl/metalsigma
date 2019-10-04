@@ -137,8 +137,8 @@ class inventario{
 			array ('system',	'DATE_FORMAT(mod_date, "%d/%m/%Y %T") AS mod_date')
 		);
 		//INV_MOVIMIENTOS_LIST
-		$this->table3 = "inv_movimientos im INNER JOIN inv_almacen ia USING (calmacen) LEFT JOIN pro_proveedores pro USING (cproveedor) ";
-		$this->table3 .= "LEFT JOIN data_entes d USING (cdata) ";
+		$this->table3 = "inv_movimientos im INNER JOIN inv_almacen ia ON im.calmacen=ia.calmacen LEFT JOIN pro_proveedores pro ON im.cproveedor=pro.cproveedor ";
+		$this->table3 .= "LEFT JOIN data_entes d ON pro.cdata=d.cdata ";
 		$this->table3 .= "LEFT JOIN data_comuna co ON d.ccomuna=co.ccomuna LEFT JOIN data_provincia pr ON co.cprovincia=pr.cprovincia ";
 		$this->table3 .= "LEFT JOIN data_region r ON pr.cregion=r.cregion LEFT JOIN data_pais p ON r.cpais=p.cpais ";
 		$this->table3 .= "INNER JOIN inv_movimientos_det imd ON (im.cmovimiento_key=imd.cmovimiento_key)";
@@ -835,12 +835,10 @@ class inventario{
 						$this->db6->deleteRecords($data);
 						break;
 					}else{
-						if($tipo=="COM" || $tipo=="NTE"){
-							if($status=="PRO"){
-								array_push($datos1, ($det[2][$i]*-1));
-								array_push($datos1, $_SESSION['metalsigma_log']);
-								$this->db7->updateRecord($det[8][$i],$datos1);
-							}							
+						if($status=="PRO" && ($tipo=="COM" || $tipo=="NTE")){
+							array_push($datos1, ($det[2][$i]*-1));
+							array_push($datos1, $_SESSION['metalsigma_log']);
+							$this->db7->updateRecord($det[8][$i],$datos1);		
 						}
 					}
 				}

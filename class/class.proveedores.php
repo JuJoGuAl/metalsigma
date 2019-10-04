@@ -65,8 +65,10 @@ class proveedores{
 		$this->table2 .= " LEFT JOIN adm_usuarios u1 ON pro.crea_user=u1.cusuario LEFT JOIN nom_trabajadores t1 ON u1.ctrabajador=t1.ctrabajador LEFT JOIN data_entes d1 ON t1.cdata=d1.cdata LEFT JOIN nom_cargos c1 ON t1.ccargo=c1.ccargo";
 		$this->table2 .= " LEFT JOIN adm_usuarios u2 ON pro.mod_user=u2.cusuario LEFT JOIN nom_trabajadores t2 ON u2.ctrabajador=t2.ctrabajador LEFT JOIN data_entes d2 ON t2.cdata=d2.cdata LEFT JOIN nom_cargos c2 ON t2.ccargo=c2.ccargo";
 		//ODC
-		$this->table2 .= " LEFT JOIN com_odc oc USING(cproveedor) LEFT JOIN com_odc_det ocd USING(corden)";
-		$this->table2 .= " LEFT JOIN inv_articulos art USING (carticulo) INNER JOIN inv_clasificacion ic USING (cclasificacion)";
+		$this->table2 .= " LEFT JOIN com_odc oc ON pro.cproveedor=oc.cproveedor AND oc.status IN ('PRO','UTI') LEFT JOIN com_odc_det ocd USING(corden)";
+		$this->table2 .= " LEFT JOIN inv_articulos art USING (carticulo) LEFT JOIN inv_clasificacion ic USING (cclasificacion)";
+		//INV_MOV
+		$this->table2 .= " LEFT JOIN inv_movimientos im ON pro.cproveedor=im.cproveedor AND im.status='PRO' AND im.tipo='NTE' AND im.corigen=0";
 		$this->tId2 = "pro.cproveedor";
 		$this->db2 = new database($this->table2, $this->tId2);
 		$this->db2->fields = array (
@@ -96,6 +98,7 @@ class proveedores{
 			array ('system',	'pa.pago'),			
 			array ('system',	'pro.status'),
 			array ('system',	'SUM(ocd.cant_rest) AS pendientes'),
+			array ('system',	'SUM(im.cmovimiento_key) AS movimientos'),
 			array ('system',	'DATE_FORMAT(pro.crea_date, "%d/%m/%Y %T") AS crea_date'),
 			array ('system',	'DATE_FORMAT(pro.mod_date, "%d/%m/%Y %T") AS mod_date'),
 			array ('system',	"(CASE WHEN pro.crea_user='METALSIGMAUSER' THEN pro.crea_user WHEN u1.ctrabajador=0 THEN u1.nombres ELSE d1.data END) AS crea_user"),
@@ -187,7 +190,7 @@ class proveedores{
 	}
 	/** PROVEEDORES */
 	//LISTAR
-	public function list_p($status=false,$withODC=false){
+	public function list_p($status=false,$withODC=false,$withmov=false){
 		$data = array (); $count=-1;
 		if($status){
 			$count++;
@@ -202,6 +205,8 @@ class proveedores{
 			$data[$count]["value"]=1;
 		}
 		$having = ($withODC) ? "pendientes > 0" : false ;
+		$having .= ($withODC && $withmov) ? " OR " : false ;
+		$having .= ($withmov) ? "movimientos > 0" : false ;
 		return $this->db2->getRecords(false,$data,"pro.cproveedor",false,$having);
 	}
 	//OBTENER

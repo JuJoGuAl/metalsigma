@@ -302,9 +302,9 @@ if (!isset($_SESSION['metalsigma_log'])){
 				}
 			}
 		}else if($accion=="search_proveedor"){
-			//$data=$compras->list_odc("PRO",true,$_POST["prov"],json_decode($_POST["not"]));
-			$withODC = ($modulo=="CRUD_INV_NTE") ? true : false ;
-			$data=$proveedores->list_p(1,$withODC);
+			$withODC = ($modulo=="CRUD_INV_NTE" || $modulo=="CRUD_INV_FAC") ? true : false ;
+			$withNTE = ($modulo=="CRUD_INV_FAC") ? true : false ;
+			$data=$proveedores->list_p(1,$withODC,$withNTE);
 			if($data["title"]=="SUCCESS"){
 				foreach ($data["content"] as $key => $value){
 					$table.='<tr><td class="_id">'.$value["codigo"].'</td><td class="_rut">'.formatRut($value["code"]).'</td><td class="_nom">'.$value['data'].'<input class="_dir" type="hidden" value="'.$value["direccion"].'"></td></tr>';
@@ -516,7 +516,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$data=$inventario->list_mov("NTE",$_POST["alm"],$_POST["prov"],"PRO",json_decode($_POST["not"]),-1);
 				if($data["title"]=="SUCCESS"){
 					foreach ($data["content"] as $key => $value){
-						$table.='<tr><td class="_id">'.$value["codigo_transaccion"].'</td><td class="_nom">'.$value['data'].'</td><td class="_art">'.($value['articulos']).'</td><td class="_mon">'.($value['monto_total']).'</td></tr>';
+						$table.='<tr><td class="_id"><input class="transsa" type="hidden" value="'.$value["codigo"].'">'.$value["codigo_transaccion"].'</td><td class="_nom">'.$value['data'].'</td><td class="_art">'.($value['articulos']).'</td><td class="_mon">'.($value['monto_total']).'</td></tr>';
 					}
 					$table.="</tbody></table></div>";
 					$response=$table;
