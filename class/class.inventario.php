@@ -150,6 +150,8 @@ class inventario{
 		//AUDITORIA
 		$this->table3 .= " LEFT JOIN adm_usuarios u1 ON im.crea_user=u1.cusuario LEFT JOIN nom_trabajadores t1 ON u1.ctrabajador=t1.ctrabajador LEFT JOIN data_entes d1 ON t1.cdata=d1.cdata LEFT JOIN nom_cargos c1 ON t1.ccargo=c1.ccargo";
 		$this->table3 .= " LEFT JOIN adm_usuarios u2 ON im.mod_user=u2.cusuario LEFT JOIN nom_trabajadores t2 ON u2.ctrabajador=t2.ctrabajador LEFT JOIN data_entes d2 ON t2.cdata=d2.cdata LEFT JOIN nom_cargos c2 ON t2.ccargo=c2.ccargo";
+		//ANULACIONES
+		$this->table3 .= " LEFT JOIN inv_movimientos im1 ON im.cmovimiento_key=im1.corigen";
 		$this->tId3 = "im.cmovimiento_key";
 		$this->db3 = new database($this->table3, $this->tId3);
 		$this->db3->fields = array (
@@ -158,6 +160,8 @@ class inventario{
 			array ('system',	"LPAD(pro.cproveedor*1,"._PAD_CEROS_.",'0') AS codigo_proveedor"),
 			array ('system',	"LPAD(ia.calmacen*1,"._PAD_CEROS_.",'0') AS codigo_almacen"),
 			array ('system',	"IF(cs.cordenservicio_sub>0, CONCAT(LPAD(cp.cordenservicio*1,"._PAD_CEROS_.",'0'), '-',cs.cordenservicio_sub*1),'N/A') AS ods_pad"),
+			array ('system',	"IF(im1.corigen>0,im1.corigen,'N/A') AS dev"),
+			array ('system',	"IF(im1.corigen>0,LPAD(im1.cmovimiento*1,"._PAD_CEROS_.",'0'),'N/A') AS cod_dev"),
 			array ('system',	"(d3.code) AS cot_code"),
 			array ('system',	'd3.data AS cot_cliente'),
 			array ('system',	'eq.equipo AS maquina'),
@@ -667,7 +671,7 @@ class inventario{
 	}
 	/** INV_MOVIMIENTOS */
 	//LISTAR
-	public function list_mov($tipo=false,$alm=false,$prov=false,$status=false,$non=false,$orig=false,$in=false){
+	public function list_mov($tipo=false,$alm=false,$prov=false,$status=false,$non=false,$orig=false,$in=false,$dev=false){
 		$data = array ();
 		$cont=-1;
 		if($tipo){
@@ -710,6 +714,13 @@ class inventario{
 			$data[$cont]["row"]="im.corigen";
 			$data[$cont]["operator"]="=";
 			$data[$cont]["value"]=0;
+		}
+		if($dev){
+			$algo=null;
+			$cont++;
+			$data[$cont]["row"]="im1.corigen";
+			$data[$cont]["operator"]="IS";
+			$data[$cont]["value"]=$algo;
 		}
 		//MUESTRA ALMACENES DE USUARIOS QUE NO SEAN ADMINISTRADOR
 		if($in && ($_SESSION['metalsigma_log']!="ADMINISTRADOR")){
@@ -835,10 +846,13 @@ class inventario{
 						$this->db6->deleteRecords($data);
 						break;
 					}else{
-						if($status=="PRO" && ($tipo=="COM" || $tipo=="NTE")){
-							array_push($datos1, ($det[2][$i]*-1));
-							array_push($datos1, $_SESSION['metalsigma_log']);
-							$this->db7->updateRecord($det[8][$i],$datos1);		
+						if($det[8][$i]!="0"){
+							if($status=="PRO" && ($tipo=="COM" || $tipo=="NTE" || $tipo=="DNT")){
+								$mul = ($tipo=="COM" || $tipo=="NTE") ? -1 : 1 ;
+								array_push($datos1, ($det[2][$i]*$mul));
+								array_push($datos1, $_SESSION['metalsigma_log']);
+								$this->db7->updateRecord($det[8][$i],$datos1);		
+							}
 						}
 					}
 				}

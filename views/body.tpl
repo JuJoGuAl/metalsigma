@@ -147,6 +147,7 @@
     <script src="./assets/axios/axios.min.js"></script>
     <script src="./assets/jquery/jquery-ui.min.js"></script>
     <script src="./assets/jquery/jquery.formatCurrency-1.4.0.js"></script>
+    <script src="./assets/jquery/jquery.rut.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="./assets/popper.js/popper.min.js"></script>
     <script src="./assets/bootstrap/js/bootstrap.min.js"></script>
@@ -154,8 +155,6 @@
     <script src="./assets/bootstrap/js/bootstrap-datepicker.js"></script>
     <!-- apps -->
     <script src="./assets/app/app.min.js"></script>
-    <script src="./assets/app/app.init.material.js"></script>
-    <script src="./assets/app/app-style-switcher.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
     <script src="./assets/perfect-scrollbar/perfect-scrollbar.js"></script>
     <!--Wave Effects -->

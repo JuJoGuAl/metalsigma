@@ -134,10 +134,14 @@ $telefono = ($cab['tel_fijo']=="") ? "+56 9 ".$cab['tel_movil'] : "+56 2 ".$cab[
             <td style="width: 50%; text-align: left;">SUB TOTAL: </td>
             <td style="width: 50%; text-align: right;"><strong>$ <?php echo numeros($cab["m_subt"],0); ?></strong></td>
         </tr>
-        <tr>
-            <td style="width: 50%; text-align: left;">DESCUENTOS ( <?php echo numeros($cab["m_descp"],0); ?> %): </td>
-            <td style="width: 50%; text-align: right;"><strong>$ <?php echo numeros($cab["m_desc"],0); ?></strong></td>
-        </tr>
+        <?php
+        if($cab["m_descp"]>0){
+            echo ' <tr>
+            <td style="width: 50%; text-align: left;">DESCUENTOS ( '.numeros($cab["m_descp"],0).'  %): </td>
+            <td style="width: 50%; text-align: right;"><strong>$ '.numeros($cab["m_desc"],0).'</strong></td>
+        </tr>';
+        }
+        ?>
         <tr>
             <td style="width: 50%; text-align: left;">VALOR NETO: </td>
             <td style="width: 50%; text-align: right;"><strong>$ <?php echo numeros($cab["m_neto"],0); ?></strong></td>

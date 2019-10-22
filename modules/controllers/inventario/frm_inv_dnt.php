@@ -1,6 +1,6 @@
 <?php
 $action=(isset($_GET['accion'])?strtolower($_GET['accion']):'');
-if($action=="save_new" || $action=="save_edit" || $action=="proc"){
+if($action=="save_new"){
 	include_once("../../../class/functions.php");
 	include_once("../../../class/class.inventario.php");
 	include_once("../../../class/class.compras.php");
@@ -19,9 +19,100 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 			extract($_GET, EXTR_PREFIX_ALL, "");
 			$datos = $detalles = $det_mov = $det_art = $det_cant = $det_costou = $det_impp = $det_impm = $det_total = $det_odc_det = $det_cnota_det = $det_origen_det = array();
 			$monto_mov = $monto_desc = $monto_total = 0;
-			$status_ = ($action=="proc") ? "PRO" : "PEN";
-			$tipo="NTE";
+			$status_ = "PRO";
+			$tipo="DNT";
+			$data=$data_class->get_mov($_ctransaccion);
+			//print_r($data);
+			if($data["title"]=="SUCCESS"){
+				if($data["det"]){
+					foreach ($data["det"] as $key => $value) {
+						$bruto = $value["cant"]*$value["costou"];
+						$impuesto = ($bruto*$value["imp_p"])/100;
+						$total = $bruto + $impuesto;
+						$monto_mov = $monto_mov + $total;
+						array_push($det_mov, 0);
+						array_push($det_art, $value["codigo_articulo"]);
+						array_push($det_cant, $value["cant"]);
+						array_push($det_costou, $value["costou"]);
+						array_push($det_impp, $value["imp_p"]);
+						array_push($det_impm, $impuesto);
+						array_push($det_total, $total);
+						array_push($det_origen_det, $value["codigo"]);//ORIGEN
+						array_push($det_odc_det, $value["corden_det"]);//ODC
+						array_push($det_cnota_det, 0);//NTE
+
+						//SI TIENE UNA ODC BUSCO SU CANTIDAD RESTANTE
+						if($value["corden_det"]>0){
+							//DETERMINO SI LA ODC EXISTE Y POSEE UNIDADES DISPONIBLE
+							$data1=$data_class1->get_odc_det($value["corden_det"]);
+							//VERIFICO LA DISPONIBILIDAD DE ART
+							$disponible = ($data1["content"]["cant_rest"])*1;
+							$original = ($data1["content"]["cant"])*1;
+							$movimniento = $value["cant"]*1;
+							if($disponible==$original){
+								$response['title']="ERROR";
+								$response["content"]="NO EXISTEN CANTIDADES DISPONIBLES PARA EL ARTICULO: <strong>".$data1["content"]["articulo"]."</strong> EN LA ODC: <strong>".$data1["content"]["origen"]."</strong>";
+								echo json_encode($response);
+								exit();// ME SALGO DEL BUCLE YA QUE NO PROCESARE NADA
+							}else if(($disponible+$movimniento)>$original){
+								$response['title']="ERROR";
+								$response["content"]="LA CANTIDAD A PROCESAR DEL ARTICULO: <strong>".$data1["content"]["articulo"]."</strong> EN LA ODC: <strong>".$data1["content"]["origen"]." ES MAYOR A LA CANTIDAD A SOLICITADA</strong>";
+								echo json_encode($response);
+								exit();// ME SALGO DEL BUCLE YA QUE NO PROCESARE NADA
+							}
+						}
+					}
+					$monto_total=$monto_mov-$monto_desc;
+
+					array_push($datos, date("Y-m-d"));
+					array_push($datos, $data["cab"]["documento"]);
+					array_push($datos, $data["cab"]["codigo_proveedor"]);
+					array_push($datos, date("Y-m-d"));
+					array_push($datos, $data["cab"]["codigo_almacen"]);
+					array_push($datos, 0);//ALMACEN 2
+					array_push($datos, $status_);
+					array_push($datos, $monto_mov);
+					array_push($datos, $monto_desc);
+					array_push($datos, $monto_total);
+					array_push($datos, $data["cab"]["codigo"]);//ORIGEN
+					array_push($datos, $_notas);
+
+					array_push($detalles, $det_mov);
+					array_push($detalles, $det_art);
+					array_push($detalles, $det_cant);
+					array_push($detalles, $det_costou);
+					array_push($detalles, $det_impp);
+					array_push($detalles, $det_impm);
+					array_push($detalles, $det_total);
+					array_push($detalles, $det_origen_det);
+					array_push($detalles, $det_odc_det);
+					array_push($detalles, $det_cnota_det);
+
+					if($action=="save_new"){
+						if($ins!=1){
+							$resultado['title']="ERROR";
+							$resultado["content"]="ACCESO DENEGADO: <strong>NO POSEE PERMISO PARA LA ACCION</strong>";
+						}else{
+							$resultado=$data_class->new_mov($tipo,$datos,$detalles);
+						}
+					}
+
+					$mensaje="GUIA DE DESPACHO ANULADA!";
+					
+					if($resultado["title"]=="SUCCESS"){
+						$response['title']=$resultado["title"];
+						$response["content"]=$mensaje;
+					}else{
+						$response['title']=$resultado["title"];
+						$response["content"]=$resultado["content"];
+					}
+				}
+			}else{
+				$response['title']="ERROR";
+				$response["content"]=$data["content"];
+			}
 			//VERIFICO SI SE UTILIZO DETALLES (EVITO EL ERROR DE ARREGLO VACIO)
+			/*			
 			if(!empty($_GET['carticulo'])){
 				for ($i=0; $i<sizeof($_GET['carticulo']); $i++){
 					$bruto = $_cant[$i]*$_costo[$i];
@@ -122,6 +213,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$response['title']=$resultado["title"];
 				$response["content"]=$resultado["content"];
 			}
+			*/
 		}		
 	}else{
 		$response['title']="INFO";
@@ -145,7 +237,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$var_array_nav=array();
 				$var_array_nav["mod"]=$_GET['mod'];
 				$var_array_nav["submod"]=$_GET['submod'];
-				$var_array_nav["ref"]="FORM_INV_NTE";
+				$var_array_nav["ref"]="FRM_INV_DNT";
 				$var_array_nav["subref"]="NONE";
 
 				foreach ($var_array_nav as $key_ => $value_) {
@@ -156,42 +248,27 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$tpl->assign("menu_pri",$value['menu']);
 				$tpl->assign("menu_sec",$value['modulo']);
 				$tpl->assign("menu_ter","NONE");
-				$tpl->assign("menu_name","RECEPCION DE GUIAS DE DESPACHO");
+				$tpl->assign("menu_name","ANULAR GUIAS DE DESPACHO");
 				$tpl->assign("form_title","TRANSACCION: ");
 			}
-			if($action=="new"){
+			if($action=="modulo"){
 				$tpl->assign("accion",'save_new');
 				$tpl->assign("stats_code","PEN");
 				$tpl->assign("stats_nom","PENDIENTE");
 				$tpl->assign("id_tittle","NUEVA");
 				$tpl->assign("status_color",color_status("PEN","badge"));
 				$tpl->assign("codigo",0);
-				$tpl->assign("fecha_doc",date("d-m-Y"));
-				$tpl->assign("fecha_mov",date("d-m-Y"));
-				$data=$data_class->list_a(1,true,false,false,$almacenes);
-				if($data["title"]=="SUCCESS"){
-					foreach ($data["content"] as $key => $value){
-						$tpl->newBlock("alm_det");
-						foreach ($data["content"][$key] as $key1 => $value1){
-							$tpl->assign($key1,$value1);
-						}
-					}
-				}
 			}elseif($action=="edit"){
 				$tpl->assign("accion",'save_edit');
 				$data=$data_class->get_mov($_GET['id']);
 				if(Evaluate_Mod($data)){
 					$cab=$data["cab"];
 					$det=$data["det"];
+					$tpl->assign("id_tittle",$cab["codigo_transaccion"]);
+					$tpl->assign("status_color",color_status($cab['status'],"badge"));
 					foreach ($cab as $llave => $datos) {
 						$tpl->assign($llave,$datos);
 					}
-					$tpl->assign("id_tittle",$cab["codigo_transaccion"]);
-					if($cab["dev"]!="N/A"){
-						$cab['status']="CAN";
-						$tpl->assign("cancelada","<br>CANCELADA POR: <strong>".$cab["cod_dev"]."</strong>");
-					}
-					$tpl->assign("status_color",color_status($cab['status'],"badge"));
 					if(!empty($array_all)){
 						foreach ($array_all as $llave => $datos){
 							if($llave==$cab["status"]){

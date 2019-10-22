@@ -27,7 +27,7 @@
           </div>
           <br>
           <div class="table-responsive">
-            <table class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
+            <table id="movimientos" class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
               <thead>
                 <tr>
                   <th>CODIGO</th>
@@ -51,7 +51,7 @@
                   <td>{fecha_mov}</td>
                   <td>{articulos}</td>
                   <td class="number_cal">{monto_total}</td>
-                  <td>{ESTATUS}</td>
+                  <td class="{isdev}" data-dev="{cod_dev}">{ESTATUS}</td>
                   <td>{actions}</td>
                 </tr>
                 <!-- END BLOCK : data -->
@@ -63,4 +63,18 @@
     </div>
   </div>
 </div>
+<script>
+  jQuery(document).ready(function(){
+    jQuery("#movimientos .isdev").each(function (){
+      jQuery(this).popover({
+       //title: '<div style="font-size: 12px;">CANCELADA POR: <strong>'+jQuery(this).data("dev")+'</strong></div>',
+        content: '<div style="font-size: 12px;" class="content-pop">CANCELADA POR: <strong>'+jQuery(this).data("dev")+'</strong></div>',
+        trigger: 'hover',
+        placement: 'left',
+        container: 'body',
+        html: true
+      });
+    });
+  });
+</script>
 <!-- END BLOCK : module -->

@@ -513,10 +513,14 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$response["content"]="ERROR AL OBTENER LOS DATOS LA ODC SELECCIONADA";
 				}
 			}else{
-				$data=$inventario->list_mov("NTE",$_POST["alm"],$_POST["prov"],"PRO",json_decode($_POST["not"]),-1);
+				if($modulo=="FRM_INV_DNT"){
+					$data=$inventario->list_mov("NTE",false,false,"PRO",false,-1,false,true);
+				}else{
+					$data=$inventario->list_mov("NTE",$_POST["alm"],$_POST["prov"],"PRO",json_decode($_POST["not"]),-1);
+				}
 				if($data["title"]=="SUCCESS"){
 					foreach ($data["content"] as $key => $value){
-						$table.='<tr><td class="_id"><input class="transsa" type="hidden" value="'.$value["codigo"].'">'.$value["codigo_transaccion"].'</td><td class="_nom">'.$value['data'].'</td><td class="_art">'.($value['articulos']).'</td><td class="_mon">'.($value['monto_total']).'</td></tr>';
+						$table.='<tr><td class="_id"><input class="transsa" type="hidden" value="'.$value["codigo"].'">'.$value["codigo_transaccion"].'</td><td class="_nom">'.$value['data'].'</td><td class="_art">'.($value['articulos']).'</td><td class="_mon number_cal">'.($value['monto_total']).'</td></tr>';
 					}
 					$table.="</tbody></table></div>";
 					$response=$table;

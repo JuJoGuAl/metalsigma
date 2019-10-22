@@ -22,8 +22,12 @@
         <form role="form" name="form_" id="form_" enctype="multipart/form-data">
           <div class="card-body">
             <div class="d-flex no-block align-items-center pb-3">
-              <div>{form_title}<strong>{id_tittle}</strong></div>
-              <div class="ml-auto">ESTATUS: <span class="badge badge-pill ml-auto mr-3 font-medium px-2 py-1 {status_color}">{stats_nom}<input type="hidden" id="stats" name="stats" value="{stats_code}"></span></div>
+              <div>{form_title}<strong>{id_tittle}</strong>{cancelada}</div>
+              <div class="ml-auto">
+                ESTATUS:
+                <span class="badge badge-pill ml-auto mr-3 font-medium px-2 py-1 {status_color}">{stats_nom}</span>
+                <input type="hidden" id="stats" name="stats" value="{stats_code}">
+              </div>
             </div>
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab"><span class="hidden-xs-down">INFO BASICA</span></a> </li>

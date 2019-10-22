@@ -178,7 +178,8 @@ function GetModule(mod,submod,ref,subref,acc,id){
                     jQuery('.popover').remove();
                     jQuery('[data-toggle="popover"]').popover({ container: "body", trigger: "hover", placement: 'left', html : true });
                     jQuery(".number_cal").formatCurrency();
-                    if(submod!="REP_COTIZACIONES" && submod!="REP_PLAN" && ref!="FORM_COT_SUB_ALL" && ref!="FORM_COT_SUB_TALLER" && ref!="FORM_COT_SUB_CEO"){ jQuery(".preloader").fadeOut(); }                    
+                    // OJO ACA DEBO DE HACER ALGO SI ESTAN CERRADAS
+                    if(submod!="REP_COTIZACIONES" && submod!="REP_PLAN"){ jQuery(".preloader").fadeOut(); }                    
                 });
             }
         })
@@ -574,7 +575,8 @@ function modal_search(_title,_data,_type,_new=false,_sub=false){
                 jQuery(modal).css("z-index","2000");
                 if(acc=="add_odc_nte_pro"){ jQuery(modal+" #modal_ok").show(); }else{ jQuery(modal+" #modal_ok").hide(); }
                 jQuery(modal).modal({show:true,backdrop: 'static',keyboard: false});
-                jQuery(".pop").each(function(){
+                jQuery(modal+" .number_cal").formatCurrency();
+                jQuery(modal+" .pop").each(function(){
                     jQuery(this).parents("td").popover({
                         title: '<div style="font-size: 12px;"><strong>'+jQuery(this).attr("data-title")+'</strong></div>',
                         content: '<div style="font-size: 12px;">'+jQuery(this).attr("data-body")+'</div>',
@@ -584,7 +586,7 @@ function modal_search(_title,_data,_type,_new=false,_sub=false){
                         html: true
                     });
                 });
-                jQuery('[data-toggle="tooltip"]').tooltip();                
+                jQuery(modal+' [data-toggle="tooltip"]').tooltip();                
                 jQuery(modal+" .datatables").DataTable();
                 jQuery(".preloader").fadeOut();
                 //Coloca en verde la fila seleccionada, luego cierra el Modal
@@ -948,17 +950,26 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                 success: function(data){
                     if(data.title=="SUCCESS"){
                         cab = data.cab, det = data.det;
-                        tbl_nte="table_nte";
-                        var count = (jQuery("#"+tbl_nte+" tbody tr").length)+1;
-                        tr_nte=`<tr>
-                        <td><input name="cnota[]" id="cnota[`+count+`]" type="hidden" value="`+cab.codigo+`">`+cab.codigo_transaccion+`</td>
-                        <td>`+cab.data+`</td>
-                        <td>`+cab.fecha_mov+`</td>
-                        <td>`+cab.articulos+`</td>
-                        <td>`+cab.monto_total+`</td>
-                        <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
-                        </tr>`;
-                        jQuery("#"+tbl_nte+" tbody").append(tr_nte);
+                        if(submod!="FRM_INV_DNT"){
+                            tbl_nte="table_nte";
+                            var count = (jQuery("#"+tbl_nte+" tbody tr").length)+1;
+                            tr_nte=`<tr>
+                            <td><input name="cnota[]" id="cnota[`+count+`]" type="hidden" value="`+cab.codigo+`">`+cab.codigo_transaccion+`</td>
+                            <td>`+cab.data+`</td>
+                            <td>`+cab.fecha_mov+`</td>
+                            <td>`+cab.articulos+`</td>
+                            <td>`+cab.monto_total+`</td>
+                            <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
+                            </tr>`;
+                            jQuery("#"+tbl_nte+" tbody").append(tr_nte);
+                        }else{
+                            jQuery("#ctransaccion").val(cab.codigo);
+                            jQuery("#transaccion").val(cab.codigo_transaccion);
+                            jQuery("#proveedor").val(jQuery.formatRut(cab.code)+" "+cab.data);
+                            jQuery("#calmacen").val(cab.almacen);
+                            jQuery("#doc").val(cab.documento);
+                            jQuery("#f_doc").val(cab.fecha_doc)
+                        }
                         jQuery.each(det, function(key,value){
                             tbl_det="table_art";
                             var count = (jQuery("#"+tbl_det+" tbody tr").length)+1;
@@ -970,21 +981,28 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                                 <input name="cmov_det[]" id="cmov_det[`+count+`]" type="hidden" value="0">
                                 <input name="cnte[]" id="cnte[`+count+`]" type="hidden" value="`+value.codigo_cabecera+`">
                                 <input name="cnte_det[]" id="cnte_det[`+count+`]" type="hidden" value="`+value.codigo+`">
+                                <input name="cant[]" id="cant[`+count+`]" type="hidden" value="`+value.cant+`">
+                                <input name="costo[]" id="costo[`+count+`]" type="hidden" value="`+value.costou+`">
+                                <input name="imp_p[]" id="imp_p[`+count+`]" type="hidden" value="`+value.imp_p+`">
                                 `+value.codigo2+`
                             </td>
                             <td>`+value.articulo+`</td>
-                            <td>
-                                `+value.cant+`
-                                <input name="cant[]" id="cant[`+count+`]" type="hidden" value="`+value.cant+`">
-                            </td>
-                            <td><input name="costo[]" id="costo[`+count+`]" type="hidden" value="`+value.costou+`">`+value.costou+`</td>
-                            <td><input name="imp_p[]" id="imp_p[`+count+`]" type="hidden" value="`+value.imp_p+`">`+value.imp_p+`</td>
-                            <td>`+value.costot+`</td>
-                            <td>NTE_`+value.codigo_movimiento+`</td>
-                            </tr>`;
+                            <td>`+value.cant+`</td>
+                            <td class="number_cal">`+value.costou+`</td>
+                            <td>`+value.imp_p+`</td>
+                            <td class="number_cal">`+value.costot+`</td>`;
+                            if(submod!="FRM_INV_DNT"){
+                                tr_det+=`<td>NTE_`+value.codigo_movimiento+`</td>`;
+                            }
+                            tr_det+=`</tr>`;
                             jQuery("#"+tbl_det+" tbody").append(tr_det);
                         });
-                        cal_fac();
+                        jQuery(".number_cal").formatCurrency();
+                        if(submod!="FRM_INV_DNT"){
+                            cal_fac();
+                        }else{
+                            cal_dnt();
+                        }
                         jQuery(".preloader").fadeOut();
                     }else{
                         jQuery(".preloader").fadeOut();

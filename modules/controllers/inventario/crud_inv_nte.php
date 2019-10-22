@@ -27,10 +27,15 @@ if($perm_val["title"]<>"SUCCESS"){
 			$tpl->assign("mod_name","ORDENES DE COMPRAS");
 		}
 		$data=$data_class->list_mov("NTE",false,false,false,false,false,$almacenes);
+		//print_r($data);
 		if($data["title"]=="SUCCESS"){
 			foreach ($data["content"] as $llave => $datos) {
 				$tpl->newBlock("data");
 				$id=$datos['codigo'];
+				if($datos["dev"]!="N/A"){
+					$datos['status']="CAN";
+					$tpl->assign("isdev","isdev");
+				}
 				if(!empty($array_all)){
 					foreach ($array_all as $key => $value){
 						if($key==$datos['status']){
