@@ -180,6 +180,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 			}elseif($action=="edit"){
 				$tpl->assign("accion",'save_edit');
 				$data=$data_class->get_mov($_GET['id']);
+				//print_r($data);
 				if(Evaluate_Mod($data)){
 					$cab=$data["cab"];
 					$det=$data["det"];
@@ -211,6 +212,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 					if(!empty($det)){
 						$array_odc_det = array();
 						$array_ori_det = array();
+						//print_r($det);
 						foreach ($det as $key => $value) {
 							$tpl->newBlock("det_arts");
 							array_push($array_odc_det, $det[$key]["corden_det"]);
@@ -235,6 +237,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 							}
 						}
 						$data2=$data_class->list_mov_det($array_ori_det);
+						//print_r($data2);
 						$cab2=$data2["content"];
 						if(!empty($cab2) && $cab2[0]["codigo"]>0){
 							foreach ($cab2 as $key => $value) {

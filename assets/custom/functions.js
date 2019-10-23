@@ -1264,6 +1264,105 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                     Modal_error(x,err);
                 }
             });
+        }else if(acc=="search_dnt"){
+            jQuery(".preloader").fadeIn();
+            jQuery.ajax({
+                type: "POST",
+                url: "./modules/controllers/ajax.php",
+                data : 'accion='+acc+'&code='+table.find('.transsa').val()+'&mod='+submod,
+                dataType:'json',
+                success: function(data){
+                    if(data.title=="SUCCESS"){
+                        cab = data.cab, det = data.det;
+                        jQuery("#ctransaccion").val(cab.codigo_devolucion_trans);
+                        jQuery("#transaccion").val(cab.codigo_devolucion);
+                        jQuery("#anulacion").val(cab.codigo_transaccion);
+                        jQuery("#canulacion").val(cab.codigo);
+                        jQuery("#proveedor").val(jQuery.formatRut(cab.code)+" "+cab.data);
+                        jQuery("#calmacen").val(cab.almacen);
+                        jQuery("#doc").val(cab.documento);
+                        jQuery("#f_doc").val(cab.fecha_doc);
+                        jQuery("#notas").val(cab.observacion);
+                        jQuery("#transaccion_").text(cab.codigo_transaccion);
+                        jQuery("#status_").text(cab.status_);
+                        jQuery("#stats").val(cab.status);
+                        jQuery("#status_bagde").removeClass("badge-warning");
+                        jQuery("#status_bagde").removeClass("badge-success");
+                        jQuery("#status_bagde").addClass(cab.color);
+
+                        jQuery.each(det, function(key,value){
+                            tbl_det="table_art";
+                            var count = (jQuery("#"+tbl_det+" tbody tr").length)+1;
+                            tr_det=`<tr>
+                            <td>
+                                <input name="codc[]" id="codc[`+count+`]" type="hidden" value="0">
+                                <input name="codc_det[]" id="codc_det[`+count+`]" type="hidden" value="0">
+                                <input name="carticulo[]" id="carticulo[`+count+`]" type="hidden" value="`+value.codigo_articulo+`">
+                                <input name="cmov_det[]" id="cmov_det[`+count+`]" type="hidden" value="0">
+                                <input name="cnte[]" id="cnte[`+count+`]" type="hidden" value="`+value.codigo_cabecera+`">
+                                <input name="cnte_det[]" id="cnte_det[`+count+`]" type="hidden" value="`+value.codigo+`">
+                                <input name="cant[]" id="cant[`+count+`]" type="hidden" value="`+value.cant+`">
+                                <input name="costo[]" id="costo[`+count+`]" type="hidden" value="`+value.costou+`">
+                                <input name="imp_p[]" id="imp_p[`+count+`]" type="hidden" value="`+value.imp_p+`">
+                                `+value.codigo2+`
+                            </td>
+                            <td>`+value.articulo+`</td>
+                            <td>`+value.cant+`</td>
+                            <td class="number_cal">`+value.costou+`</td>
+                            <td>`+value.imp_p+`</td>
+                            <td class="number_cal">`+value.costot+`</td>
+                            </tr>`;
+                            jQuery("#"+tbl_det+" tbody").append(tr_det);
+                        });
+                        /*
+                        jQuery.each(det, function(key,value){
+                            tbl_det="table_art";
+                            var count = (jQuery("#"+tbl_det+" tbody tr").length)+1;
+                            tr_det=`<tr>
+                            <td>
+                                <input name="codc[]" id="codc[`+count+`]" type="hidden" value="0">
+                                <input name="codc_det[]" id="codc_det[`+count+`]" type="hidden" value="0">
+                                <input name="carticulo[]" id="carticulo[`+count+`]" type="hidden" value="`+value.codigo_articulo+`">
+                                <input name="cmov_det[]" id="cmov_det[`+count+`]" type="hidden" value="0">
+                                <input name="cnte[]" id="cnte[`+count+`]" type="hidden" value="`+value.codigo_cabecera+`">
+                                <input name="cnte_det[]" id="cnte_det[`+count+`]" type="hidden" value="`+value.codigo+`">
+                                <input name="cant[]" id="cant[`+count+`]" type="hidden" value="`+value.cant+`">
+                                <input name="costo[]" id="costo[`+count+`]" type="hidden" value="`+value.costou+`">
+                                <input name="imp_p[]" id="imp_p[`+count+`]" type="hidden" value="`+value.imp_p+`">
+                                `+value.codigo2+`
+                            </td>
+                            <td>`+value.articulo+`</td>
+                            <td>`+value.cant+`</td>
+                            <td class="number_cal">`+value.costou+`</td>
+                            <td>`+value.imp_p+`</td>
+                            <td class="number_cal">`+value.costot+`</td>`;
+                            if(submod!="FRM_INV_DNT"){
+                                tr_det+=`<td>NTE_`+value.codigo_movimiento+`</td>`;
+                            }
+                            tr_det+=`</tr>`;
+                            jQuery("#"+tbl_det+" tbody").append(tr_det);
+                        });
+                        jQuery(".number_cal").formatCurrency();
+                        if(submod!="FRM_INV_DNT"){
+                            cal_fac();
+                        }else{
+                            cal_dnt();
+                        }*/
+                        jQuery(".number_cal").formatCurrency();
+                        cal_dnt();
+                        block_controls(true);
+                        jQuery('a[href="#tab_1"]').trigger('click');
+                        jQuery(".preloader").fadeOut();
+                    }else{
+                        jQuery(".preloader").fadeOut();
+                        dialog(data.content,data.title);
+                    }
+                },
+                error: function(x,err){
+                    jQuery(".preloader").fadeOut();
+                    Modal_error(x,err);
+                }
+            });
         }
     }
     jQuery(this).find(".modal-body .modal-body-content").empty();

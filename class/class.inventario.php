@@ -152,6 +152,8 @@ class inventario{
 		$this->table3 .= " LEFT JOIN adm_usuarios u2 ON im.mod_user=u2.cusuario LEFT JOIN nom_trabajadores t2 ON u2.ctrabajador=t2.ctrabajador LEFT JOIN data_entes d2 ON t2.cdata=d2.cdata LEFT JOIN nom_cargos c2 ON t2.ccargo=c2.ccargo";
 		//ANULACIONES
 		$this->table3 .= " LEFT JOIN inv_movimientos im1 ON im.cmovimiento_key=im1.corigen";
+		//ORIGENES
+		$this->table3 .= " LEFT JOIN inv_movimientos im2 ON im.corigen=im2.cmovimiento_key";
 		$this->tId3 = "im.cmovimiento_key";
 		$this->db3 = new database($this->table3, $this->tId3);
 		$this->db3->fields = array (
@@ -162,6 +164,8 @@ class inventario{
 			array ('system',	"IF(cs.cordenservicio_sub>0, CONCAT(LPAD(cp.cordenservicio*1,"._PAD_CEROS_.",'0'), '-',cs.cordenservicio_sub*1),'N/A') AS ods_pad"),
 			array ('system',	"IF(im1.corigen>0,im1.corigen,'N/A') AS dev"),
 			array ('system',	"IF(im1.corigen>0,LPAD(im1.cmovimiento*1,"._PAD_CEROS_.",'0'),'N/A') AS cod_dev"),
+			array ('system',	"IF(im.corigen>0,LPAD(im2.cmovimiento*1,"._PAD_CEROS_.",'0'),'N/A') AS codigo_devolucion"),
+			array ('system',	"IF(im.corigen>0,LPAD(im2.cmovimiento_key*1,"._PAD_CEROS_.",'0'),'N/A') AS codigo_devolucion_trans"),
 			array ('system',	"(d3.code) AS cot_code"),
 			array ('system',	'd3.data AS cot_cliente'),
 			array ('system',	'eq.equipo AS maquina'),
@@ -804,7 +808,7 @@ class inventario{
 			$data[$cont]["operator"]="IN";
 			$data[$cont]["value"]=$dets;
 		}
-		return $this->db3->getRecords('DISTINCT(im.cmovimiento_key) AS codigo, im.cmovimiento AS codigo_cab, d.data,DATE_FORMAT(im.fecha_mov,"%d-%m-%Y") AS fecha_mov,COUNT(imd.cant) AS articulos,monto_total AS monto_total',$data);
+		return $this->db3->getRecords('DISTINCT(im.cmovimiento_key) AS codigo, im.cmovimiento AS codigo_cab, d.data,DATE_FORMAT(im.fecha_mov,"%d-%m-%Y") AS fecha_mov,COUNT(imd.cant) AS articulos,im.monto_total AS monto_total',$data);
 	}
 	//CREAR
 	public function new_mov($tipo,$data,$det){

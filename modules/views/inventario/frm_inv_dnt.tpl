@@ -22,12 +22,13 @@
       <form role="form" name="form_" id="form_" enctype="multipart/form-data">
         <div class="card-body">
           <div class="d-flex no-block align-items-center pb-3">
-            <div>{form_title}<strong>{id_tittle}</strong></div>
-            <div class="ml-auto">ESTATUS: <span class="badge badge-pill ml-auto mr-3 font-medium px-2 py-1 {status_color}">{stats_nom}<input type="hidden" id="stats" name="stats" value="{stats_code}"></span></div>
+            <div>{form_title}<strong><span id="transaccion_">{id_tittle}</span></strong></div>
+            <div class="ml-auto">ESTATUS: <span id="status_bagde" class="badge badge-pill ml-auto mr-3 font-medium px-2 py-1 {status_color}"><span id="status_">{stats_nom}</span><input type="hidden" id="stats" name="stats" value="{stats_code}"></span></div>
           </div>
           <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab"><span class="hidden-xs-down">INFO BASICA</span></a> </li>
             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">ARTICULOS</span></a> </li>
+            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_3" role="tab"><span class="hidden-xs-down">CONSULTAR</span></a> </li>
           </ul>
           <div class="tab-content tabcontent-border">
             <div class="tab-pane p-4 active" id="tab_1" role="tabpanel">
@@ -133,6 +134,20 @@
                 </div>
               </div>
             </div>
+            <div class="tab-pane p-4" id="tab_3" role="tabpanel">
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                      <label for="anulacion" class="control-label col-form-label">CONSULTAR ANULACION</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control validar" id="anulacion" name="anulacion" placeholder="SELECCIONE UNA ANULACION A CONSULTAR" value="{codigo_}" readonly> 
+                        <input type="hidden" id="canulacion" name="canulacion">
+                        <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_dnt"><span class="fa fa-search"></button></div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <hr>
@@ -152,10 +167,10 @@
             <div class="form-group mb-0 text-center">
               <input type="hidden" id="accion" name="accion" value="{accion}">
               <input type="hidden" id="id" name="id" value="{codigo}">
+              <button class="btn btn-outline-secondary waves-effect waves-light menu" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="MODULO" data-id="0"><span class="btn-label"><i class="fas fa-file"></i></span> NUEVO</button>
               <!-- START BLOCK : data_save -->
               <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="SAVE" data-id="0"><span class="btn-label"><i class="fas fa-save"></i></span> GUARDAR</button>
               <!-- END BLOCK : data_save -->
-              <button class="btn btn-outline-secondary waves-effect waves-light menu" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="CLOSE" data-id="0"><span class="btn-label"><i class="fas fa-sign-out-alt"></i></span> CERRAR</button>
             </div>
           </div>
         </div>
@@ -201,6 +216,8 @@
         }
       }else if(acc=="add_nte"){
         modal_search("SELECCIONE UNA GUIA DE DESP. A ANULAR",'accion='+acc+'&mod='+submod,'POST',false,false);
+      }else if(acc=="search_dnt"){
+        modal_search("SELECCIONE UNA CANCELACION A CONSULTAR",'accion='+acc+'&mod='+submod,'POST',false,false);
       }
     });
     <!-- START BLOCK : val -->
