@@ -35,12 +35,12 @@
               <div class="row">
                 <div class="col-sm-4">
                   <div class="form-group">
-                    <label for="transaccion" class="control-label col-form-label">GUIA DESP.</label>
+                    <label for="transaccion" class="control-label col-form-label">RECEP. FACTURAS</label>
                     <div class="input-group">
-                      <input type="text" class="form-control validar" id="transaccion" name="transaccion" placeholder="SELECCIONE UNA GUIA A ANULAR" value="{codigo_}" readonly> 
-                      <input type="hidden" id="ctransaccion" name="ctransaccion">
+                      <input type="text" class="form-control validar" id="transaccion" name="transaccion" placeholder="SELECCIONE UNA RECEPCION A ANULAR" value="{codigo_}" readonly> 
+                      <input type="hidden" id="ctransaccion" name="ctransaccion" >
                       <!-- START BLOCK : data_save_search -->
-                      <div class="input-group-append"><button class="btn btn-outline-secondary ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="add_nte"><span class="fa fa-search"></button></div>
+                      <div class="input-group-append"><button class="btn btn-outline-secondary ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="add_fac"><span class="fa fa-search"></button></div>
                         <!-- END BLOCK : data_save_search -->
                     </div>
                   </div>
@@ -188,7 +188,7 @@
 </div>
 </div>
 <script>
-  function cal_dnt(){
+  function cal_dco(){
     let cant = precio = bruto = impp = impm = total = all_sub = all_desc = all_total = 0, valido=true;
     if(jQuery('#table_art tbody tr').length>0){
       jQuery('#table_art tbody tr').each(function(index){
@@ -222,9 +222,9 @@
             SendForm(mod,submod,ref,subref,"#form_",false);
           }
         }
-      }else if(acc=="add_nte"){
-        modal_search("SELECCIONE UNA GUIA DE DESP. A ANULAR",'accion='+acc+'&mod='+submod,'POST',false,false);
-      }else if(acc=="search_dnt"){
+      }else if(acc=="add_fac"){
+        modal_search("SELECCIONE UNA RECEP. DE FACTURA A ANULAR",'accion='+acc+'&mod='+submod,'POST',false,false);
+      }else if(acc=="search_dco"){
         modal_search("SELECCIONE UNA CANCELACION A CONSULTAR",'accion='+acc+'&mod='+submod,'POST',false,false);
       }
     });

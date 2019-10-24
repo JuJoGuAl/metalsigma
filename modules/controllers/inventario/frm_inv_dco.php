@@ -145,7 +145,7 @@ if($action=="save_new"){
 				$tpl->assign("menu_pri",$value['menu']);
 				$tpl->assign("menu_sec",$value['modulo']);
 				$tpl->assign("menu_ter","NONE");
-				$tpl->assign("menu_name","ANULAR GUIAS DE DESPACHO");
+				$tpl->assign("menu_name","ANULAR RECEPCIONES DE FACTURAS");
 				$tpl->assign("form_title","TRANSACCION: ");
 			}
 			if($action=="modulo"){

@@ -288,7 +288,6 @@ class database {
         if($this->con_["title"]=="SUCCESS"){
             //echo "<br><strong>Query: </strong>".$query."<br><strong>Valores: </strong>";
             //print_r ($values)."<br>";
-            //print_r($this->getEditFields(true));
             $response=array();
             try {
                 //$this->conn->beginTransaction();

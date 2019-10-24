@@ -103,7 +103,8 @@ if (!isset($_SESSION['metalsigma_log'])){
 			$titles='<tr><th>CODIGO</th><th>PROVEEDOR</th><th>ART. PEND</th><th>MONTO ODC</th></tr>';
 			break;
 			case 'add_nte':
-			$titles='<tr><th>CODIGO</th><th>PROVEEDOR</th><th>ART.</th><th>MONTO</th></tr>';
+			case 'add_fac':
+			$titles='<tr><th>CODIGO</th><th>PROVEEDOR</th><th>ART.</th><th>MONTO</th><th>FECHA</th></tr>';
 			break;
 			case 'search_dnt':
 			$titles='<tr><th>CODIGO</th><th>COD. ORIGEN</th><th>PROVEEDOR</th><th>ARTS.</th><th>MONTO</th></tr>';
@@ -523,7 +524,7 @@ if (!isset($_SESSION['metalsigma_log'])){
 				}
 				if($data["title"]=="SUCCESS"){
 					foreach ($data["content"] as $key => $value){
-						$table.='<tr><td class="_id"><input class="transsa" type="hidden" value="'.$value["codigo"].'">'.$value["codigo_transaccion"].'</td><td class="_nom">'.$value['data'].'</td><td class="_art">'.($value['articulos']).'</td><td class="_mon number_cal">'.($value['monto_total']).'</td></tr>';
+						$table.='<tr><td class="_id"><input class="transsa" type="hidden" value="'.$value["codigo"].'">'.$value["codigo_transaccion"].'</td><td class="_nom">'.$value['data'].'</td><td class="_art">'.($value['articulos']).'</td><td class="_mon number_cal">'.($value['monto_total']).'</td><td>'.$value['fecha_mov'].'</td></tr>';
 					}
 					$table.="</tbody></table></div>";
 					$response=$table;
@@ -551,6 +552,32 @@ if (!isset($_SESSION['metalsigma_log'])){
 				if($data["title"]=="SUCCESS"){
 					foreach ($data["content"] as $key => $value){
 						$table.='<tr><td class="_id"><input class="transsa" type="hidden" value="'.$value["codigo"].'">'.$value["codigo_transaccion"].'</td><td>'.$value['codigo_devolucion'].'</td><td class="_nom">'.$value['data'].'</td><td class="_art">'.($value['articulos']).'</td><td class="_mon number_cal">'.($value['monto_total']).'</td></tr>';
+					}
+					$table.="</tbody></table></div>";
+					$response=$table;
+				}else{
+					$response["title"]="ERROR";
+					$response["content"]="NO EXISTE INFORMACION PARA MOSTRAR";
+				}
+			}
+		}elseif($accion=="add_fac"){
+			if(isset($_POST['code'])){
+				$data=$inventario->get_mov($_POST['code']);
+				if($data["title"]=="SUCCESS"){
+					$response["title"]="SUCCESS";
+					$response["cab"]=$data["cab"];
+					$response["det"]=$data["det"];
+					$response["imp"]=constant("VALOR_IMP");
+				}else{
+					$response["title"]="ERROR";
+					$response["content"]="ERROR AL OBTENER LOS DATOS LA ODC SELECCIONADA";
+				}
+			}else{
+				$data=$inventario->list_mov("COM",false,false,"PRO",false,-1,false,true);
+
+				if($data["title"]=="SUCCESS"){
+					foreach ($data["content"] as $key => $value){
+						$table.='<tr><td class="_id"><input class="transsa" type="hidden" value="'.$value["codigo"].'">'.$value["codigo_transaccion"].'</td><td class="_nom">'.$value['data'].'</td><td class="_art">'.($value['articulos']).'</td><td class="_mon number_cal">'.($value['monto_total']).'</td><td>'.$value['fecha_mov'].'</td></tr>';
 					}
 					$table.="</tbody></table></div>";
 					$response=$table;
