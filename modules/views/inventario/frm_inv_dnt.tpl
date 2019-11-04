@@ -148,7 +148,7 @@
                   <div class="form-group">
                       <label for="anulacion" class="control-label col-form-label">CONSULTAR ANULACION</label>
                       <div class="input-group">
-                        <input type="text" class="form-control validar" id="anulacion" name="anulacion" placeholder="SELECCIONE UNA ANULACION A CONSULTAR" value="{codigo_}" readonly> 
+                        <input type="text" class="form-control" id="anulacion" name="anulacion" placeholder="SELECCIONE UNA ANULACION A CONSULTAR" value="{codigo_}" readonly> 
                         <input type="hidden" id="canulacion" name="canulacion">
                         <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_dnt"><span class="fa fa-search"></button></div>
                       </div>

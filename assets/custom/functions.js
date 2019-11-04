@@ -970,8 +970,11 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                             jQuery("#doc").val(cab.documento);
                             jQuery("#f_doc").val(cab.fecha_doc)
                         }
+                        tbl_det="table_art";
+                        if(submod=="FRM_INV_DNT"){
+                            jQuery("#"+tbl_det+" tbody").empty();
+                        }
                         jQuery.each(det, function(key,value){
-                            tbl_det="table_art";
                             var count = (jQuery("#"+tbl_det+" tbody tr").length)+1;
                             tr_det=`<tr>
                             <td>
@@ -1030,9 +1033,11 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                         jQuery("#calmacen").val(cab.almacen);
                         jQuery("#doc").val(cab.documento);
                         jQuery("#f_doc").val(cab.fecha_doc);
-
+                        
+                        tbl_det="table_art";
+                        jQuery("#"+tbl_det+" tbody").empty();
+                        
                         jQuery.each(det, function(key,value){
-                            tbl_det="table_art";
                             var count = (jQuery("#"+tbl_det+" tbody tr").length)+1;
                             tr_det=`<tr>
                             <td>

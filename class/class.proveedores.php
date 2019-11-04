@@ -214,7 +214,7 @@ class proveedores{
 		$data = $result = array (); $count=-1;
 		if($id){
 			$count++;
-			$data[$count]["row"]="cproveedor";
+			$data[$count]["row"]="pro.cproveedor";
 			$data[$count]["operator"]="=";
 			$data[$count]["value"]=$id;
 		}

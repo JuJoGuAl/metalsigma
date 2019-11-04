@@ -20,7 +20,7 @@ if($action=="save_new"){
 			$datos = $detalles = $det_mov = $det_art = $det_cant = $det_costou = $det_impp = $det_impm = $det_total = $det_odc_det = $det_cnota_det = $det_origen_det = array();
 			$monto_mov = $monto_desc = $monto_total = 0;
 			$status_ = "PRO";
-			$tipo="DNT";
+			$tipo="DCO";
 			$data=$data_class->get_mov($_ctransaccion);
 			//print_r($data);
 			if($data["title"]=="SUCCESS"){
@@ -38,7 +38,7 @@ if($action=="save_new"){
 						array_push($det_impm, $impuesto);
 						array_push($det_total, $total);
 						array_push($det_origen_det, $value["codigo"]);//ORIGEN
-						array_push($det_odc_det, $value["corden_det"]);//ODC
+						array_push($det_odc_det, 0);//ODC
 						array_push($det_cnota_det, 0);//NTE
 
 						//SI TIENE UNA ODC BUSCO SU CANTIDAD RESTANTE
@@ -94,10 +94,11 @@ if($action=="save_new"){
 							$resultado["content"]="ACCESO DENEGADO: <strong>NO POSEE PERMISO PARA LA ACCION</strong>";
 						}else{
 							$resultado=$data_class->new_mov($tipo,$datos,$detalles);
+							print_r($resultado);
 						}
 					}
 
-					$mensaje="GUIA DE DESPACHO ANULADA!";
+					$mensaje="RECEPCION DE FACTURA ANULADA!";
 					
 					if($resultado["title"]=="SUCCESS"){
 						$response['title']=$resultado["title"];
@@ -134,7 +135,7 @@ if($action=="save_new"){
 				$var_array_nav=array();
 				$var_array_nav["mod"]=$_GET['mod'];
 				$var_array_nav["submod"]=$_GET['submod'];
-				$var_array_nav["ref"]="FRM_INV_DNT";
+				$var_array_nav["ref"]="FRM_INV_DCO";
 				$var_array_nav["subref"]="NONE";
 
 				foreach ($var_array_nav as $key_ => $value_) {

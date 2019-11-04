@@ -38,7 +38,7 @@ if($action=="save_new"){
 						array_push($det_impm, $impuesto);
 						array_push($det_total, $total);
 						array_push($det_origen_det, $value["codigo"]);//ORIGEN
-						array_push($det_odc_det, $value["corden_det"]);//ODC
+						array_push($det_odc_det, 0);//ODC
 						array_push($det_cnota_det, 0);//NTE
 
 						//SI TIENE UNA ODC BUSCO SU CANTIDAD RESTANTE
