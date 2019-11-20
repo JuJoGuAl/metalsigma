@@ -301,14 +301,16 @@ function axios_Error(error){
             }else if(error.response.status==500){
                 response="ERROR INTERNO DEL SERVIDOR";
             }else{
-                response="ERROR DESCONOCIDO:<br>"+error.message.toUpperCase();
+                response="ERROR DESCONOCIDO:<br>"+error;
             }
         }else{
             if(error.request){
                 response="ERROR DE CONEXION!<br>VERIFIQUE SU CONEXION!";
+            }else{
+                response="ERROR DESCONOCIDO:<br>"+error;
             }
         }
-        dialog(response,"ERROR");
+        dialog(response.toUpperCase(),"ERROR");
     }
 }
 /** Muestra una notificacion

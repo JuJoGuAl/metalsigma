@@ -76,6 +76,10 @@ class inventario{
 	private $db18;
 	public $table18;
 	public $Id18;
+	//INVENTARIO ORIGEN
+	private $db19;
+	public $table19;
+	public $Id19;
 	public function __construct(){
 		include_once('class.bd_transsac.php');
 		//ARTICULOS
@@ -483,6 +487,15 @@ class inventario{
 			array ('public_i',	'crea_user'),
 			array ('public_u',	'mod_user')
 		);
+		//INVENTARIO ORIGEN
+		$this->table19 = "inv_movimientos";
+		$this->tId19 = "cmovimiento_key";
+		$this->db19 = new database($this->table19, $this->tId19);
+		$this->db19->fields = array (
+			array ('system',	"LPAD(".$this->tId19."*1,"._PAD_CEROS_.",'0') AS codigo"),			
+			array ('public_u',	"corigen"),
+			array ('public_u',	'mod_user')
+		);
 	}
 	/** ARTICULOS */
 	//LISTAR
@@ -815,6 +828,7 @@ class inventario{
 	public function new_mov($tipo,$data,$det){
 		$resultado = false;
 		$status=$data[6];
+		$origen=$data[10];
 		$data[]=$tipo;
 		$data[]=$_SESSION['metalsigma_log'];
 		$result = $this->db5->insertRecord($data);
@@ -852,14 +866,26 @@ class inventario{
 						break;
 					}else{
 						if($det[8][$i]!="0"){
-							if($status=="PRO" && ($tipo=="COM" || $tipo=="NTE" || $tipo=="DNT")){
+							if($status=="PRO" && ($tipo=="COM" || $tipo=="NTE" || $tipo=="DNT" || $tipo=="DCO")){
 								$mul = ($tipo=="COM" || $tipo=="NTE") ? -1 : 1 ;
 								array_push($datos1, ($det[2][$i]*$mul));
 								array_push($datos1, $_SESSION['metalsigma_log']);
-								$this->db7->updateRecord($det[8][$i],$datos1);		
+								$this->db7->updateRecord($det[8][$i],$datos1);
 							}
 						}
 					}
+				}
+				if($tipo=="DCO" && $status=="PRO"){
+					$conditions=$data1=array ();
+					array_push($datos1, 0);
+					array_push($datos1, $_SESSION['metalsigma_log']);
+					$conditions[0]["row"]="corigen";
+					$conditions[0]["operator"]="=";
+					$conditions[0]["value"]=$origen;
+					$conditions[1]["row"]="tipo";
+					$conditions[1]["operator"]="=";
+					$conditions[1]["value"]="NTE";
+					$this->db19->updateRecord(0,$datos1,$conditions);
 				}
 				if($tipo=="COM" || $tipo=="NTE"){
 					$data1 = array ();

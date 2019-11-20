@@ -43,15 +43,19 @@ class database {
                 $query .= " WHERE $this->tablekey > ?";
                 $values[]=0;
                 foreach ($where_str as $key => $value) {
+                    //LA ACCION FUE ENVIADA?
+                    $operador = (array_key_exists("action",$value)) ? $value["action"] : "AND" ;
                     //Evaluo si un valor es Arreglo
                     if(is_array($value["value"])){
                         $in  = str_repeat('?,', count($value["value"]) - 1) . '?';
-                        $query .= " AND ".$value["row"]." ".$value["operator"]." ($in)";                        
+                        //$operador = ($value["operator"]=="LIKE" && $key>1) ? "OR" : "AND" ;
+                        $query .= " ".$operador." ".$value["row"]." ".$value["operator"]." ($in)";                        
                         $values2=array_map('strtoupper', $value["value"]);
                         //dentro del arreglo values, meto el otro arreglo, para permitirlo
                         $values=array_merge($values,$values2);
                     }else{
-                        $query .= " AND ".$value["row"]." ".$value["operator"]." ?";
+                        //$operador = ($value["operator"]=="LIKE" && $key>1) ? "OR" : "AND" ;
+                        $query .= " ".$operador." ".$value["row"]." ".$value["operator"]." ?";
                         $values[]=$value["value"]==null ? $value["value"] : strtoupper($value["value"]);
                     }
                 }

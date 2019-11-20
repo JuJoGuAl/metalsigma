@@ -14,6 +14,7 @@
     <link href="./assets/fullcalendar/css/fullcalendar.min.css" rel="stylesheet">
     <link href="./assets/fullcalendar/css/calendar.css" rel="stylesheet">
     <link href="./assets/jquery-confirm/css/jquery-confirm.css" rel="stylesheet">
+    <link href="./assets/jquery/jquery-ui.css" rel="stylesheet">
     <link href="./assets/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet">
     <link href="./assets/outdatedbrowser/outdatedbrowser.css" rel="stylesheet">
     <link href="{style}" rel="stylesheet">

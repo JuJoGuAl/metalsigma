@@ -347,8 +347,21 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$response["title"]="ERROR";
 				$response["content"]="NO EXISTE INFORMACION PARA MOSTRAR";
 			}
-		}
-		else if($accion=="add_eqs_cot"){
+		}else if($accion=="search_cliente_auto"){
+			$condicion = (trim($_condition)=="") ? -1 : $_condition ;
+			$data=$clientes->list_c(1,$condicion);
+			if($data["title"]=="SUCCESS"){
+				$response["title"]="SUCCESS";
+				$contenido = array();
+				foreach ($data["content"] as $key => $value){
+					$contenido[]=array("value"=>$value["codigo"], "label"=>$value["code"]." - ".$value["data"]);
+				}
+				$response["content"]=$contenido;
+			}else{
+				$response["title"]="ERROR";
+				$response["content"]="NO EXISTE INFORMACION PARA MOSTRAR";
+			}
+		}else if($accion=="add_eqs_cot"){
 			$data=$equipos->list_eq($_POST["cli"],true);
 			if($data["title"]=="SUCCESS"){
 				foreach ($data["content"] as $key => $value){
@@ -1325,6 +1338,43 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$response["title"]="ERROR";
 				$response["content"]=$data["content"];
 			}
+		}else if($accion=="rep_gen_cots"){
+			$status_ = ($_status<>-1) ? array($_status) : false ;
+			$cliente_ = ($_cliente>=0) ? $_cliente : false ;
+			$inicio_ = ($_fini!="") ? setDate($_fini,"Y-m-d") : false ;
+			$fin_ = ($_ffin!="") ? setDate($_ffin,"Y-m-d") : false ;
+			$data=$cotizaciones->list_sub(false,$status_,false,$cliente_,$inicio_,$fin_,false,false,false,"co.crea_date DESC");
+			if($data["title"]=="SUCCESS"){
+				$response["title"]="SUCCESS";
+				foreach ($data["content"] as $key => $value){
+					$data["content"][$key]["avance"]=numeros($value["avance"],2)." %";
+					$data["content"][$key]["adic"]=$value["adic"];
+					$data["content"][$key]["ocupado"]=$value["ocupado"];
+					$data["content"][$key]["horas"]=$value["horas"];
+					$data["content"][$key]["estatus_"]=$array_status[$value["status"]];
+					$tecnico=$f_plan=$f_carga=$f_fin="N/A";
+					$data2=$planificaciones->get_plan_cot($value["codigo"]);
+					if($data2["title"]=="SUCCESS"){
+						$tecnico=$data2["content"][0]["dets"][0]["data"];
+						$f_plan=$data2["content"][0]["fecha_creacion"];
+						$f_carga=$data2["content"][0]["fecha_inicio"];
+						$final = (sizeof($data2["content"])-1);
+						$f_fin=$data2["content"][$final]["fecha_inicio"];
+					}
+					$data["content"][$key]["tecnico"]=$tecnico;
+					$data["content"][$key]["fecha_plan"]=$f_plan;
+					$data["content"][$key]["fecha_carga"]=$f_carga;
+					$data["content"][$key]["fecha_fin"]=$f_fin;
+				}
+				$response["content"]=$data["content"];
+			}else if($data["title"]=="WARNING"){
+				$response["title"]="ERROR";
+				$response["content"]="NO EXISTE INFORMACION PARA MOSTRAR";
+			}else{
+				$response["title"]="ERROR";
+				$response["content"]=$data["content"];
+			}
+
 		}
 	}
 }

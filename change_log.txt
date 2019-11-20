@@ -336,3 +336,17 @@ INSERT INTO `adm_mod` (`cmodulo`, `modulo`, `mod_url`, `mod_icon`, `cmenu`, `csu
 
 * INICIE EL PROCESO DE ANULAR RECEPCION DE FACTURA
 * SE DEPURO LA CLASS DE INVENTARIO PARA NO INCLUIR MOVIMENTOS QUE TIENEN ORIGENES VALIDOS
+
+19-11-2019
+* SE DEPURO FORM_COT_CLI PARA AGREGAR EL COSTO DE LOS SERVICIOS TERCERIZADOS (BUG)
+* SE IMPLEMENTA AUTOCOMPLETE EN LA BUSQUEDA DEL CLIENTE (SE AHORRA EL MODAL).
+* SE IMPLEMENTA UNA ACCION A LA CLASS DEL ORM, ASI SE PUEDE DEFINIR SI SE BUSCA HACER UN OR O AND.
+
+20-11-2019
+* IMPLEMENTADOS LISTADO DE COTIZACIONES.
+* CAMBIOS EN DOS REPORTES.
+UPDATE `adm_mod` SET `orden` = '2' WHERE `adm_mod`.`cmodulo` = 0000000034;
+UPDATE `adm_mod` SET `modulo` = 'LISTADOS', `csubmenu` = '0000000003', `mod_user` = NULL, `mod_date` = NULL WHERE `adm_mod`.`cmodulo` = 0000000021;
+UPDATE `adm_mod` SET `mod_icon` = 'fas fa-copy', `mod_user` = NULL WHERE `adm_mod`.`cmodulo` = 0000000021;
+UPDATE `adm_mod` SET `mod_icon` = 'fas fa-chart-bar', `mod_user` = NULL, `mod_date` = NULL WHERE `adm_mod`.`cmodulo` = 0000000034;
+UPDATE `adm_mod` SET `modulo` = 'ESTADISTICAS' WHERE `adm_mod`.`cmodulo` = 0000000034;

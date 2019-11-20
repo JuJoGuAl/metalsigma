@@ -304,7 +304,7 @@ class clientes{
 	}
 	/** CLIENTES */
 	//LISTAR
-	public function list_c($status=false){
+	public function list_c($status=false,$autocomplete=false){
 		$data = array (); $count=-1;
 		if($status){
 			$count++;
@@ -312,7 +312,21 @@ class clientes{
 			$data[$count]["operator"]="=";
 			$data[$count]["value"]=$status;
 		}
-		return $this->db4->getRecords(false,$data);
+		if($autocomplete!==false && $autocomplete!==-1){
+			$count++;
+			$data[$count]["action"]="AND";
+			$data[$count]["row"]="d.code";
+			$data[$count]["operator"]="LIKE";
+			$data[$count]["value"]="%".$autocomplete."%";
+			
+			$count++;
+			$data[$count]["action"]="OR";
+			$data[$count]["row"]="d.data";
+			$data[$count]["operator"]="LIKE";
+			$data[$count]["value"]="%".$autocomplete."%";
+		}
+		$limit = ($autocomplete!==false) ? 50 : false ;
+		return $this->db4->getRecords(false,$data,false,false,false,$limit);
 	}
 	//OBTENER
 	public function get_cliente($id){

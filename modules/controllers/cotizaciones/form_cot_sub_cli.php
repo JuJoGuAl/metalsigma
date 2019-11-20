@@ -129,6 +129,7 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 				$det=$cotiza["det"];
 				$art=$cotiza["art"];
 				$cots=$cotiza["cot"];
+				$csegmento=$cab_cli["csegmento"];
 				$style = ($cab["clugar"]=="0000000001") ? 'style="display:none;"' : '' ;
 				$codigo_origen=$cab["origen"];
 				$tpl->assign("id_tittle",$cab["cot_full"]);

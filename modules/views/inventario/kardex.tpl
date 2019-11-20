@@ -133,7 +133,7 @@
               value.costou,
               value.costo_total
             ]);
-          });            
+          });
         }else if(data.content==-1){
           document.location.href="./?error=1";
         }

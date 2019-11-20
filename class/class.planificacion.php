@@ -87,6 +87,8 @@ class planificaciones{
 			array ('system',	'em.marca'),
 			array ('system',	'eq.modelo'),
 			array ('system',	'pc.status AS plan_status'),
+			array ('system',	'DATE_FORMAT(pc.crea_date, "%d/%m/%Y") AS fecha_creacion'),
+			array ('system',	'DATE_FORMAT(pc.finicio, "%d/%m/%Y") AS fecha_inicio'),
 			array ('system',	'((TIMESTAMPDIFF(MINUTE, pc.finicio, pc.ffin))/60) AS duracion'),
 			array ('system',	'DATE_FORMAT(pc.crea_date, "%d/%m/%Y %T") AS crea_date'),
 			array ('system',	'DATE_FORMAT(pc.mod_date, "%d/%m/%Y %T") AS mod_date'),
@@ -266,22 +268,21 @@ class planificaciones{
 		$data[0]["row"]="pc.cordenservicio_sub";
 		$data[0]["operator"]="=";
 		$data[0]["value"]=$cot;
-		$result = $this->db2->getRecords(false,$data);
+		$result = $this->db2->getRecords(false,$data,false,"pc.finicio ASC");
 		if($result["title"]=="SUCCESS"){
 			$resultado["title"]="SUCCESS";
-			$cab=$result["content"][0];
-			$id = $cab["codigo_cabecera"];
-			$resultado["cab"]=$cab;
-
-			$data[0]["row"]="pd.cplanificacion";
-			$data[0]["operator"]="=";
-			$data[0]["value"]=$id;
-			$result = $this->db3->getRecords(false,$data);
-			if($result["title"]=="SUCCESS"){
-				$resultado["det"]=$result["content"];
-			}else{
-				$resultado["det"]=NULL;
+			foreach ($result["content"] as $key => $value) {
+				$data[0]["row"]="pd.cplanificacion";
+				$data[0]["operator"]="=";
+				$data[0]["value"]=$value["codigo_cabecera"];
+				$detalles = $this->db3->getRecords(false,$data);
+				if($detalles["title"]=="SUCCESS"){
+					$result["content"][$key]["dets"]=$detalles["content"];
+				}else{
+					$result["content"][$key]["dets"]=NULL;
+				}
 			}
+			$resultado["content"]=$result["content"];
 		}else{
 			$resultado = $result;
 		}
