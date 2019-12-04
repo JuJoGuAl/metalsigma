@@ -1352,19 +1352,20 @@ if (!isset($_SESSION['metalsigma_log'])){
 					$data["content"][$key]["ocupado"]=$value["ocupado"];
 					$data["content"][$key]["horas"]=$value["horas"];
 					$data["content"][$key]["estatus_"]=$array_status[$value["status"]];
-					$tecnico=$f_plan=$f_carga=$f_fin="N/A";
+					$data["content"][$key]["fecha_ini_pro"]=$value["llegada"];
+					$data["content"][$key]["fecha_fin_pro"]=$value["retiro"];
+					$tecnico=$f_ini_pro=$f_ini_plan=$f_fin_plan="N/A";
 					$data2=$planificaciones->get_plan_cot($value["codigo"]);
 					if($data2["title"]=="SUCCESS"){
 						$tecnico=$data2["content"][0]["dets"][0]["data"];
-						$f_plan=$data2["content"][0]["fecha_creacion"];
-						$f_carga=$data2["content"][0]["fecha_inicio"];
+						$f_ini_pro=$data2["content"][0]["fecha_creacion"];
+						$f_ini_plan=$data2["content"][0]["fecha_inicio"];
 						$final = (sizeof($data2["content"])-1);
-						$f_fin=$data2["content"][$final]["fecha_inicio"];
+						$f_fin_plan=$data2["content"][$final]["fecha_inicio"];
 					}
 					$data["content"][$key]["tecnico"]=$tecnico;
-					$data["content"][$key]["fecha_plan"]=$f_plan;
-					$data["content"][$key]["fecha_carga"]=$f_carga;
-					$data["content"][$key]["fecha_fin"]=$f_fin;
+					$data["content"][$key]["fecha_ini_plan"]=$f_ini_plan;
+					$data["content"][$key]["fecha_fin_plan"]=$f_fin_plan;
 				}
 				$response["content"]=$data["content"];
 			}else if($data["title"]=="WARNING"){

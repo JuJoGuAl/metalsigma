@@ -240,7 +240,7 @@ class proveedores{
 			}
 		}else if($result["title"]=="SUCCESS"){
 			//RUT ENCONTRO
-			$id = $result["content"]["codigo"];
+			$id = $result["content"][0]["codigo"];
 		}
 		//SI ARRIBA NO DIO ERROR PROCESO EL PROVEEDOR
 		if($result["title"]=="SUCCESS"){

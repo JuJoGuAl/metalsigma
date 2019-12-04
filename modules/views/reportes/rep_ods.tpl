@@ -90,9 +90,10 @@
                         <th>ASESOR COMERCIAL</th>
                         <th>ESTADO ORDEN</th>
                         <th>COORDINADOR TECNICO</th>
-                        <th>FECHA PRIMER PLAN</th>
-                        <th>FECHA PRIMER TRAB</th>
-                        <th>FECHA ULTIMO TRAB</th>
+                        <th>FECHA INICIO PROG</th>
+                        <th>FECHA FIN PROG</th>
+                        <th>FECHA INICIO SERV</th>
+                        <th>FECHA ULTIMO SERV</th>
                         <th>AVANCE</th>
                         <th>COT</th>
                         <th>UTIL</th>
@@ -221,9 +222,10 @@
               value.crea_user,
               value.estatus_,
               value.tecnico,
-              value.fecha_plan,
-              value.fecha_carga,
-              value.fecha_fin,
+              value.fecha_ini_pro,
+              value.fecha_fin_pro,
+              value.fecha_ini_plan,
+              value.fecha_fin_plan,
               value.avance,
               value.horas,
               value.ocupado,

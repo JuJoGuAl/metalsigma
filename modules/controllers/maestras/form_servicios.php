@@ -23,6 +23,7 @@ if($action=="save_new" || $action=="save_edit"){
 			array_push($datos, $_desc);
 			array_push($datos, $_clasif);
 			array_push($datos, $_precio);
+			array_push($datos, 0);
 			array_push($datos, $status_);
 			if($action=="save_edit"){
 				if($upt!=1){

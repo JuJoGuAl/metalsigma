@@ -191,7 +191,7 @@ class compras{
 		$this->table6 .= " LEFT JOIN com_odc oc USING (corden)";
 
 		$this->table6 .= " LEFT JOIN (SELECT imd.carticulo, coa.cant-(SUM(CASE WHEN (im.tipo='CSM') THEN imd.cant ELSE -imd.cant END)) AS cant_disp, c.corden FROM inv_movimientos_det imd INNER JOIN inv_movimientos im ON imd.cmovimiento_key=im.cmovimiento_key LEFT JOIN co_cotizacion_sub_det_art coa ON imd.corigen_det=coa.ccotizacionart LEFT JOIN com_odc c ON coa.ccotizacion=c.ods WHERE im.tipo IN ('CSM','DCS') GROUP BY imd.carticulo,c.corden) disp ON disp.corden=oc.corden AND disp.carticulo=ocd.carticulo";
-		$this->table6 .= " LEFT JOIN co_cotizacion_sub_det_art csda ON ocd.carticulo=csda.carticulo AND oc.ods=csda.ccotizacion";
+		$this->table6 .= " LEFT JOIN co_cotizacion_sub_det_art csda ON ocd.carticulo=csda.carticulo AND oc.ods=csda.ccotizacion AND csda.del=0";
 		$this->tId6 = "ocd.corden_det";
 		$this->db6 = new database($this->table6, $this->tId6);
 		$this->db6->fields = array (
