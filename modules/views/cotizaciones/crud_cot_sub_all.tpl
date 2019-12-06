@@ -46,14 +46,14 @@
             <table class="table table-bordered table-hover datatables">
               <thead>
                 <tr>
-                  <th>COTIZACION</th>
+                  <th style="width: 90px;">COTIZACION</th>
                   <th>TIPO</th>
                   <th>LUGAR</th>
                   <th>EQUIPO TRAB.</th>
                   <th>TOTAL NETO</th>
                   <th>EJECUTIVO</th>
-                  <th>ESTATUS</th>
-                  <th>OPC</th>
+                  <th style="width: 100px;">ESTATUS</th>
+                  <th style="width: 30px;">OPC</th>
                 </tr>
               </thead>
               <tbody>

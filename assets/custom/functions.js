@@ -700,9 +700,6 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
             jQuery("#ccliente").val(code);
             jQuery("#rut").val(rut);
             jQuery("#direccion").val(dir);
-            jQuery("#pago").val(pag);
-            jQuery("#credito").val(cre);
-            jQuery("#descuento").val(desc);
             jQuery("#table_eqs_cot tbody").empty();
             jQuery("#add_eqs").fadeIn();
         }else if(acc=="add_eqs_cot"){

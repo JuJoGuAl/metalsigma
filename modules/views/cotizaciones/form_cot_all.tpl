@@ -118,24 +118,6 @@
                   <input type="text" class="form-control" id="direccion" name="direccion" value="{direccion}" readonly>
                 </div>
               </div>
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label for="pago" class="control-label col-form-label">TIPO PAGO</label>
-                  <input type="text" class="form-control" id="pago" name="pago" value="" readonly>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label for="credito" class="control-label col-form-label">MAX CREDITO</label>
-                  <input type="text" class="form-control" id="credito" name="credito" value="" readonly>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label for="descuento" class="control-label col-form-label">MAX DESCUENTO</label>
-                  <input type="text" class="form-control" id="descuento" name="descuento" value="" readonly>
-                </div>
-              </div>
               <div class="col-lg-12">
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="table_eqs_cot">

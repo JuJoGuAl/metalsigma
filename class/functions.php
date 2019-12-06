@@ -55,6 +55,7 @@ $array_all["FAC"]="FACTURADA";
 $array_status=array();
 $array_status["PCO"]="POR COTIZAR";
 $array_status["PEN"]="PENDIENTE";
+$array_status["PCM"]="PEND. POR COMERCIO";
 $array_status["PAC"]="PEND. APROB. CEO";
 $array_status["PAT"]="PEND. APROB. TALLER";
 $array_status["PCL"]="PEND. APROB. CLIENTE";
@@ -112,7 +113,7 @@ $array_mont_cero[10]=0;
 $array_mont_cero[11]=0;
 $array_mont_cero[12]=0;
 //ARREGLOS DE STATUS
-$array_cot_all=array('PCO','PEN','PAC','PAT','PCL','APB','PRO','FAC','CAN'); //USADO PARA CONSULTAR LAS ODS (COTIZACIONES VISIBLES EN ODS)
+$array_cot_all=array('PCO','PEN','PCM','PAC','PAT','PCL','APB','PRO','FAC','CAN'); //USADO PARA CONSULTAR LAS ODS (COTIZACIONES VISIBLES EN ODS)
 $array_ods=array('PCL','APB','PRO'); //USADO PARA CONSULTAR LAS ODS (COTIZACIONES VISIBLES EN ODS)
 $array_cot_adm=array('PAC'); //COTIZACIONES POR APROB ADMINISTRATIVAS
 $array_cot_cli=array('PCL'); //COTIZACIONES POR APROB CLIENTE
