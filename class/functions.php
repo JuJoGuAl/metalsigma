@@ -114,6 +114,7 @@ $array_mont_cero[11]=0;
 $array_mont_cero[12]=0;
 //ARREGLOS DE STATUS
 $array_cot_all=array('PCO','PEN','PCM','PAC','PAT','PCL','APB','PRO','FAC','CAN'); //USADO PARA CONSULTAR LAS ODS (COTIZACIONES VISIBLES EN ODS)
+$array_cot_edit_all=array('PCO','PEN','PCM'); //COTIZACIONES EIDTABLES POR AREA COMERCIAL
 $array_ods=array('PCL','APB','PRO'); //USADO PARA CONSULTAR LAS ODS (COTIZACIONES VISIBLES EN ODS)
 $array_cot_adm=array('PAC'); //COTIZACIONES POR APROB ADMINISTRATIVAS
 $array_cot_cli=array('PCL'); //COTIZACIONES POR APROB CLIENTE
@@ -166,6 +167,7 @@ function color_status($status,$type=false,$sec=false){
 		case 'PEN':
 		case 'PCO':
 		case 'PCL':
+		case 'PCM':
 			$stats_color .= "warning";
 			break;
 		case 'FAC':

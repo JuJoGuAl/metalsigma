@@ -99,14 +99,13 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc" || $action=="s
 										$valores["costo_km"]= $costo_km;
 
 										//YA CON LOS DATOS PREVIOS CALCULO LOS TOTALES
-										//definir 3 acciones:
-										// guardaer
-										// enviar (pasa a taller desde nuevo)
-										// modificar (pasa a taller desde modificar)
-										// enviar (pasa a ceo/cli desde modificar)
-										$status_cot = "PEN";
-										$status_cot = ($action=="send") ? "PAT" : $status_cot;
-										$status_cot = ($action=="proc") ? "PCM" : $status_cot;
+										$status_cot = ($_id==0) ? "PEN" : $_stats ;
+										$status_cot = ($action=="proc") ? "PAT" : $status_cot;
+										$status_cot = ($action=="send" && $_id==0) ? "PAT" : $status_cot;
+										$resultado=$clientes->get_cliente($_cliente);
+										$cliente = $resultado["content"][0];
+										$status_cot = ($action=="send" && $_id>0) ? ($cliente["descu"]<$_desc) ?  "PAC" : "PCL" : $status_cot;
+
 										array_push($datos, $_cotizat);
 										array_push($datos, $_lugar);
 										array_push($datos, $_vehiculo);
@@ -191,7 +190,8 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc" || $action=="s
 												array_push($cotizaciones, $_ccotizacion[$i]);
 											}
 										}
-										if($action=="save_edit" || $action=="proc"){
+
+										if($action=="save_edit" || $action=="proc" || $action=="send"){
 											if($upt!=1){
 												$resultado['title']="ERROR";
 												$resultado["content"]="ACCESO DENEGADO: <strong>NO POSEE PERMISO PARA LA ACCION</strong>";
@@ -219,6 +219,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc" || $action=="s
 											case "save_edit":
 												$mensaje="DATOS DE LA COTIZACION ACTUALIZADOS";
 											break;
+											case "send":
 											case "proc":
 												$mensaje="COTIZACION ENVIADA A APROBACION";
 											break;
@@ -699,7 +700,8 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc" || $action=="s
 				$tpl->assign("mod_user",$cab['mod_user']);
 				$tpl->assign("crea_date",$cab['crea_date']);
 				$tpl->assign("mod_date",$cab['mod_date']);
-				if($cab["status"]!="PEN"){
+				$array_cot_edit_all=array('PCO','PEN','PCM');
+				if(!in_array($cab["status"], $array_cot_edit_all)){
 					$tpl->newBlock("val");
 				}
 			}
@@ -708,6 +710,13 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc" || $action=="s
 				$tpl->newBlock("data_save");
 				foreach ($var_array_nav as $key_ => $value_) {
 					$tpl->assign($key_,$value_);
+				}
+				$tpl->assign("codigo",$codigo_origen);
+				if($action=="edit" && $cab["status"]=="PCM"){
+					$tpl->newBlock("data_mod");
+					foreach ($var_array_nav as $key_ => $value_) {
+						$tpl->assign($key_,$value_);
+					}
 				}
 				$tpl->assign("codigo",$codigo_origen);
 			}else{ $tpl->assign("read",'readonly'); }

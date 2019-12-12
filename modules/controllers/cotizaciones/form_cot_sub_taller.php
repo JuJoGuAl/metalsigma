@@ -1,6 +1,6 @@
 <?php
 $action=(isset($_GET['accion'])?strtolower($_GET['accion']):'');
-if($action=="proc"){
+if($action=="proc" || $action=="send"){
 	include_once("../../../class/functions.php");
 	include_once("../../../class/class.cotizaciones.php");
 	include_once("../../../class/class.par_admin.php");
@@ -18,7 +18,7 @@ if($action=="proc"){
 		}else{
 			$ins=$perm_val["content"][0]["ins"];
 			$upt=$perm_val["content"][0]["upt"];
-			if($action=="proc"){
+			if($action=="proc" || $action=="send"){
 				extract($_GET, EXTR_PREFIX_ALL, "");
 				$datos = $detalles = $articulos = $cotizaciones = $det_det = $det_det_art = $det_sist = $det_comp = $det_serv = $det_servp = $det_hhta = $det_hhte = $det_day = $det_ini = $det_fin = $det_art = $det_precio = $det_cant = array();
 				//VARIABLES PARA CALCULOS
@@ -97,12 +97,13 @@ if($action=="proc"){
 										$valores["mar_stt"]= $mar_stt;
 										$valores["sal"]= $sal;
 										$valores["costo_km"]= $costo_km;
-
 										//YA CON LOS DATOS PREVIOS CALCULO LOS TOTALES
 										$resultado=$clientes->get_cliente($_cliente);
 										$cliente = $resultado["content"][0];
-										$status_cot = ($cliente["descu"]<$_desc) ?  "PAC" : "PCL" ;
-										$status_cot = ($_cotizat==5) ? "APB" : $status_cot ;
+										$status_cot = ($action=="send" && $cliente["descu"]<$_desc) ?  "PAC" : "PCL" ;
+										$status_cot = ($action=="send" && $_cotizat==5) ? "APB" : $status_cot ;
+										$status_cot = ($action=="proc") ? "PCM" : $status_cot ;
+
 										array_push($datos, $_cotizat);
 										array_push($datos, $_lugar);
 										array_push($datos, $_vehiculo);
@@ -187,18 +188,19 @@ if($action=="proc"){
 												array_push($cotizaciones, $_ccotizacion[$i]);
 											}
 										}
-										if($action=="proc"){
-											if($upt!=1){
-												$resultado['title']="ERROR";
-												$resultado["content"]="ACCESO DENEGADO: <strong>NO POSEE PERMISO PARA LA ACCION</strong>";
-											}else{
-												$resultado=$data_class->edit_co_sub($_id,$datos,$detalles,$articulos,$cotizaciones);
-											}
+										if($upt!=1){
+											$resultado['title']="ERROR";
+											$resultado["content"]="ACCESO DENEGADO: <strong>NO POSEE PERMISO PARA LA ACCION</strong>";
+										}else{
+											$resultado=$data_class->edit_co_sub($_id,$datos,$detalles,$articulos,$cotizaciones);
 										}
 						
 										$mensaje="SIN MENSAJE";
 										switch ($action) {
 											case "proc":
+												$mensaje = "COTIZACION ENVIADA AL AREA COMERCIAL";
+											break;
+											case "send":
 												$mensaje = ($cliente["descu"]<$_desc) ?  "COTIZACION ENVIADA A APROBACION DE CEO" : "COTIZACION ENVIADA A APROBACION DE CLIENTE!" ;
 											break;
 										}

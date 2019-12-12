@@ -34,24 +34,24 @@
               <p style="margin: .5rem 0;">SERIAL: <strong>{serial}</strong></p>
             </h6>
             <div class="d-flex no-block align-items-center pb-3">
-              <div>{form_title}<strong>{id_tittle}</strong></div>
+              <div>{form_title}<strong>COT-{id_tittle}</strong></div>
               <div class="ml-auto">ESTATUS: <span class="badge badge-pill ml-auto mr-3 font-medium px-2 py-1 {status_color}">{stats_nom}<input type="hidden" id="stats" name="stats" value="{stats_code}"></span></div>
             </div>
             <h6 class="card-subtitle"></h6>
             <ul class="nav nav-tabs" role="tablist">
-              <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab"><span class="hidden-xs-down">COTIZACION</span></a> </li>
+              <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab"><span class="hidden-xs-down">SERVICIO</span></a> </li>
               <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">RESUMEN</span></a> </li>
             </ul>
             <div class="tab-content tabcontent-border">
               <div class="tab-pane p-4 active" id="tab_1" role="tabpanel">
                 <div class="tarjetas material-card card" id="card_cot_det">
-                  <a href="javascript:void(0);" id="link_card_cot_det" class="card-header bg-secondary text-white" data-toggle="collapse" data-target="#tarjeta_cot_det" aria-expanded="true" aria-controls="tarjeta_cot_det">DETALLE DE COTIZACION</a>
+                  <a href="javascript:void(0);" id="link_card_cot_det" class="card-header bg-secondary text-white" data-toggle="collapse" data-target="#tarjeta_cot_det" aria-expanded="true" aria-controls="tarjeta_cot_det">DETALLE DEL SERVICIO</a>
                   <div id="tarjeta_cot_det" class="collapse show" aria-labelledby="link_card_cot_det">
                     <div class="card-body">
                       <div class="row">
                         <div class="col-sm-6">
                           <div class="form-group">
-                            <label for="cotizat" class="control-label col-form-label">TIPO DE COTIZACION</label>
+                            <label for="cotizat" class="control-label col-form-label">TIPO DE SERVICIO</label>
                             <select class="form-control validar list ctrl" id="cotizat" name="cotizat">
                               <option value="-1">SELECCIONE...</option>
                               <!-- START BLOCK : tipo_det -->
@@ -118,7 +118,7 @@
                         </div>
                         <div class="col-sm-6">
                           <div class="form-group">
-                            <label for="equipot" class="control-label col-form-label">EQUIPO DE TRAB</label>
+                            <label for="equipot" class="control-label col-form-label">EQUIPO DE TRABAJO</label>
                             <select class="form-control validar list ctrl" id="equipot" name="equipot">
                               <!-- START BLOCK : equipo_det -->
                               <option value="{codigo}" {selected}>{equipo}</option>
@@ -517,6 +517,7 @@
 </div>
 <script>
   var submod='{submod}';
+  var accion ='{accion}'
   jQuery("#imp_show").text(jQuery("#imp").val()+" %");
   setTimeout(function(){
     jQuery('#lugar').trigger("change");
@@ -536,10 +537,12 @@
   },200);
   jQuery('#form_ button').click(function(){
     submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc"), assoc_id = jQuery(this).attr("data-id");
-    if(acc=="SAVE" || acc=="PROC"){
+    if(acc=="SAVE" || acc=="PROC" || acc=="SEND"){
       if(count_row("table_det_cot","COMPONENTE")){
         if(check_datas_cot()){
+          if(acc=="SAVE"){ jQuery("#accion").val(accion); }
           if(acc=="PROC"){ jQuery("#accion").val("proc"); }
+          if(acc=="SEND"){ jQuery("#accion").val("send"); }
           let cli_desc = parseFloat(jQuery("#desc_percent").val()), cot_desc = parseFloat(jQuery("#desc").val());
           let event = function (){ SendForm(mod,submod,ref,subref,"#form_",assoc_id); }
           if(cot_desc>cli_desc){

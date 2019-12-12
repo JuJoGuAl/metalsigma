@@ -9,6 +9,8 @@ var array_status_print_fac = ["FAC"];
 var array_status_print_odc = ["PRO","UTI"];
 //Array para Calculas COT
 var array_status_calc_odc = ["PCO","PEN", "PCM", "PAC","PAT"];
+//Array para COT editables en ALL
+var array_status_cot_all = ["PCO","PEN", "PCM"];
 
 outdatedBrowserRework({
     fullscreen: false,
@@ -90,6 +92,31 @@ jQuery(document).on("keypress", ".numeric", function(e){
     jQuery(this).val($(this).val().replace(/[^0-9\.]/g, ''));
     if ((e.which != 46 || jQuery(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
         e.preventDefault();
+    }
+});
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+function addcero(value) {
+    let new_val = value;
+    if (value<9){
+        new_val="0"+value;
+    }
+    return new_val;
+}
+jQuery(document).on("blur", ".sum_dtaller", function(){
+    let fecha_ini = jQuery(this).closest("tr").find("td:eq(7) input").val();
+    if((parseInt(jQuery(this).val())>0) && (fecha_ini!==null || fecha_ini!=="") && (jQuery.inArray(jQuery("#stats").val(),array_status_calc_odc)!=-1)){
+        let from = fecha_ini.split("-");
+        let fechas = new Date(from[2], from[1] - 1, from[0]);
+        //let fechas = new Date();
+        fechas = fechas.addDays(parseInt(jQuery(this).val()))
+        //let fecha_hoy = addcero(fechas.getDate())+"-"+(addcero(fechas.getMonth()+1))+"-"+fechas.getFullYear();
+        let tr = jQuery(this).closest("tr").find("td:eq(8) input");
+        tr.datepicker("setDate", new Date(fechas.getFullYear(),(addcero(fechas.getMonth())),addcero(fechas.getDate())));
+        //tr.val(fecha_hoy);
     }
 });
 /** Limpia el Log en este TEMA CLEAR_LOG, elimina los ERRORES en INPUTS
@@ -638,6 +665,8 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                 jQuery("#parte").val(nombre);
                 jQuery("#cparte").val(code);
             }else if(mod=="COTIZACIONES"){
+                var currentdate = new Date();
+                var fecha_hoy = currentdate.getDate()+"-"+(currentdate.getMonth()+1)+"-"+currentdate.getFullYear();
                 var count = (jQuery("#table_det_cot tbody tr").length-1)+1;
                 tr=`<tr class="datas">
                 <td>`+count+`<input name="c_det[]" id="c_det[]" type="hidden" value="0"></td>
@@ -649,8 +678,8 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                 <td><input name="hhtaller[]" id="hhtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_ta" style="width: 70px" maxlength="5" value=""></td>
                 <td><input name="hhterreno[]" id="hhterreno[`+count+`]" type="text" class="form-control numeric ctrl sum_hh_te" style="width: 70px" maxlength="5" value="0"></td>
                 <td><input name="dtaller[]" id="dtaller[`+count+`]" type="text" class="form-control numeric ctrl sum_dtaller" style="width: 50px" maxlength="2" value="0"></td>
-                <td><input name="inicio[]" id="inicio[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:110px;" autocomplete="off" value=""></td>
-                <td><input name="fin[]" id="fin[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:110px;" autocomplete="off" value=""></td>
+                <td><input name="inicio[]" id="inicio[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:110px;" autocomplete="off" value="`+fecha_hoy+`"></td>
+                <td><input name="fin[]" id="fin[`+count+`]" type="text" class="form-control dates ctrl" maxlength="10" style="width:110px;" autocomplete="off" value="`+fecha_hoy+`"></td>
                 <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
                 </tr>`;
                 jQuery("#table_det_cot tbody tr:last").before(tr);
