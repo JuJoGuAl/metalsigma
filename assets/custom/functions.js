@@ -8,7 +8,7 @@ var array_status_print_fac = ["FAC"];
 //Array para imprimir ODC
 var array_status_print_odc = ["PRO","UTI"];
 //Array para Calculas COT
-var array_status_calc_odc = ["PCO","PEN","PAC","PAT"];
+var array_status_calc_odc = ["PCO","PEN", "PCM", "PAC","PAT"];
 
 outdatedBrowserRework({
     fullscreen: false,
@@ -158,10 +158,10 @@ function GetModule(mod,submod,ref,subref,acc,id){
                 jQuery(document).ready(function() {
                     if(acc!="NEW" && acc!="EDIT"){
                         let table = jQuery(".datatables");
-                        table.DataTable({
-                            "order" : table.is("[data-dt_order]") ? (table.data("dt_order") == false ? [] : table.data("dt_order")) : [[0, 'desc']],
-                            "pageLength" : table.is("[data-dt_page_lenght]") ? table.data("dt_page_lenght") : 10,
-                        });
+                        let options = {};
+                        options.order = table.is("[data-dt_order]") ? (table.data("dt_order") == false ? [] : table.data("dt_order")) : [[0, 'desc']];
+                        options.pageLength = table.is("[data-dt_page_lenght]") ? table.data("dt_page_lenght") : 10;
+                        table.DataTable(options);
                     }
                     jQuery('.tooltip').tooltip("dispose");
                     jQuery('[data-toggle="tooltip"]').tooltip();
@@ -179,7 +179,7 @@ function GetModule(mod,submod,ref,subref,acc,id){
                     jQuery('[data-toggle="popover"]').popover({ container: "body", trigger: "hover", placement: 'left', html : true });
                     jQuery(".number_cal").formatCurrency();
                     // OJO ACA DEBO DE HACER ALGO SI ESTAN CERRADAS
-                    if(submod!="REP_COTIZACIONES" && submod!="REP_PLAN"){ jQuery(".preloader").fadeOut(); }                    
+                    if(submod!="REP_COTIZACIONES" && submod!="REP_PLAN" && ref!="FORM_COT_SUB_ALL" && ref!="FORM_COT_SUB_TALLER" && ref!="FORM_COT_SUB_CEO"){ jQuery(".preloader").fadeOut(); }                    
                 });
             }
         })

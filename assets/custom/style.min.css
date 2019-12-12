@@ -20044,6 +20044,7 @@ pre code {
 .table th {
     padding: .9375rem .4rem;
     vertical-align: top;
+    vertical-align: middle;
     border-top: 1px solid #dee2e6
 }
 

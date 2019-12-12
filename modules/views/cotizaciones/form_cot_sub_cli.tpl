@@ -417,6 +417,7 @@
   });
   <!-- START BLOCK : val -->
   block_controls(true);
+  jQuery(".preloader").fadeOut();
   <!-- END BLOCK : val -->
 </script>
 <!-- END BLOCK : module -->

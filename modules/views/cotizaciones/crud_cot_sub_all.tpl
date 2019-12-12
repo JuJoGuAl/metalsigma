@@ -26,9 +26,7 @@
             <p style="margin: .5rem 0;">EQUIPO: <strong>{equipo} {marca} {modelo}</strong></p>
             <p style="margin: .5rem 0;">SERIAL: <strong>{serial}</strong></p>
           </h6>
-          <div class="d-flex no-block align-items-center pb-3">
-            <div>COTIZACION: <strong>{codigo}</strong></div>
-          </div>
+          <div class="d-flex no-block align-items-center pb-3"><div>COTIZACION: <strong>COT-{codigo}</strong></div></div>
           <hr>
           <div class="row">
             <div class="col-sm-3">
@@ -46,14 +44,14 @@
             <table class="table table-bordered table-hover datatables">
               <thead>
                 <tr>
-                  <th style="width: 90px;">COTIZACION</th>
+                  <th style="width: 90px;">SERVICIO</th>
                   <th>TIPO</th>
                   <th>LUGAR</th>
                   <th>EQUIPO TRAB.</th>
                   <th>TOTAL NETO</th>
                   <th>EJECUTIVO</th>
                   <th style="width: 100px;">ESTATUS</th>
-                  <th style="width: 30px;">OPC</th>
+                  <th>OPC</th>
                 </tr>
               </thead>
               <tbody>

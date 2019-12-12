@@ -40,8 +40,7 @@
             <h6 class="card-subtitle"></h6>
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab"><span class="hidden-xs-down">COTIZACION</span></a> </li>
-              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_3" role="tab"><span class="hidden-xs-down">SERVICIOS TERC</span></a> </li>
-              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_4" role="tab"><span class="hidden-xs-down">RESUMEN</span></a> </li>
+              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">RESUMEN</span></a> </li>
             </ul>
             <div class="tab-content tabcontent-border">
               <div class="tab-pane p-4 active" id="tab_1" role="tabpanel">
@@ -199,8 +198,8 @@
                     </div>
                 </div>
                 <div class="tarjetas material-card card" id="card_ins">
-                    <a href="javascript:void(0);" id="link_card_ins" class="card-header bg-secondary text-white" data-toggle="collapse" data-target="#tarjeta_ins" aria-expanded="true" aria-controls="tarjeta_ins">INSUMOS</a>
-                    <div id="tarjeta_ins" class="collapse show" aria-labelledby="link_card_ins">
+                    <a href="javascript:void(0);" id="link_card_ins" class="card-header bg-secondary text-white collapsed" data-toggle="collapse" data-target="#tarjeta_ins" aria-expanded="false" aria-controls="tarjeta_ins">INSUMOS</a>
+                    <div id="tarjeta_ins" class="collapse" aria-labelledby="link_card_ins">
                         <div class="card-body">
                           <div class="row">
                             <div class="col-lg-12">
@@ -239,8 +238,8 @@
                     </div>
                 </div>
                 <div class="tarjetas material-card card" id="card_rep">
-                    <a href="javascript:void(0);" id="link_card_rep" class="card-header bg-secondary text-white" data-toggle="collapse" data-target="#tarjeta_rep" aria-expanded="true" aria-controls="tarjeta_rep">REPUESTOS</a>
-                    <div id="tarjeta_rep" class="collapse show" aria-labelledby="link_card_rep">
+                    <a href="javascript:void(0);" id="link_card_rep" class="card-header bg-secondary text-white collapsed" data-toggle="collapse" data-target="#tarjeta_rep" aria-expanded="false" aria-controls="tarjeta_rep">REPUESTOS</a>
+                    <div id="tarjeta_rep" class="collapse" aria-labelledby="link_card_rep">
                         <div class="card-body">
                           <div class="row">
                             <div class="col-lg-12">
@@ -279,8 +278,8 @@
                     </div>
                 </div>
                 <div class="tarjetas material-card card" id="card_serv_terc">
-                    <a href="javascript:void(0);" id="link_card_serv_terc" class="card-header bg-secondary text-white" data-toggle="collapse" data-target="#tarjeta_serv_terc" aria-expanded="true" aria-controls="tarjeta_serv_terc">COTIZACIONES DE SERVICIOS</a>
-                    <div id="tarjeta_serv_terc" class="collapse show" aria-labelledby="link_card_serv_terc">
+                    <a href="javascript:void(0);" id="link_card_serv_terc" class="card-header bg-secondary text-white collapsed" data-toggle="collapse" data-target="#tarjeta_serv_terc" aria-expanded="false" aria-controls="tarjeta_serv_terc">COTIZACIONES DE SERVICIOS</a>
+                    <div id="tarjeta_serv_terc" class="collapse" aria-labelledby="link_card_serv_terc">
                         <div class="card-body">
                           <div class="row">
                             <div class="col-lg-12">
@@ -316,50 +315,48 @@
                         </div>
                     </div>
                 </div>
-              </div>
-              <div class="tab-pane p-4" id="tab_3" role="tabpanel">
                 <div class="tarjetas material-card card" id="card_serv_terc_det">
-                    <a href="javascript:void(0);" id="link_card_serv_terc_det" class="card-header bg-secondary text-white" data-toggle="collapse" data-target="#tarjeta_serv_terc_det" aria-expanded="true" aria-controls="tarjeta_serv_terc_det">SERVICIOS TERCERIZADOS</a>
-                    <div id="tarjeta_serv_terc_det" class="collapse show" aria-labelledby="link_card_serv_terc_det">
-                        <div class="card-body">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="table_ser_ter">
-                                  <thead>
-                                    <tr>
-                                      <th>CODIGO</th>
-                                      <th>COD. INT</th>
-                                      <th>SERVICIO</th>
-                                      <th width="100px;">CANT</th>
-                                      <th>PRECIO</th>
-                                      <th>ORIGEN</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <!-- START BLOCK : det_ser_ter -->
-                                    <tr>
-                                      <td>
-                                        <input name="corigen[]" id="corigen[{count}]" type="hidden" value="{origen}">
-                                        {codigo_art}
-                                      </td>
-                                      <td>{codigo2}</td>
-                                      <td>{articulo}</td>
-                                      <td width="100px;"><input name="cant[]" id="cant[{count}]" type="hidden" value="{cant}">{cant}</td>
-                                      <td class="add_ser"><span class="number_cal">{precio}</span><input name="precio[]" id="precio[{count}]" type="hidden" value="{precio}"><input name="tipo_art[]" id="tipo_art[{count}]" type="hidden" value="stt"></td>
-                                      <td>{origen}</td>
-                                    </tr>
-                                    <!-- END BLOCK : det_ser_ter -->
-                                  </tbody>
-                                </table>
-                              </div>
+                  <a href="javascript:void(0);" id="link_card_serv_terc_det" class="card-header bg-secondary text-white collapsed" data-toggle="collapse" data-target="#tarjeta_serv_terc_det" aria-expanded="false" aria-controls="tarjeta_serv_terc_det">SERVICIOS TERCERIZADOS</a>
+                  <div id="tarjeta_serv_terc_det" class="collapse" aria-labelledby="link_card_serv_terc_det">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="table-responsive">
+                              <table class="table table-bordered table-hover" id="table_ser_ter">
+                                <thead>
+                                  <tr>
+                                    <th>CODIGO</th>
+                                    <th>COD. INT</th>
+                                    <th>SERVICIO</th>
+                                    <th width="100px;">CANT</th>
+                                    <th>PRECIO</th>
+                                    <th>ORIGEN</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <!-- START BLOCK : det_ser_ter -->
+                                  <tr>
+                                    <td>
+                                      <input name="corigen[]" id="corigen[{count}]" type="hidden" value="{origen}">
+                                      {codigo_art}
+                                    </td>
+                                    <td>{codigo2}</td>
+                                    <td>{articulo}</td>
+                                    <td width="100px;"><input name="cant[]" id="cant[{count}]" type="hidden" value="{cant}">{cant}</td>
+                                    <td class="add_ser"><span class="number_cal">{precio}</span><input name="precio[]" id="precio[{count}]" type="hidden" value="{precio}"><input name="tipo_art[]" id="tipo_art[{count}]" type="hidden" value="stt"></td>
+                                    <td>{origen}</td>
+                                  </tr>
+                                  <!-- END BLOCK : det_ser_ter -->
+                                </tbody>
+                              </table>
                             </div>
-                          </div>                            
+                          </div>
                         </div>
-                    </div>
-                </div>
+                      </div>
+                  </div>
               </div>
-              <div class="tab-pane p-4" id="tab_4" role="tabpanel">
+              </div>
+              <div class="tab-pane p-4" id="tab_2" role="tabpanel">
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="table-responsive">
@@ -489,7 +486,10 @@
                 <input type="hidden" id="id" name="id" value="{id}">
                 <!-- START BLOCK : data_save -->
                 <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="SAVE" data-id="{codigo}"><span class="btn-label"><i class="fas fa-save"></i></span> GUARDAR</button>
-                <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="PROC" data-id="{codigo}"><span class="btn-label"><i class="fas fa-cogs"></i></span> ENVIAR</button>
+                <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="SEND" data-id="{codigo}"><span class="btn-label"><i class="fas fa-cogs"></i></span> APROBAR</button>
+                <!-- START BLOCK : data_mod -->
+                <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="PROC" data-id="{codigo}"><span class="btn-label"><i class="fas fa-cogs"></i></span> MODIFICAR</button>
+                <!-- END BLOCK : data_mod -->
                 <!-- END BLOCK : data_save -->
                 <button class="btn btn-outline-secondary waves-effect waves-light" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="IMP" data-id="0"><span class="btn-label"><i class="fas fa-print"></i></span> IMPRIMIR</button>
                 <button class="btn btn-outline-secondary waves-effect waves-light menu" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="CLOSE" data-id="0"><span class="btn-label"><i class="fas fa-sign-out-alt"></i></span> CERRAR</button>
@@ -523,6 +523,12 @@
     jQuery('a[data-toggle="tab"]').each(function(){
       let tab = jQuery(this).attr("href");
       let alert = jQuery(tab+" span.badge").length;
+      if(alert>0){
+        jQuery(this).append('<span class="badge badge-pill count badge-info"><i class="fas fa-star"></i></span>');
+      }
+    });
+    jQuery('a.card-header').each(function(){
+      let alert = jQuery("#"+jQuery(this).attr("aria-controls")+" span.badge").length;
       if(alert>0){
         jQuery(this).append('<span class="badge badge-pill count badge-info"><i class="fas fa-star"></i></span>');
       }
@@ -659,6 +665,7 @@
   <!-- START BLOCK : val -->
   block_controls(true);
   setTimeout(function(){ jQuery(".dates").datepicker("destroy"); },100);
+  jQuery(".preloader").fadeOut();
   <!-- END BLOCK : val -->
 </script>
 <!-- END BLOCK : module -->

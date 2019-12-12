@@ -70,6 +70,7 @@ if($perm_val["title"]<>"SUCCESS"){
 				<span data-toggle="tooltip" data-placement="top" title="" data-original-title="'.$stat.'">'.$kstat.'</span>
 				</div>
 				';
+				$cadena_status = '<span >'.$stat.'</span>';
 				foreach ($data["content"][$llave] as $key => $value){
 					$tpl->assign($key,$value);
 				}

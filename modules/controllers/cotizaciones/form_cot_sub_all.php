@@ -1,6 +1,6 @@
 <?php
 $action=(isset($_GET['accion'])?strtolower($_GET['accion']):'');
-if($action=="save_new" || $action=="save_edit" || $action=="proc"){
+if($action=="save_new" || $action=="save_edit" || $action=="proc" || $action=="send"){
 	include_once("../../../class/functions.php");
 	include_once("../../../class/class.cotizaciones.php");
 	include_once("../../../class/class.par_admin.php");
@@ -18,7 +18,7 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 		}else{
 			$ins=$perm_val["content"][0]["ins"];
 			$upt=$perm_val["content"][0]["upt"];
-			if($action=="save_new" || $action=="save_edit" || $action=="proc"){
+			if($action=="save_new" || $action=="save_edit" || $action=="proc" || $action=="send"){
 				extract($_GET, EXTR_PREFIX_ALL, "");
 				$datos = $detalles = $articulos = $cotizaciones = $det_det = $det_det_art = $det_sist = $det_comp = $det_serv = $det_servp = $det_hhta = $det_hhte = $det_day = $det_ini = $det_fin = $det_art = $det_precio = $det_cant = array();
 				//VARIABLES PARA CALCULOS
@@ -99,7 +99,14 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 										$valores["costo_km"]= $costo_km;
 
 										//YA CON LOS DATOS PREVIOS CALCULO LOS TOTALES
-										$status_cot = ($action=="proc") ? "PAT" : "PEN";
+										//definir 3 acciones:
+										// guardaer
+										// enviar (pasa a taller desde nuevo)
+										// modificar (pasa a taller desde modificar)
+										// enviar (pasa a ceo/cli desde modificar)
+										$status_cot = "PEN";
+										$status_cot = ($action=="send") ? "PAT" : $status_cot;
+										$status_cot = ($action=="proc") ? "PCM" : $status_cot;
 										array_push($datos, $_cotizat);
 										array_push($datos, $_lugar);
 										array_push($datos, $_vehiculo);

@@ -635,6 +635,7 @@
   <!-- START BLOCK : val -->
   block_controls(true);
   setTimeout(function(){ jQuery(".dates").datepicker("destroy"); },100);
+  jQuery(".preloader").fadeOut();
   <!-- END BLOCK : val -->
 </script>
 <!-- END BLOCK : module -->

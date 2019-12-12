@@ -53,9 +53,9 @@ $array_all["CAN"]="CANCELADA";
 $array_all["FAC"]="FACTURADA";
 //STATUS COTIZACION
 $array_status=array();
-$array_status["PCO"]="POR COTIZAR";
+$array_status["PCO"]="PEND. POR COTIZAR";
 $array_status["PEN"]="PENDIENTE";
-$array_status["PCM"]="PEND. POR COMERCIO";
+$array_status["PCM"]="PEND. APROB. COMERCIO";
 $array_status["PAC"]="PEND. APROB. CEO";
 $array_status["PAT"]="PEND. APROB. TALLER";
 $array_status["PCL"]="PEND. APROB. CLIENTE";
@@ -124,7 +124,7 @@ $array_cot_ods=array('PRO'); //USADO PARA COTIZACIONES EN PLANIFICACION (SOLO LA
 $array_cot_fac=array('PRO','FAC'); //USADO PARA COTIZACIONES EN VENTAS/FACTURACION
 $array_car_emp=array(1,2); //USADO PARA MOSTRAR LA PLANIFICACION DE ESOS CARGOS
 $array_excel_rows=array('codigo','articulo','descripcion'); //GESTIONO QUE LOS CAMPOS SEAN LOS NECESARIOS
-$array_cot_all_=array('PCO','PEN','PAC','PAT','PCL','APB','PRO','FAC'); //USADO PARA CONSULTAR LAS COT REALIZADAS
+$array_cot_all_=array('PCO','PEN', 'PCM', 'PAC','PAT','PCL','APB','PRO','FAC'); //USADO PARA CONSULTAR LAS COT REALIZADAS
 $array_cot_pro_=array('APB','PRO','FAC'); //USADO PARA CONSULTAR LAS COT APROBADAS
 //IDENTIFICO CAMPOS NUMERICOS PARA FORMATEAR
 $array_numbers=array("mar_ins","mar_rep","mar_stt","gastos","margen","salida","costo_km","costo_prom","monto_total","costou","costot","m_serv","m_rep","m_ins","m_stt","m_tra","m_misc","m_subt","m_desc","m_neto","m_imp","m_bruto");

@@ -26,9 +26,7 @@
             <p style="margin: .5rem 0;">EQUIPO: <strong>{equipo} {marca} {modelo}</strong></p>
             <p style="margin: .5rem 0;">SERIAL: <strong>{serial}</strong></p>
           </h6>
-          <div class="d-flex no-block align-items-center pb-3">
-            <div>COTIZACION: <strong>{codigo}</strong></div>
-          </div>
+          <div class="d-flex no-block align-items-center pb-3"><div>COTIZACION: <strong>COT-{codigo}</strong></div></div>
           <hr>
           <div class="button-group">
               <button class="btn btn-outline-secondary waves-effect waves-light menu" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="NONE" data-subref="{subref}" data-acc="MODULO" data-id="0"><span class="btn-label"><i class="fas fa-arrow-left"></i></span> VOLVER</button>
@@ -38,13 +36,13 @@
             <table class="table table-bordered table-hover datatables">
               <thead>
                 <tr>
-                  <th>COTIZACION</th>
+                  <th style="width: 90px;">SERVICIO</th>
                   <th>TIPO</th>
                   <th>LUGAR</th>
                   <th>EQUIPO TRAB.</th>
                   <th>TOTAL NETO</th>
                   <th>EJECUTIVO</th>
-                  <th>ESTATUS</th>
+                  <th style="width: 100px;">ESTATUS</th>
                   <th>OPC</th>
                 </tr>
               </thead>

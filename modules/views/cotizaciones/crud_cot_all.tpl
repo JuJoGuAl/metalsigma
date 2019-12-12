@@ -62,20 +62,20 @@
             <table id="cot_all" class="table table-bordered table-hover datatables">
               <thead>
                 <tr>
-                  <th>COTIZACION</th>
+                  <th width="75px">COTIZACION</th>
                   <th width="75px">RUT</th>
                   <th>CLIENTE</th>
                   <th>EQUIPO</th>
                   <th>SEGMENTO</th>
-                  <th>FECHA</th>
-                  <th>SUB-COT</th>
-                  <th>OPC</th>
+                  <th width="80px">FECHA</th>
+                  <th>SERV</th>
+                  <th width="50px">OPC</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- START BLOCK : data -->
                 <tr class="{class}">
-                  <td>{codigo}</td>
+                  <td>COT-{codigo}</td>
                   <td>{code}</td>
                   <td>{data}</td>
                   <td>{equipo} {marca} {modelo}<br><span style="font-size: 11px">S/N: {serial}</span></td>
@@ -87,7 +87,6 @@
                 <!-- END BLOCK : data -->
               </tbody>
             </table>
-            <div id="sub_cotizaciones" style="display:none;"></div>
           </div>
         </div>
       </div>
@@ -114,7 +113,7 @@
       jQuery('.popover').popover('dispose');
       code = jQuery(this).data("id");
       let options = {
-        title: '<div style="font-size: 12px;">SUB COTIZACIONES: <strong>'+jQuery(this).data("count")+'</strong></div>',
+        title: '<div style="font-size: 12px;">SERVICIOS: <strong>'+jQuery(this).data("count")+'</strong></div>',
         content: '<div style="font-size: 12px;" class="content-pop">ESPERE...</div>',
         placement: 'left',
         container: 'body',
@@ -159,7 +158,7 @@
             let equi_ = value.equipo+' '+value.marca+' '+value.modelo+'<br><span style="font-size: 11px">S/N: '+value.serial+'</span>';
             let stat_ = '<h3><span class="badge badge-secondary" data-count="'+value.cuentas+'" data-id="'+value.codigo+'">'+value.cuentas+'</span></h3>';
             var rowNode = table.row.add([
-              value.codigo,
+              "COT-"+value.codigo,
               value.code,
               value.data,              
               equi_,
