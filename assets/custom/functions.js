@@ -59,6 +59,7 @@ $.extend( true, $.fn.dataTable.defaults, {
         jQuery("input[type='search']").focus();
     }
 });
+
 /** Asigno el Calendario a los campos Fecha (Creo una función para poder hacerlo en los campos dinamicos)*/
 function SetCalendar(){
     let options = {

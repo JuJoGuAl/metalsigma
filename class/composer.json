@@ -1,7 +1,13 @@
 {
+    "autoload": {
+        "psr-4": {
+            "WebSocket\\": "Server/"
+        }
+    },
     "require": {
         "intervention/image": "^2.4",
         "spipu/html2pdf": "^5.2",
-        "phpoffice/phpspreadsheet": "^1.6"
+        "phpoffice/phpspreadsheet": "^1.6",
+        "cboden/ratchet": "^0.4.1"
     }
 }

@@ -3,6 +3,12 @@
  * License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
 
+ *{
+     -moz-box-sizing: border-box;
+     -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+ }
+
 .fa-fw,
 .fa-li,
 .wi-fw {

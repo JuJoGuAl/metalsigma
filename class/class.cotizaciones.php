@@ -60,6 +60,10 @@ class cotizaciones{
 	private $db17;
 	public $table17;
 	public $Id17;
+	//COTIZACION COUNT
+	private $db18;
+	public $table18;
+	public $Id18;
 	public function __construct(){
 		include_once('class.bd_transsac.php');
 		$this->table = "co_tipos";
@@ -481,6 +485,18 @@ class cotizaciones{
 			array ('public_u',	"cods"),
 			array ('public_u',	"mod_user")
 		);
+		//COTIZACION COUNT
+		$this->table18 = "co_cotizacion_sub";
+		$this->tId18 = "ccotizacion";
+		$this->db18 = new database($this->table18, $this->tId18);
+		$this->db18->fields = array (
+			array ('system',	"COUNT(*) AS cuenta"),
+			array ('system',	'status')
+		);
+	}
+	//LISTAR
+	public function list_status(){
+		return $this->db18->getRecords();
 	}
 	/** TIPOS COTIZACIONES */
 	//LISTAR
