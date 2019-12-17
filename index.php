@@ -35,6 +35,64 @@ $filemtime = filemtime($file);
 $tpl->assign("ico", $file."?".$filemtime);
 
 if(isset($_SESSION['metalsigma_log'])){
+	//
+	include_once("./class/class.cotizaciones.php");
+	include_once("./class/class.inventario.php");
+	include_once("./class/class.compras.php");
+
+	$cot = new cotizaciones();
+	$com = new compras();
+	$inv = new inventario();
+
+	$mensaje='{';
+
+	$cot_count=$cot->list_status();
+	if($cot_count["title"]=="SUCCESS"){
+		$mensaje.='"cot":[';
+		foreach ($cot_count["content"] as $key => $value) {
+			$mensaje.="{";
+			foreach ($value as $key1 => $value1) {
+				$mensaje.='"'.$key1.'":"'.$value1.'",';
+			}
+			$mensaje = substr($mensaje,0,-1);
+			$mensaje.="},";
+		}
+		$mensaje = substr($mensaje,0,-1);
+		$mensaje.="],";
+	}
+	$inv_count=$inv->list_status();
+	if($inv_count["title"]=="SUCCESS"){
+		$mensaje.='"inv":[';
+		foreach ($inv_count["content"] as $key => $value) {
+			$mensaje.="{";
+			foreach ($value as $key1 => $value1) {
+				$mensaje.='"'.$key1.'":"'.$value1.'",';
+			}
+			$mensaje = substr($mensaje,0,-1);
+			$mensaje.="},";
+		}
+		$mensaje = substr($mensaje,0,-1);
+		$mensaje.="],";
+	}
+	$com_count=$com->list_status();
+	if($com_count["title"]=="SUCCESS"){
+		$mensaje.='"com":[';
+		foreach ($com_count["content"] as $key => $value) {
+			$mensaje.="{";
+			foreach ($value as $key1 => $value1) {
+				$mensaje.='"'.$key1.'":"'.$value1.'",';
+			}
+			$mensaje = substr($mensaje,0,-1);
+			$mensaje.="},";
+		}
+		$mensaje = substr($mensaje,0,-1);
+		$mensaje.="],";
+	}
+
+	$mensaje = substr($mensaje,0,-1);
+	$mensaje.="}";
+	$tpl->assign("json_mensaje",$mensaje);
+	
 	$tpl->assign("nom_emp","HeavyTech SpA");
 	$data = $perm->get_($_SESSION['metalsigma_log']);
 	$perfil = $data["cab"];

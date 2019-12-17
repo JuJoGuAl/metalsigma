@@ -11,6 +11,10 @@ var array_status_print_odc = ["PRO","UTI"];
 var array_status_calc_odc = ["PCO","PEN", "PCM", "PAC","PAT"];
 //Array para COT editables en ALL
 var array_status_cot_all = ["PCO","PEN", "PCM"];
+//JSON with menus and Pends
+var json_cot_number = {"FAC":0,"CAN":0,"PRO":0,"PEN":0,"APB":0,"PCM":0,"PCO":0,"PAC":0,"PAT":0,"PCL":0};
+var json_inv_number = {"NTE":0,"DNT":0,"COM":0,"DCO":0};
+var json_com_number = {"cuenta_odc_cot":0,"cuenta_odc_ods":0,"cuenta_odc":0};
 
 outdatedBrowserRework({
     fullscreen: false,
@@ -59,6 +63,103 @@ $.extend( true, $.fn.dataTable.defaults, {
         jQuery("input[type='search']").focus();
     }
 });
+function setAlerts(obj) {
+    let cot_pen_all = inv_pen = 0 ;
+    jQuery.each(obj, function(indice, valor) {
+        if(indice=="cot"){
+            jQuery.each(valor, function(key, value) {
+                json_cot_number[value.status]=(value.cuenta)*1;
+            });
+            cot_pen_all = json_cot_number["PCO"]+json_cot_number["PCM"]+json_cot_number["PEN"];
+            if(cot_pen_all>0){
+                jQuery('li a[data-mod="CRUD_COT_ALL"] .alertas').remove();
+                jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+cot_pen_all+'</span>').insertAfter('li a[data-mod="CRUD_COT_ALL"] span');
+                jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_COT_ALL"] i');
+            }
+            if(json_cot_number["PAT"]>0){
+                jQuery('li a[data-mod="CRUD_COT_TALLER"] .alertas').remove();
+                jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+json_cot_number["PAT"]+'</span>').insertAfter('li a[data-mod="CRUD_COT_TALLER"] span');
+                jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_COT_TALLER"] i');
+            }
+            if(json_cot_number["PAC"]>0){
+                jQuery('li a[data-mod="CRUD_COT_CEO"] .alertas').remove();
+                jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+json_cot_number["PAC"]+'</span>').insertAfter('li a[data-mod="CRUD_COT_CEO"] span');
+                jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_COT_CEO"] i');
+            }
+            if(json_cot_number["PCL"]>0){
+                jQuery('li a[data-mod="CRUD_COT_CLI"] .alertas').remove();
+                jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+json_cot_number["PCL"]+'</span>').insertAfter('li a[data-mod="CRUD_COT_CLI"] span');
+                jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_COT_CLI"] i');
+            }
+        }
+        if(indice=="inv"){
+            jQuery.each(valor, function(key, value) {
+                json_inv_number[value.tipo]=(value.cuenta)*1;
+            });
+            inv_pen = json_inv_number["NTE"]+json_inv_number["DNT"]+json_inv_number["COM"]+json_inv_number["DCO"]+json_inv_number["AJS"]+json_inv_number["AJE"];
+            if(json_inv_number["NTE"]>0){
+                jQuery('li a[data-mod="CRUD_INV_NTE"] .alertas').remove();
+                jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+json_inv_number["NTE"]+'</span>').insertAfter('li a[data-mod="CRUD_INV_NTE"] span');
+                jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_INV_NTE"] i');
+            }
+            if(json_inv_number["COM"]>0){
+                jQuery('li a[data-mod="CRUD_INV_FAC"] .alertas').remove();
+                jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+json_inv_number["COM"]+'</span>').insertAfter('li a[data-mod="CRUD_INV_FAC"] span');
+                jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_INV_FAC"] i');
+            }
+        }
+        if(indice=="com"){
+            jQuery.each(valor[0], function(key, value) {
+                json_com_number[key]=(value)*1;
+            });
+            if(json_com_number["cuenta_odc_cot"]>0){
+                jQuery('li a[data-mod="CRUD_ODC_SRV"] .alertas').remove();
+                jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+json_com_number["cuenta_odc_cot"]+'</span>').insertAfter('li a[data-mod="CRUD_ODC_SRV"] span');
+                jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_ODC_SRV"] i');
+            }
+            if(json_com_number["cuenta_odc_ods"]>0){
+                jQuery('li a[data-mod="CRUD_ODC_ODS"] .alertas').remove();
+                jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+json_com_number["cuenta_odc_ods"]+'</span>').insertAfter('li a[data-mod="CRUD_ODC_ODS"] span');
+                jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_ODC_ODS"] i');
+            }
+            if(json_com_number["cuenta_odc"]>0){
+                jQuery('li a[data-mod="CRUD_ODC"] .alertas').remove();
+                jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+json_com_number["cuenta_odc"]+'</span>').insertAfter('li a[data-mod="CRUD_ODC"] span');
+                jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_ODC"] i');
+            }
+        }
+    });
+    //MARCO EL PAPA COMO PENDIENTE
+    jQuery('li.first-parent').each(function(){
+        var sum = 0;
+        //REMUEVO SI TIENE YA NOTIFICACION
+        jQuery(this).find(".alertas2").remove();
+        //SUMO LOS NUMEROS DE LAS NOT HIJOS
+        jQuery(this).find('.alertas').each(function() {
+            sum += jQuery(this).text()*1;
+        });
+        if(sum>0){
+            jQuery('<div class="notify2 alertas2"><span class="heartbit"></span><span class="point"></span></div>').insertAfter(jQuery(this).find("i:eq(0)"));
+            jQuery('<span class="alertas2 badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+sum+'</span>').insertAfter(jQuery(this).find("a span.hide-menu:eq(0)"));
+            
+        }
+    });
+    //MARCO EL HIJO COMO PENDIENTE
+    jQuery('li.second-parent').each(function(){
+        var sum = 0;
+        //REMUEVO SI TIENE YA NOTIFICACION
+        jQuery(this).find(".alertas3").remove();
+        //SUMO LOS NUMEROS DE LAS NOT HIJOS
+        jQuery(this).find('.alertas').each(function() {
+            sum += jQuery(this).text()*1;
+        });
+        if(sum>0){
+            jQuery('<div class="notify2 alertas3"><span class="heartbit"></span><span class="point"></span></div>').insertAfter(jQuery(this).find("i:eq(0)"));
+            jQuery('<span class="alertas3 badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+sum+'</span>').insertAfter(jQuery(this).find("a span.hide-menu:eq(0)"));
+            
+        }
+    });
+}
 
 /** Asigno el Calendario a los campos Fecha (Creo una función para poder hacerlo en los campos dinamicos)*/
 function SetCalendar(){
@@ -207,7 +308,10 @@ function GetModule(mod,submod,ref,subref,acc,id){
                     jQuery('[data-toggle="popover"]').popover({ container: "body", trigger: "hover", placement: 'left', html : true });
                     jQuery(".number_cal").formatCurrency();
                     // OJO ACA DEBO DE HACER ALGO SI ESTAN CERRADAS
-                    if(submod!="REP_COTIZACIONES" && submod!="REP_PLAN" && ref!="FORM_COT_SUB_ALL" && ref!="FORM_COT_SUB_TALLER" && ref!="FORM_COT_SUB_CEO"){ jQuery(".preloader").fadeOut(); }                    
+                    if(submod!="REP_COTIZACIONES" && submod!="REP_PLAN" && ref!="FORM_COT_SUB_ALL" && ref!="FORM_COT_SUB_TALLER" && ref!="FORM_COT_SUB_CEO"){ jQuery(".preloader").fadeOut(); }
+                    if(typeof conn !== undefined){
+                        conn.send(1);
+                    }
                 });
             }
         })

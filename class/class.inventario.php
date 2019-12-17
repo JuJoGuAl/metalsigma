@@ -80,6 +80,10 @@ class inventario{
 	private $db19;
 	public $table19;
 	public $Id19;
+	//INVENTARIO_COUNT
+	private $db20;
+	public $table20;
+	public $Id20;
 	public function __construct(){
 		include_once('class.bd_transsac.php');
 		//ARTICULOS
@@ -496,6 +500,22 @@ class inventario{
 			array ('public_u',	"corigen"),
 			array ('public_u',	'mod_user')
 		);
+		//INVENTARIO_COUNT
+		$this->table20 = "inv_movimientos";
+		$this->tId20 = "cmovimiento";
+		$this->db20 = new database($this->table20, $this->tId20);
+		$this->db20->fields = array (
+			array ('system',	"COUNT(*) AS cuenta"),
+			array ('system',	'tipo')
+		);
+	}
+	//LISTAR_CUENTAS
+	public function list_status(){
+		$data = array ();
+		$data[0]["row"]="status";
+		$data[0]["operator"]="=";
+		$data[0]["value"]="PEN";
+		return $this->db20->getRecords(false,$data,"tipo");
 	}
 	/** ARTICULOS */
 	//LISTAR

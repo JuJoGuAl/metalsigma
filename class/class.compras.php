@@ -40,6 +40,10 @@ class compras{
 	private $db10;
 	public $table10;
 	public $Id10;
+	//ODC_COUNT
+	private $db11;
+	public $table11;
+	public $Id11;
 	public function __construct(){
 		include_once('class.bd_transsac.php');
 		//COTIZACION_LIST
@@ -306,6 +310,23 @@ class compras{
 			array ('system',	'DATE_FORMAT(ocd.crea_date, "%d/%m/%Y %T") AS crea_date'),
 			array ('system',	'DATE_FORMAT(ocd.mod_date, "%d/%m/%Y %T") AS mod_date')
 		);
+		//ODC_COUNT
+		$this->table11 = "com_odc";
+		$this->tId11 = "corden";
+		$this->db11 = new database($this->table11, $this->tId11);
+		$this->db11->fields = array (
+			array ('system',    'SUM(CASE WHEN (ccotizacion>0 AND ods=0) THEN 1 ELSE 0 END) AS cuenta_odc_cot'),
+			array ('system',    'SUM(CASE WHEN (ccotizacion=0 AND ods>0) THEN 1 ELSE 0 END) AS cuenta_odc_ods'),
+			array ('system',    'SUM(CASE WHEN (ccotizacion=0 AND ods=0) THEN 1 ELSE 0 END) AS cuenta_odc')
+		);
+	}
+	//LISTAR_CUENTAS
+	public function list_status(){
+		$data = array ();
+		$data[0]["row"]="status";
+		$data[0]["operator"]="=";
+		$data[0]["value"]="PEN";
+		return $this->db11->getRecords(false,$data);
 	}
 	/** COTIZACIONES */
 	//LISTAR

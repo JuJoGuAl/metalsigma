@@ -12,7 +12,7 @@ use WebSocket\WebSocketMessage;
                 new WebSocketMessage()
             )
         ),
-        8080
+        8000
     );
 
     $server->run();

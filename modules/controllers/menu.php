@@ -19,12 +19,13 @@ if($menu["title"]==="SUCCESS"){
 			if($submenu["title"]==="SUCCESS"){
 				foreach ($submenu["content"] as $key1 => $value1){
 					$mod = $perm->get_mod($_SESSION['metalsigma_log'],$value['cmenu'],$value1['csubmenu']);
-					$class_sub_menu=$data_sub_menu=$data_link_1=$data_link_2="";
+					$class_sub_menu=$data_sub_menu=$data_link_1=$data_link_2=$class_sub_li="";
 					if($value1['csubmenu']==0){
 						$class_sub_menu=$data_sub_menu=""; $data_link_1="menu"; $data_link_2="";
 						if($mod["title"]==="SUCCESS"){
 							foreach ($mod["content"] as $key3 => $value3){
 								$tpl->newBlock("modulo");
+								$tpl->assign("class_sub_li",$class_sub_li);
 								$tpl->assign("class_sub_menu",$class_sub_menu);
 								$tpl->assign("data_sub_menu",$data_sub_menu);
 								$tpl->assign("data_link_1",$data_link_1);
@@ -37,9 +38,10 @@ if($menu["title"]==="SUCCESS"){
 							}
 						}
 					}else{
-						$class_sub_menu="has-arrow";$data_sub_menu='aria-expanded="false"';$data_link_1=""; $data_link_2="menu";
+						$class_sub_menu="has-arrow";$data_sub_menu='aria-expanded="false"';$data_link_1=""; $data_link_2="menu";$class_sub_li="second-parent";
 						if($mod["title"]==="SUCCESS"){
 							$tpl->newBlock("modulo");
+							$tpl->assign("class_sub_li",$class_sub_li);
 							$tpl->assign("class_sub_menu",$class_sub_menu);
 							$tpl->assign("data_sub_menu",$data_sub_menu);
 							$tpl->assign("data_link_1",$data_link_1);

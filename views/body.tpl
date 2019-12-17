@@ -29,6 +29,7 @@
     <div class="preloader">
         <div id="status">&nbsp;</div>
     </div>
+    <input type="hidden" id="json" name="json" value='{json_mensaje}'>
     <div id="main-wrapper">
         <header class="topbar">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
@@ -181,6 +182,7 @@
     <script src="{custom}"></script>
     <script src="{functions}"></script>
     <script>
+        var conn = "";
         jQuery.get("./views/home.tpl", function(){ })
         .done(function(data) {
             jQuery("#modulo").html(data);
@@ -223,7 +225,17 @@
                     }
                 }
             }
-
+        });
+        
+        jQuery(function () {
+            conn = new WebSocket('ws://190.171.166.251:8000');
+            conn.onmessage = function(e) {
+                setAlerts(JSON.parse(e.data));
+            };
+            if(typeof conn !== undefined){
+                setAlerts(JSON.parse(jQuery("#json").val()));
+                setTimeout(function(){ conn.send(1); },1000);
+            }
         });
     </script>
 </body>

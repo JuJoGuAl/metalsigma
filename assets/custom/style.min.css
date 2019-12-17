@@ -30126,6 +30126,10 @@ body[data-theme=dark] .manage-table tr.advanced-table {
     #main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .sidebar-nav .hide-menu {
         display: none
     }
+    #main-wrapper[data-layout=vertical][data-sidebartype=full] .sidebar-nav .notify2,
+    #main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar:hover .sidebar-nav .notify2 {
+        display: none;
+    }
     #main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .sidebar-nav .nav-small-cap {
         justify-content: center
     }
@@ -30396,6 +30400,40 @@ body[data-theme=dark] .manage-table tr.advanced-table {
     position: absolute;
     right: 6px;
     top: -10px
+}
+
+.notify2 {
+    position: relative;
+    right: -10px
+}
+
+.notify2 .heartbit {
+    position: absolute;
+    top: -20px;
+    right: -4px;
+    height: 25px;
+    width: 25px;
+    z-index: 10;
+    border: 5px solid #ffc36d;
+    border-radius: 70px;
+    -moz-animation: heartbit 1s ease-out;
+    -moz-animation-iteration-count: infinite;
+    -o-animation: heartbit 1s ease-out;
+    -o-animation-iteration-count: infinite;
+    -webkit-animation: heartbit 1s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite
+}
+.notify2 .point {
+    width: 6px;
+    height: 6px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;
+    background-color: #ffc36d;
+    position: absolute;
+    right: 6px;
+    top: -10px;
 }
 
 @-moz-keyframes heartbit {

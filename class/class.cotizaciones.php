@@ -490,13 +490,25 @@ class cotizaciones{
 		$this->tId18 = "ccotizacion";
 		$this->db18 = new database($this->table18, $this->tId18);
 		$this->db18->fields = array (
+			/*array ('system',    'SUM(CASE WHEN (status="PCO") THEN 1 ELSE 0 END) AS c_PCO'),
+			array ('system',    'SUM(CASE WHEN (status="PEN") THEN 1 ELSE 0 END) AS c_PEN'),
+			array ('system',    'SUM(CASE WHEN (status="PCM") THEN 1 ELSE 0 END) AS c_PCM'),
+			array ('system',    'SUM(CASE WHEN (status="PAC") THEN 1 ELSE 0 END) AS c_PAC'),
+			array ('system',    'SUM(CASE WHEN (status="PAT") THEN 1 ELSE 0 END) AS c_PAT'),
+			array ('system',    'SUM(CASE WHEN (status="PCL") THEN 1 ELSE 0 END) AS c_PCL'),
+			array ('system',    'SUM(CASE WHEN (status="APB") THEN 1 ELSE 0 END) AS c_APB'),
+			array ('system',    'SUM(CASE WHEN (status="PRO") THEN 1 ELSE 0 END) AS c_PRO'),
+			array ('system',    'SUM(CASE WHEN (status="TRA") THEN 1 ELSE 0 END) AS c_TRA'),
+			array ('system',    'SUM(CASE WHEN (status="TER") THEN 1 ELSE 0 END) AS c_TER'),
+			array ('system',    'SUM(CASE WHEN (status="FAC") THEN 1 ELSE 0 END) AS c_FAC'),
+			array ('system',    'SUM(CASE WHEN (status="CAN") THEN 1 ELSE 0 END) AS c_CAN')*/
 			array ('system',	"COUNT(*) AS cuenta"),
 			array ('system',	'status')
 		);
 	}
-	//LISTAR
+	//LISTAR_CUENTAS
 	public function list_status(){
-		return $this->db18->getRecords();
+		return $this->db18->getRecords(false,false,"status");
 	}
 	/** TIPOS COTIZACIONES */
 	//LISTAR
