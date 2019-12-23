@@ -166,11 +166,17 @@ class planificaciones{
 		return $this->db->getRecords();
 	}
 	//LISTAR ODS PLANIFICADAS
-	public function list_t(){
-		$data = array ();
-		$data[0]["row"]="pc.status";
-		$data[0]["operator"]="=";
-		$data[0]["value"]=1;
+	public function list_t($code=0){
+		$data = array (); $cont=-1;
+		$cont++;
+		$data[$cont]["row"]="pc.status";
+		$data[$cont]["operator"]="=";
+		$data[$cont]["value"]=1;
+		if($code>0){
+			$data[$cont]["row"]="cs.ccotizacion";
+			$data[$cont]["operator"]="=";
+			$data[$cont]["value"]=$code;
+		}
 		/*$data[1]["row"]="cs.status";
 		$data[1]["operator"]="=";
 		$data[1]["value"]="PRO";*/

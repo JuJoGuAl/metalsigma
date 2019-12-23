@@ -1335,7 +1335,9 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
             jQuery("#cdata").val(code);
             jQuery("#persona").val(table.find('._code').text());
         }else if(acc=="search_ods"){
-            jQuery(".preloader").fadeIn();
+            if(submod=="CRUD_INV_RES" || submod=="CRUD_INV_ODS" || submod=="CRUD_INV_REQ"){
+                jQuery(".preloader").fadeIn();
+            }
             if(submod!="CRUD_INV_REQ"){
                 jQuery("#ods").val(table.find('._ods_pad').val());
                 jQuery("#cods").val(table.find('._ods').val());
@@ -1351,101 +1353,103 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                 </tr>`;
                 jQuery("#table_det_ods tbody").append(tr_det);
             }
-            tbl_det = (submod=="CRUD_INV_RES") ? "table_art" : "table_det_odc" ;
-            tbl_det = (submod=="CRUD_INV_ODS") ? "table_art" : tbl_det ;
-            tbl_det = (submod=="CRUD_INV_REQ") ? "table_det_odc" : tbl_det ;
-            if(submod!="CRUD_INV_REQ"){
-                jQuery("#"+tbl_det+" tbody").empty();
-            }
-            jQuery.ajax({
-                type: "POST",
-                url: "./modules/controllers/ajax.php",
-                data : 'accion=get_ods_art&code='+table.find('._ods').val()+'&alm='+jQuery("#calmacen").val()+'&mod='+submod,
-                dataType:'json',
-                success: function(data){
-                    if(data.title=="SUCCESS"){
-                        jQuery.each(data.content, function(key,value){
-                            var count = (jQuery("#"+tbl_det+" tbody tr").length)+1;
-                            row_det = (submod=="CRUD_INV_ODS") ? `<input name="cot_det[]" id="cot_det[`+count+`]" type="hidden" value="`+value.codigo_cot+`">` : `` ;
-                            row_precio = (submod=="CRUD_INV_ODS") ? `<input name="precio[]" id="precio[`+count+`]" type="hidden" value="`+value.precio+`">` : `` ;
-                            row_ods = (submod=="CRUD_INV_REQ") ? `<input name="cods[]" id="cods[`+count+`]" type="hidden" value="`+table.find('._ods').val()+`">` : `` ;
-                            row_odc_det = (submod=="CRUD_ODC_ODS") ? `<input name="corden_det[]" id="corden_det[`+count+`]" type="hidden" class="hidden" value="0">` : `` ;
-                            tr_det=`<tr>
-                            <td>
-                                <input name="carticulo[]" id="carticulo[`+count+`]" type="hidden" value="`+value.codigo+`">
-                                `+row_det+row_precio+row_ods+row_odc_det+`
-                                `+value.codigo+`
-                            </td>
-                            <td>`+value.codigo2+`</td>
-                            <td>`+value.articulo+`</td>`;
-                            if(submod=="CRUD_INV_RES" || submod=="CRUD_INV_ODS"){
-                                tr_det+=`
-                                <td>`+(value.cant_ods-value.cant_ent)+`</td>
-                                <td>`+(value.cant_inv-value.cant_res)+`</td>
-                                <td>`+(value.cant_res)+`</td>
-                                <td><input type="text" id="cant[`+count+`]" name="cant[]" class="form-control numeric" maxlength="10" style="width:100px" value=""></td>
-                                <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
-                                </tr>`;
-                            }else{
-                                if(submod=="CRUD_INV_REQ"){
-                                    tr_det+=`<td><input type="text" id="cant[`+count+`]" name="cant[]" class="form-control numeric" maxlength="10" style="width:100px" value="`+(value.cant_ods-value.cant_ent)+`"></td>
-                                    <td>`+value.clasificacion+`</td>
-                                    <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>                                    
+            if(submod=="CRUD_INV_RES" || submod=="CRUD_INV_ODS" || submod=="CRUD_INV_REQ"){
+                tbl_det = (submod=="CRUD_INV_RES") ? "table_art" : "table_det_odc" ;
+                tbl_det = (submod=="CRUD_INV_ODS") ? "table_art" : tbl_det ;
+                tbl_det = (submod=="CRUD_INV_REQ") ? "table_det_odc" : tbl_det ;
+                if(submod!="CRUD_INV_REQ"){
+                    jQuery("#"+tbl_det+" tbody").empty();
+                }
+                jQuery.ajax({
+                    type: "POST",
+                    url: "./modules/controllers/ajax.php",
+                    data : 'accion=get_ods_art&code='+table.find('._ods').val()+'&alm='+jQuery("#calmacen").val()+'&mod='+submod,
+                    dataType:'json',
+                    success: function(data){
+                        if(data.title=="SUCCESS"){
+                            jQuery.each(data.content, function(key,value){
+                                var count = (jQuery("#"+tbl_det+" tbody tr").length)+1;
+                                row_det = (submod=="CRUD_INV_ODS") ? `<input name="cot_det[]" id="cot_det[`+count+`]" type="hidden" value="`+value.codigo_cot+`">` : `` ;
+                                row_precio = (submod=="CRUD_INV_ODS") ? `<input name="precio[]" id="precio[`+count+`]" type="hidden" value="`+value.precio+`">` : `` ;
+                                row_ods = (submod=="CRUD_INV_REQ") ? `<input name="cods[]" id="cods[`+count+`]" type="hidden" value="`+table.find('._ods').val()+`">` : `` ;
+                                row_odc_det = (submod=="CRUD_ODC_ODS") ? `<input name="corden_det[]" id="corden_det[`+count+`]" type="hidden" class="hidden" value="0">` : `` ;
+                                tr_det=`<tr>
+                                <td>
+                                    <input name="carticulo[]" id="carticulo[`+count+`]" type="hidden" value="`+value.codigo+`">
+                                    `+row_det+row_precio+row_ods+row_odc_det+`
+                                    `+value.codigo+`
+                                </td>
+                                <td>`+value.codigo2+`</td>
+                                <td>`+value.articulo+`</td>`;
+                                if(submod=="CRUD_INV_RES" || submod=="CRUD_INV_ODS"){
+                                    tr_det+=`
+                                    <td>`+(value.cant_ods-value.cant_ent)+`</td>
+                                    <td>`+(value.cant_inv-value.cant_res)+`</td>
+                                    <td>`+(value.cant_res)+`</td>
+                                    <td><input type="text" id="cant[`+count+`]" name="cant[]" class="form-control numeric" maxlength="10" style="width:100px" value=""></td>
+                                    <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>
                                     </tr>`;
                                 }else{
-                                    tr_det+=`<td>`+(value.cant_inv-value.cant_res_alm)+`</td>
-                                    <td>`+(value.cant_ods-value.cant_ent-value.cant_res)+`</td>
-                                    <td><input type="text" id="cant[`+count+`]" name="cant[]" class="form-control numeric" maxlength="10" style="width:100px" value=""></td>
-                                    <td><input type="text" id="precio[`+count+`]" name="precio[]" class="form-control numeric" maxlength="12" style="width:100px" value=""></td>
-                                    <td><input type="text" id="imp[`+count+`]" name="imp[]" class="form-control numeric" maxlength="12" style="width:100px" value="`+data.imp+`" readonly></td>
-                                    <td><input type="text" id="total[`+count+`]" name="total[]" class="form-control" style="width:100px" value="0" disabled></td>`;
-                                    btn=`<td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>`;
-                                    if(submod=="CRUD_ODC_ODS"){
-                                        let cots = "";
-                                        if(typeof value.ods_arts !== 'undefined'){
-                                            jQuery.each(value.ods_arts, function(i,v){
-                                                cots += "ODC # "+v.origen+" (<strong>"+v.status+"</strong>) - CANT: "+v.cant+"<br>";
-                                            });
-                                            btn=`<td>
-                                                <button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button>
-                                                <span class="badge badge-pill count badge-info" data-conten="`+cots+`"><i class="fas fa-star"></i></span>
-                                            </td>`;
-                                        }                                        
+                                    if(submod=="CRUD_INV_REQ"){
+                                        tr_det+=`<td><input type="text" id="cant[`+count+`]" name="cant[]" class="form-control numeric" maxlength="10" style="width:100px" value="`+(value.cant_ods-value.cant_ent)+`"></td>
+                                        <td>`+value.clasificacion+`</td>
+                                        <td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>                                    
+                                        </tr>`;
+                                    }else{
+                                        tr_det+=`<td>`+(value.cant_inv-value.cant_res_alm)+`</td>
+                                        <td>`+(value.cant_ods-value.cant_ent-value.cant_res)+`</td>
+                                        <td><input type="text" id="cant[`+count+`]" name="cant[]" class="form-control numeric" maxlength="10" style="width:100px" value=""></td>
+                                        <td><input type="text" id="precio[`+count+`]" name="precio[]" class="form-control numeric" maxlength="12" style="width:100px" value=""></td>
+                                        <td><input type="text" id="imp[`+count+`]" name="imp[]" class="form-control numeric" maxlength="12" style="width:100px" value="`+data.imp+`" readonly></td>
+                                        <td><input type="text" id="total[`+count+`]" name="total[]" class="form-control" style="width:100px" value="0" disabled></td>`;
+                                        btn=`<td><button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button></td>`;
+                                        if(submod=="CRUD_ODC_ODS"){
+                                            let cots = "";
+                                            if(typeof value.ods_arts !== 'undefined'){
+                                                jQuery.each(value.ods_arts, function(i,v){
+                                                    cots += "ODC # "+v.origen+" (<strong>"+v.status+"</strong>) - CANT: "+v.cant+"<br>";
+                                                });
+                                                btn=`<td>
+                                                    <button type="button" class="btn btn-outline-secondary btn-circle btn-sm waves-effect waves-light bt_del ctrl" data-menu="`+mod+`" data-mod="`+submod+`" data-ref="`+ref+`" data-subref="`+subref+`"><i class="fas fa-trash-alt"></i></button>
+                                                    <span class="badge badge-pill count badge-info" data-conten="`+cots+`"><i class="fas fa-star"></i></span>
+                                                </td>`;
+                                            }                                        
+                                        }
+                                        tr_det+=btn;
+                                        tr_det+=`</tr>`;
                                     }
-                                    tr_det+=btn;
-                                    tr_det+=`</tr>`;
                                 }
-                            }
-                            jQuery("#"+tbl_det+" tbody").append(tr_det);
-                            if(submod=="CRUD_ODC_ODS"){
-                                if(typeof value.ods_arts !== 'undefined'){
-                                    jQuery("#"+tbl_det+" tbody tr").last().addClass("table-warning");
+                                jQuery("#"+tbl_det+" tbody").append(tr_det);
+                                if(submod=="CRUD_ODC_ODS"){
+                                    if(typeof value.ods_arts !== 'undefined'){
+                                        jQuery("#"+tbl_det+" tbody tr").last().addClass("table-warning");
+                                    }
                                 }
-                            }
-                        });
-                        if(submod=="CRUD_ODC_ODS"){
-                            jQuery(".count").each(function(){
-                                jQuery(this).popover({
-                                  title: '<div style="font-size: 12px;"><strong>PROCESADO POR:</strong></div>',
-                                  content: '<div style="font-size: 12px;">'+jQuery(this).attr("data-conten")+'</div>',
-                                  trigger: 'hover',
-                                  placement: 'left',
-                                  container: 'body',
-                                  html: true
-                                });
                             });
+                            if(submod=="CRUD_ODC_ODS"){
+                                jQuery(".count").each(function(){
+                                    jQuery(this).popover({
+                                    title: '<div style="font-size: 12px;"><strong>PROCESADO POR:</strong></div>',
+                                    content: '<div style="font-size: 12px;">'+jQuery(this).attr("data-conten")+'</div>',
+                                    trigger: 'hover',
+                                    placement: 'left',
+                                    container: 'body',
+                                    html: true
+                                    });
+                                });
+                            }
+                            jQuery(".preloader").fadeOut();
+                        }else{
+                            jQuery(".preloader").fadeOut();
+                            dialog(data.content,data.title);
                         }
-                        jQuery(".preloader").fadeOut();
-                    }else{
-                        jQuery(".preloader").fadeOut();
-                        dialog(data.content,data.title);
+                    },
+                    error: function(x,err){
+                        //jQuery(".preloader").fadeOut();
+                        Modal_error(x,err);
                     }
-                },
-                error: function(x,err){
-                    //jQuery(".preloader").fadeOut();
-                    Modal_error(x,err);
-                }
-            });
+                });
+            }
         }else if (acc=="search_ods_gar"){
             jQuery(".preloader").fadeIn();
             jQuery("#cods_gar").val(table.find('._ods').val());

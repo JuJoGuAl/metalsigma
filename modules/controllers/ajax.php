@@ -1170,7 +1170,8 @@ if (!isset($_SESSION['metalsigma_log'])){
 			}
 		}else if($accion=="search_ods"){
 			$not = ($_POST['mod']=="CRUD_INV_REQ") ? json_decode($_POST["not"]) : false ;
-			$data=$cotizaciones->list_sub(false,$array_cot_ods,false,false,false,false,true,$not);
+			$cuentas = ($_POST['mod']=="CRUD_INV_REQ") ? true : false ;
+			$data=$cotizaciones->list_sub(false,$array_cot_ods,false,false,false,false,$cuentas,$not);
 			if($data["title"]=="SUCCESS"){
 				foreach ($data["content"] as $key => $value){
 					$table.='<tr><td class="_id"><input class="_ods" type="hidden" value="'.$value["codigo"].'"><input class="_ods_pad" type="hidden" value="'.$value["ods_full"].'">'.$value["ods_full"].'</td><td class="_code">'.formatRut($value["code"]).'</td><td class="_nom">'.$value['data'].'</td><td class="_fecha">'.$value['fecha'].'</td></tr>';
@@ -1374,6 +1375,44 @@ if (!isset($_SESSION['metalsigma_log'])){
 				$response["content"]=$data["content"];
 			}
 
+		}else if($accion=="get_ods_plan"){
+			$data=$planificaciones->list_t($_ods);
+			if($data["title"]=="SUCCESS"){
+				$response["title"]="SUCCESS";
+				$planes=array();
+				$colores=array("primary","warning","info","danger","success","secondary");
+				$color_new=array_rand($colores,1);
+				$color = "bg-".$colores[$color_new];
+				foreach ($data["content"] as $key => $value){
+					$det_plan=array();
+					$planes[$key]["id"]=$value["codigo_cabecera"];
+					$planes[$key]["title"]=$value["codigo_ods"];
+					$planes[$key]["ods"]=$value["codigo_ods"];
+					$planes[$key]["status"]=$value["status"];
+					$planes[$key]["transporte"]=$value["transporte"];
+					$planes[$key]["start"]=$value["finicio"];
+					$planes[$key]["end"]=$value["ffin"];
+					$planes[$key]["end"]=$value["ffin"];
+					$planes[$key]["color"]=$color;
+
+					$data3=$planificaciones->list_dets($value["codigo_cabecera"]);
+					if($data3["title"]=="SUCCESS"){
+						foreach ($data3["content"] as $key1 => $value1){
+							$code = $key1+1;
+							$det_plan[$key1]["trabajador_".$code]=$value1["data"];
+							$det_plan[$key1]["cargo_".$code]=$value1["cargo"];
+						}
+						$planes[$key]["det_plan"]=$det_plan;
+					}
+				}
+				$response["content"]=$planes;
+			}else if($data["title"]=="WARNING"){
+				$response["title"]="ERROR";
+				$response["content"]="LA ODS NO POSEE PLANIFICACIONES";
+			}else{
+				$response["title"]="ERROR";
+				$response["content"]=$data["content"];
+			}
 		}
 	}
 }

@@ -169,6 +169,7 @@
     <script src="./assets/moment/moment.js"></script>
     <!-- FullCalendar -->
     <script src="./assets/fullcalendar/js/fullcalendar.min.js"></script>
+    <script src="./assets/fullcalendar/js/es.js"></script>
     <!-- jquery-confirm -->
     <script src="./assets/jquery-confirm/js/jquery-confirm.js"></script>
     <!-- Echarts -->

@@ -123,7 +123,7 @@
     config.cancelToken = call.token
     return axios(config);
   }
-  var event = function () {
+  var event_clear = function () {
     jQuery(".ui-autocomplete-loading").removeClass("ui-autocomplete-loading");
     jQuery("#ccliente").val("");
     jQuery("#cliente").val("").focus();
@@ -139,10 +139,10 @@
           if(repuesta.title=="SUCCESS"){
             response(repuesta.content);
           }else{
-              event();
+              event_clear();
               dialog(repuesta.content,repuesta.title);
           }
-        }).catch(error => { event(); axios_Error(error); });
+        }).catch(error => { event_clear(); axios_Error(error); });
       },
       autoFocus: true,
       minLength: 3,
