@@ -101,10 +101,10 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc" || $action=="s
 										//YA CON LOS DATOS PREVIOS CALCULO LOS TOTALES
 										$status_cot = ($_id==0) ? "PEN" : $_stats ;
 										$status_cot = ($action=="proc") ? "PAT" : $status_cot;
-										$status_cot = ($action=="send" && $_id==0) ? "PAT" : $status_cot;
+										$status_cot = ($action=="send" && $_stats=="PEN") ? "PAT" : $status_cot;
 										$resultado=$clientes->get_cliente($_cliente);
 										$cliente = $resultado["content"][0];
-										$status_cot = ($action=="send" && $_id>0) ? ($cliente["descu"]<$_desc) ?  "PAC" : "PCL" : $status_cot;
+										$status_cot = ($action=="send" && $_stats=="PCM") ? ($cliente["descu"]<$_desc) ?  "PAC" : "PCL" : $status_cot;
 
 										array_push($datos, $_cotizat);
 										array_push($datos, $_lugar);
@@ -456,7 +456,8 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc" || $action=="s
 					$cotiza_hist=$data_class->get_hcs($cab["ultima_edicion"]);
 					$historia=$cotiza_hist["content"][0];
 					foreach ($hist_array as $key => $value) {
-						$hist_array[$key] = ($cab[$key]!=$historia[$key]) ? '<span class="badge badge-pill count badge-info" data-content="Valor anterior: <strong>'.numeros($historia[$key]).'</strong><br>Cambiado por: <strong>'.$historia["user"].'</strong><br>Fecha: <strong>'.setDate($historia["date"],"d/m/Y H:i:s").'</strong>" rel="popover" data-placement="top" data-toggle="popover"><i class="fas fa-star"></i></span>' : "" ;
+						$unidad = ($key=="m_descp") ? " %" : " $";
+						$hist_array[$key] = ($cab[$key]!=$historia[$key]) ? '<span class="badge badge-pill count badge-info" data-content="Valor anterior: <strong>'.numeros($historia[$key]).$unidad.'</strong><br>Cambiado por: <strong>'.$historia["user"].'</strong><br>Fecha: <strong>'.setDate($historia["date"],"d/m/Y H:i:s").'</strong>" rel="popover" data-placement="top" data-toggle="popover"><i class="fas fa-star"></i></span>' : "" ;
 						$tpl->assign("hist_".$key,$hist_array[$key]);
 					}
 				}

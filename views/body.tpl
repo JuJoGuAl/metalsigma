@@ -69,10 +69,6 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav float-right">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-print font-18"></i> REPORTES</a>
-                        </li>
-                        <li class="nav-item"><span class="nav-link"><span class="d-none d-md-block"><i class="fas fa-ellipsis-v"></i></span></span></li>
                         <!-- INCLUDE BLOCK : profile -->
                     </ul>
                 </div>
@@ -228,13 +224,13 @@
         });
         
         jQuery(function () {
-            conn = new WebSocket('ws://190.171.166.251:8000');
+            conn = new WebSocket('ws://190.171.166.251:26');
             conn.onmessage = function(e) {
                 setAlerts(JSON.parse(e.data));
             };
             if(typeof conn !== undefined){
                 setAlerts(JSON.parse(jQuery("#json").val()));
-                setTimeout(function(){ conn.send(1); },1000);
+                setTimeout(function(){ if(conn.readyState==1){ conn.send(1); } },1000);
             }
         });
     </script>

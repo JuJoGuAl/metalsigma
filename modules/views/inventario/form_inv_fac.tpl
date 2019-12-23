@@ -285,7 +285,6 @@
   jQuery(document).ready(function(){
     cal_fac();
     jQuery('#form_ button').click(function(){
-      console.log("de FAC");
       submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc");
       if(acc=="SAVE" || acc=="PROC"){
         if(validate("rut")){

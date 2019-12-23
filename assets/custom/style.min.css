@@ -38285,3 +38285,22 @@ CUSTOM CSS
 .tarjetas a[data-toggle="collapse"].collapsed:after {
     transform: rotate(-180deg);
 }
+#table_resumen tfoot tr td, #table_resumen tfoot tr th {
+    border: none;
+}
+#table_resumen tfoot tr td:first-child{
+    font-weight: 700;
+    padding-right: 10px;
+}
+#table_resumen tfoot tr td:last-child{
+    border-top: 1px solid #aaa;
+}
+#table_resumen tfoot tr:last-child{
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+#table_resumen .form-control:disabled, #table_resumen .form-control[readonly] {
+    background-color: transparent;
+    border: none;
+}

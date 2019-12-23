@@ -62,14 +62,14 @@
             <table id="cot_all" class="table table-bordered table-hover datatables">
               <thead>
                 <tr>
-                  <th width="75px">COTIZACION</th>
+                  <th width="80px">COTIZACION</th>
                   <th width="75px">RUT</th>
                   <th>CLIENTE</th>
                   <th>EQUIPO</th>
                   <th>SEGMENTO</th>
                   <th width="80px">FECHA</th>
-                  <th>SERV</th>
-                  <th width="50px">OPC</th>
+                  <th width="40px">SERV</th>
+                  <th width="40px">OPC</th>
                 </tr>
               </thead>
               <tbody>

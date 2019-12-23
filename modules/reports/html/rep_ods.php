@@ -15,9 +15,9 @@ $telefono = ($cab['tel_fijo']=="") ? "+56 9 ".$cab['tel_movil'] : "+56 2 ".$cab[
     <table style="width: 100%;" align="center" cellpadding="0" cellspacing="0">
         <tr>
             <td style="width: 15%; text-align: left; "><strong>COTIZACION</strong></td>
-            <td style="width: 30%; text-align: left;"><?php echo $cab["cot_full"]; ?></td>
+            <td style="width: 30%; text-align: left;">COT-<?php echo $cab["cot_full"]; ?></td>
             <td style="width: 15%; text-align: left; "><strong>ODS</strong></td>
-            <td style="width: 40%; text-align: left;"><?php echo $cab["ods_full"]; ?></td>
+            <td style="width: 40%; text-align: left;">OS-ST<?php echo $cab["ods_full"]; ?></td>
         </tr>
         <tr>
             <td style="width: 15%; text-align: left; "><strong>RUT</strong></td>

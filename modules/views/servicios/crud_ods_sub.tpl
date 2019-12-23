@@ -26,10 +26,10 @@
             <p style="margin: .5rem 0;">EQUIPO: <strong>{equipo} {marca} {modelo}</strong></p>
             <p style="margin: .5rem 0;">SERIAL: <strong>{serial}</strong></p>
           </h6>
+          <div class="d-flex no-block align-items-center pb-3"><div>COTIZACION: <strong>COT-{codigo}</strong> - ODS: <strong>OS-ST{codigo_ods}</strong></div></div>
           <hr>
           <div class="row">
             <div class="col-sm-2">
-              <label for="none" class="control-label col-form-label"><br></label>
               <div class="button-group">
                 <button class="btn btn-outline-secondary waves-effect waves-light menu" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="NONE" data-subref="{subref}" data-acc="MODULO" data-id="0"><span class="btn-label"><i class="fas fa-arrow-left"></i></span> VOLVER</button>
               </div>
@@ -40,21 +40,21 @@
             <table class="table table-bordered table-hover datatables">
               <thead>
                 <tr>
-                  <th>COTIZACION</th>
-                  <th>ODS</th>
+                  <th width="80px">COTIZACION</th>
+                  <th width="95px">ODS</th>
                   <th>TIPO</th>
                   <th>LUGAR</th>
                   <th>EQUIPO TRAB.</th>
                   <th>EJECUTIVO</th>
-                  <th>ESTATUS</th>
-                  <th>OPC</th>
+                  <th width="90px">ESTATUS</th>
+                  <th width="40px">OPC</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- START BLOCK : data -->
                 <tr class="{estatus}">
-                  <td>{cot_full}</td>
-                  <td>{ods_full}</td>
+                  <td>COT-{cot_full}</td>
+                  <td>OS-ST{ods_full}</td>
                   <td>{tipo}{gar}</td>
                   <td>{lugar}</td>
                   <td>{equipo}</td>

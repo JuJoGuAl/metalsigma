@@ -197,11 +197,11 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 							$parte = 		$value["parte"];
 							$pieza = 		$value["pieza"];
 							$articulo = 	$value["articulo"];
-							$hh_taller =	'<input name="hhtaller[]" id="hhtaller[]" type="hidden" class="ctrl sum_hh_ta" value="'.$value["hh_taller"].'">'.$value["hh_taller"];
-							$hh_terreno =	'<input name="hhterreno[]" id="hhterreno[]" type="hidden" class="ctrl sum_hh_te" value="'.$value["hh_terreno"].'">'.$value["hh_terreno"];
-							$dias_taller =	'<input name="dtaller[]" id="dtaller[]" type="hidden" class="sum_dtaller" value="'.$value["dias_taller"].'">'.$value["dias_taller"];
-							$finicio = 		'<input name="inicio[]" id="inicio[]" type="hidden" value="'.setDate($value["finicio"],"d-m-Y").'">'.setDate($value["finicio"],"d-m-Y");
-							$ffin = 		'<input name="fin[]" id="fin[]" type="hidden" value="'.setDate($value["ffin"],"d-m-Y").'">'.setDate($value["ffin"],"d-m-Y");
+							$hh_taller =	'<input name="hhtaller[]" id="hhtaller['.$count.']" type="hidden" class="ctrl sum_hh_ta" value="'.$value["hh_taller"].'">'.$value["hh_taller"];
+							$hh_terreno =	'<input name="hhterreno[]" id="hhterreno['.$count.']" type="hidden" class="ctrl sum_hh_te" value="'.$value["hh_terreno"].'">'.$value["hh_terreno"];
+							$dias_taller =	'<input name="dtaller[]" id="dtaller['.$count.']" type="hidden" class="sum_dtaller" value="'.$value["dias_taller"].'">'.$value["dias_taller"];
+							$finicio = 		'<input name="inicio[]" id="inicio['.$count.']" type="hidden" value="'.setDate($value["finicio"],"d-m-Y").'">'.setDate($value["finicio"],"d-m-Y");
+							$ffin = 		'<input name="fin[]" id="fin['.$count.']" type="hidden" value="'.setDate($value["ffin"],"d-m-Y").'">'.setDate($value["ffin"],"d-m-Y");
 							$actions = 		'-';
 							//REVISO SI TIENE CAMBIOS ANTERIORES
 							if($value["ultima_edicion"]>0){
@@ -261,6 +261,7 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 				if(!empty($art)){
 					foreach ($art as $key => $value) {
 						$tpl->newBlock("articulos");
+						$precio_="";
 						if($value["del"]==0){
 							$codigo =			$value["carticulo"];
 							$codigo2 =			$value["codigo2"];
@@ -281,7 +282,7 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 									$cant.='<span class="badge badge-pill count badge-info" data-content="Valor anterior: <strong>'.$historia["cant"].'</strong><br>Cambiado por: <strong>'.$historia["user"].'</strong><br>Fecha: <strong>'.setDate($historia["date"],"d/m/Y H:i:s").'</strong>" rel="popover" data-placement="top" data-toggle="popover"><i class="fas fa-star"></i></span>';
 								}
 								if($value["precio"]!=$historia["precio"]){
-									$precio.='<span class="badge badge-pill count badge-info" data-content="Valor anterior: <strong>'.$historia["precio"].'</strong><br>Cambiado por: <strong>'.$historia["user"].'</strong><br>Fecha: <strong>'.setDate($historia["date"],"d/m/Y H:i:s").'</strong>" rel="popover" data-placement="top" data-toggle="popover"><i class="fas fa-star"></i></span>';
+									$precio_.='<span class="badge badge-pill count badge-info" data-content="Valor anterior: <strong>'.numeros($historia["precio"]).'</strong><br>Cambiado por: <strong>'.$historia["user"].'</strong><br>Fecha: <strong>'.setDate($historia["date"],"d/m/Y H:i:s").'</strong>" rel="popover" data-placement="top" data-toggle="popover"><i class="fas fa-star"></i></span>';
 								}
 							}
 						}else{
@@ -298,6 +299,7 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 						$tpl->assign("nombre",$nombre);
 						$tpl->assign("cant",$cant);
 						$tpl->assign("precio",$precio);
+						$tpl->assign("precio_",$precio_);
 						$tpl->assign("clasificacion",$clasificacion);
 						$tpl->assign("actions",$actions);
 					}
@@ -326,7 +328,11 @@ if($action=="proc" || $action=="canc" || $action=="reco"){
 						}
 					}
 				}
-				
+				$tpl->newBlock("aud_data");
+				$tpl->assign("crea_user",$cab['crea_user']);
+				$tpl->assign("mod_user",$cab['mod_user']);
+				$tpl->assign("crea_date",$cab['crea_date']);
+				$tpl->assign("mod_date",$cab['mod_date']);
 				if($cab["status"]!="PEN"){
 					$tpl->newBlock("val");
 				}

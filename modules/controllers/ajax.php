@@ -1317,7 +1317,6 @@ if (!isset($_SESSION['metalsigma_log'])){
 			$fstat = ($arr[0]=="-1") ? false : json_decode($_stat);
 			$ftipo = ($_tipo=="-1") ? false : $_tipo;
 			$data=$cotizaciones->list_sub($_code,$fstat,false,false,false,false,false,false,false,false,$ftipo);
-			//print_r($data);
 			if($data["title"]=="SUCCESS"){
 				$response["title"]="SUCCESS";
 				foreach ($data["content"] as $key => $value){
@@ -1327,7 +1326,6 @@ if (!isset($_SESSION['metalsigma_log'])){
 			}
 		}else if($accion=="get_odc_full"){
 			$data=$compras->get_odc_full(json_decode($_odc));
-			//print_r($data);
 			if($data["title"]=="SUCCESS"){
 				$response["title"]="SUCCESS";
 				$response["content"]=$data["content"];

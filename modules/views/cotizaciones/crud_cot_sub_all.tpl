@@ -44,14 +44,14 @@
             <table class="table table-bordered table-hover datatables">
               <thead>
                 <tr>
-                  <th style="width: 90px;">SERVICIO</th>
+                  <th width="75px">SERVICIO</th>
                   <th>TIPO</th>
                   <th>LUGAR</th>
                   <th>EQUIPO TRAB.</th>
                   <th>TOTAL NETO</th>
                   <th>EJECUTIVO</th>
-                  <th style="width: 100px;">ESTATUS</th>
-                  <th>OPC</th>
+                  <th width="90px">ESTATUS</th>
+                  <th width="40px">OPC</th>
                 </tr>
               </thead>
               <tbody>

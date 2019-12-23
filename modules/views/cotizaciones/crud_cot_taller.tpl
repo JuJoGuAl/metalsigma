@@ -30,8 +30,8 @@
                   <th>EQUIPO</th>
                   <th>SEGMENTO</th>
                   <th width="80px">FECHA</th>
-                  <th>SERV</th>
-                  <th width="50px">OPC</th>
+                  <th width="40px">SERV</th>
+                  <th width="40px">OPC</th>
                 </tr>
               </thead>
               <tbody>

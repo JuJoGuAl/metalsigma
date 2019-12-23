@@ -858,7 +858,7 @@ class inventario{
 				$id=$result["id"];
 				$query_id=array();
 				for ($i=0; $i<sizeof($det[0]); $i++){
-					$datos=$datos1=array();
+					$datos=array();
 					array_push($query_id, $det[9][$i]);
 					$new_id = ($det[0][$i]==0) ? "" : $det[0][$i] ;
 					array_push($datos, $new_id);
@@ -887,6 +887,7 @@ class inventario{
 					}else{
 						if($det[8][$i]!="0"){
 							if($status=="PRO" && ($tipo=="COM" || $tipo=="NTE" || $tipo=="DNT" || $tipo=="DCO")){
+								$datos1=array();
 								$mul = ($tipo=="COM" || $tipo=="NTE") ? -1 : 1 ;
 								array_push($datos1, ($det[2][$i]*$mul));
 								array_push($datos1, $_SESSION['metalsigma_log']);
@@ -897,15 +898,15 @@ class inventario{
 				}
 				if($tipo=="DCO" && $status=="PRO"){
 					$conditions=$data1=array ();
-					array_push($datos1, 0);
-					array_push($datos1, $_SESSION['metalsigma_log']);
+					array_push($data1, 0);
+					array_push($data1, $_SESSION['metalsigma_log']);
 					$conditions[0]["row"]="corigen";
 					$conditions[0]["operator"]="=";
 					$conditions[0]["value"]=$origen;
 					$conditions[1]["row"]="tipo";
 					$conditions[1]["operator"]="=";
 					$conditions[1]["value"]="NTE";
-					$this->db19->updateRecord(0,$datos1,$conditions);
+					$this->db19->updateRecord(0,$data1,$conditions);
 				}
 				if($tipo=="COM" || $tipo=="NTE"){
 					$data1 = array ();

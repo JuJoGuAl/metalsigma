@@ -38,7 +38,7 @@ if($action=="save_new"){
 						array_push($det_impm, $impuesto);
 						array_push($det_total, $total);
 						array_push($det_origen_det, $value["codigo"]);//ORIGEN
-						array_push($det_odc_det, 0);//ODC
+						array_push($det_odc_det, $value["corden_det"]);//ODC
 						array_push($det_cnota_det, 0);//NTE
 
 						//SI TIENE UNA ODC BUSCO SU CANTIDAD RESTANTE
@@ -49,14 +49,9 @@ if($action=="save_new"){
 							$disponible = ($data1["content"]["cant_rest"])*1;
 							$original = ($data1["content"]["cant"])*1;
 							$movimniento = $value["cant"]*1;
-							if($disponible==$original){
+							if(($disponible+$movimniento)>$original){
 								$response['title']="ERROR";
-								$response["content"]="NO EXISTEN CANTIDADES DISPONIBLES PARA EL ARTICULO: <strong>".$data1["content"]["articulo"]."</strong> EN LA ODC: <strong>".$data1["content"]["origen"]."</strong>";
-								echo json_encode($response);
-								exit();// ME SALGO DEL BUCLE YA QUE NO PROCESARE NADA
-							}else if(($disponible+$movimniento)>$original){
-								$response['title']="ERROR";
-								$response["content"]="LA CANTIDAD A PROCESAR DEL ARTICULO: <strong>".$data1["content"]["articulo"]."</strong> EN LA ODC: <strong>".$data1["content"]["origen"]." ES MAYOR A LA CANTIDAD A SOLICITADA</strong>";
+								$response["content"]="NO SE PUEDE REGRESAR LA CANTIDAD <strong>".$movimniento."</strong> DEL ARTICULO: <strong>".$data1["content"]["articulo"]."</strong> EN LA ODC: <strong>".$data1["content"]["origen"]."</strong>";
 								echo json_encode($response);
 								exit();// ME SALGO DEL BUCLE YA QUE NO PROCESARE NADA
 							}
@@ -94,7 +89,6 @@ if($action=="save_new"){
 							$resultado["content"]="ACCESO DENEGADO: <strong>NO POSEE PERMISO PARA LA ACCION</strong>";
 						}else{
 							$resultado=$data_class->new_mov($tipo,$datos,$detalles);
-							print_r($resultado);
 						}
 					}
 

@@ -31,6 +31,10 @@ if($perm_val["title"]<>"SUCCESS"){
 			foreach ($data["content"] as $llave => $datos) {
 				$tpl->newBlock("data");
 				$id=$datos['codigo'];
+				if($datos["dev"]!="N/A"){
+					$datos['status']="CAN";
+					$tpl->assign("isdev","isdev");
+				}
 				if(!empty($array_all)){
 					foreach ($array_all as $key => $value){
 						if($key==$datos['status']){

@@ -53,6 +53,7 @@ if($perm_val["title"]<>"SUCCESS"){
 				<span data-toggle="tooltip" data-placement="top" title="" data-original-title="'.$stat.'">'.$kstat.'</span>
 				</div>
 				';
+				$cadena_status=$stat;
 				foreach ($data["content"][$llave] as $key => $value){
 					$campos = array("m_neto");
 					$value = (in_array($key, $campos)) ? numeros($value,0) : $value ;

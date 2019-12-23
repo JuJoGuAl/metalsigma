@@ -67,7 +67,6 @@
   jQuery(document).ready(function(){
     jQuery("#movimientos .isdev").each(function (){
       jQuery(this).popover({
-       //title: '<div style="font-size: 12px;">CANCELADA POR: <strong>'+jQuery(this).data("dev")+'</strong></div>',
         content: '<div style="font-size: 12px;" class="content-pop">CANCELADA POR: <strong>'+jQuery(this).data("dev")+'</strong></div>',
         trigger: 'hover',
         placement: 'left',

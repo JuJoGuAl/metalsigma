@@ -186,12 +186,6 @@
                                     <button class="btn btn-outline-secondary waves-effect waves-light ctrl" {hide2} type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_sistema" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
                                   </p>
                                 </div>
-                                <div class="col-sm-12">
-                                  <div class="form-group">
-                                    <label for="notas" class="control-label col-form-label">NOTAS</label>
-                                    <textarea class="form-control ctrl" rows="3" id="notas" name="notas" placeholder="DESCRIBA LAS OBSERVACIONES">{notas}</textarea>
-                                  </div>
-                                </div>
                               </div>
                             </div>
                         </div>
@@ -354,23 +348,31 @@
                         </div>
                       </div>
                   </div>
-              </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label for="notas" class="control-label col-form-label">NOTAS</label>
+                      <textarea class="form-control ctrl" rows="3" id="notas" name="notas" placeholder="DESCRIBA LAS OBSERVACIONES">{notas}</textarea>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="tab-pane p-4" id="tab_2" role="tabpanel">
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="table-responsive">
-                      <table class="table table-bordered table-hover" id="table_resumen">
+                      <table class="table table-bordered table-hover table-striped" id="table_resumen">
                         <thead>
                           <tr>
                             <th>DESCRIPCION</th>
-                            <th colspan="2">VALOR</th>
+                            <th>VALOR</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <th>SERVICIO TECNICO</th>
-                            <td colspan="2" class="text-right">
+                            <td class="text-right">
                               <div class="input-group pull-right" style="width: auto;">
                                 <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_serv}</div>
                                 <span class="number_cal" id="_serv">{m_serv}</span>
@@ -379,7 +381,7 @@
                           </tr>
                           <tr>
                             <th>REPUESTOS</th>
-                            <td colspan="2" class="text-right">
+                            <td class="text-right">
                               <div class="input-group pull-right" style="width: auto;">
                                 <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_rep}</div>
                                 <span class="number_cal" id="_rep">{m_rep}</span>
@@ -388,7 +390,7 @@
                           </tr>
                           <tr>
                             <th>INSUMOS</th>
-                            <td colspan="2" class="text-right">
+                            <td class="text-right">
                               <div class="input-group pull-right" style="width: auto;">
                                 <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_ins}</div>
                                 <span class="number_cal" id="_ins">{m_ins}</span>
@@ -397,7 +399,7 @@
                           </tr>
                           <tr>
                             <th>SERVICIOS TERCERIZADOS</th>
-                            <td colspan="2" class="text-right">
+                            <td class="text-right">
                               <div class="input-group pull-right" style="width: auto;">
                                 <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_stt}</div>
                                 <span class="number_cal" id="_stt">{m_stt}</span>
@@ -406,7 +408,7 @@
                           </tr>
                           <tr>
                             <th>TRASLADOS</th>
-                            <td colspan="2" class="text-right">
+                            <td class="text-right">
                               <div class="input-group pull-right" style="width: auto;">
                                 <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_tra}</div>
                                 <span class="number_cal" id="_tras">{m_tra}</span>
@@ -415,16 +417,18 @@
                           </tr>
                           <tr>
                             <th>MISCELANEOS</th>
-                            <td colspan="2" class="text-right">
+                            <td class="text-right">
                               <div class="input-group pull-right" style="width: auto;">
                                 <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_misc}</div>
                                 <span class="number_cal" id="_misc">{m_misc}</span>
                               </div>
                             </td>
                           </tr>
+                        </tbody>
+                        <tfoot>
                           <tr>
-                            <th>SUB TOTAL</th>
-                            <td colspan="2" class="text-right">
+                            <td class="text-right">SUB TOTAL</td>
+                            <td class="text-right">
                               <div class="input-group pull-right" style="width: auto;">
                                 <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_subt}</div>
                                 <span class="number_cal" id="_subt">{m_subt}</span>
@@ -432,18 +436,21 @@
                             </td>
                           </tr>
                           <tr>
-                            <th>DESC (%) </th>
-                            <td width="150px" class="text-right" style="padding: .55rem;">
+                            <td class="text-right">
+                              DESC 
+                              <input type="text" id="desc" name="desc" maxlength="6" class="form-control numeric ctrl" style="display: inline-block; width: 60px; height: 30px; padding: .375rem .3rem;" value="{m_descp}">
+                              <span> %</span>
+                            </td>
+                            <td width="150px" class="text-right">
                               <div class="input-group pull-right" style="width: auto;">
                                 <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_descp}</div>
-                                <input type="text" id="desc" name="desc" maxlength="6" class="form-control numeric ctrl" style="height: '30px'" value="{m_descp}">
+                                <span class="number_cal" id="_desc">{m_desc}</span>
                               </div>
                             </td>
-                            <td width="150px" class="text-right"><span class="number_cal" id="_desc">{m_desc}</span></td>
                           </tr>
                           <tr>
-                            <th>VALOR NETO</th>
-                            <td colspan="2" class="text-right">
+                            <td class="text-right">VALOR NETO</td>
+                            <td class="text-right">
                               <div class="input-group pull-right" style="width: auto;">
                                 <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_neto}</div>
                                 <span class="number_cal" id="_neto">{m_neto}</span>
@@ -451,15 +458,17 @@
                             </td>
                           </tr>
                           <tr>
-                            <th>IMPUESTOS (%) </th>
-                            <td width="150px" class="text-right"><span id="imp_show">{m_impp}</span></td>
+                            <td class="text-right">
+                              IMPUESTOS
+                              (<span id="imp_show">{m_impp}</span>)
+                            </td>
                             <td width="150px" class="text-right"><span class="number_cal" id="_imp">{m_imp}</span></td>
                           </tr>
                           <tr>
-                            <th>VALOR BRUTO</th>
-                            <td colspan="2" class="text-right"><span class="number_cal" id="_bruto">{m_bruto}</span></td>
+                            <td class="text-right">VALOR BRUTO</td>
+                            <td class="text-right"><span class="number_cal" id="_bruto">{m_bruto}</span></td>
                           </tr>
-                        </tbody>
+                        </tfoot>
                       </table>
                     </div>
                   </div>                  
@@ -668,7 +677,9 @@
   <!-- START BLOCK : val -->
   block_controls(true);
   setTimeout(function(){ jQuery(".dates").datepicker("destroy"); },100);
-  jQuery(".preloader").fadeOut();
+  if(jQuery.inArray(jQuery("#stats").val(),array_status_calc_odc)==-1){
+    jQuery(".preloader").fadeOut();
+  }
   <!-- END BLOCK : val -->
 </script>
 <!-- END BLOCK : module -->

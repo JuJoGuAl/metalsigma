@@ -91,6 +91,16 @@ function setAlerts(obj) {
                 jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+json_cot_number["PCL"]+'</span>').insertAfter('li a[data-mod="CRUD_COT_CLI"] span');
                 jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_COT_CLI"] i');
             }
+            if(json_cot_number["APB"]>0){
+                jQuery('li a[data-mod="CRUD_ODS"] .alertas').remove();
+                jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+json_cot_number["APB"]+'</span>').insertAfter('li a[data-mod="CRUD_ODS"] span');
+                jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_ODS"] i');
+            }
+            if(json_cot_number["PRO"]>0){
+                jQuery('li a[data-mod="CRUD_VENTAS"] .alertas').remove();
+                jQuery('<span class="alertas badge badge-warning text-white badge-pill ml-auto mr-3 font-medium px-2 py-1">'+json_cot_number["PRO"]+'</span>').insertAfter('li a[data-mod="CRUD_VENTAS"] span');
+                jQuery('<div class="notify2 alertas"><span class="heartbit"></span><span class="point"></span></div>').insertAfter('li a[data-mod="CRUD_VENTAS"] i');
+            }
         }
         if(indice=="inv"){
             jQuery.each(valor, function(key, value) {
@@ -310,7 +320,7 @@ function GetModule(mod,submod,ref,subref,acc,id){
                     // OJO ACA DEBO DE HACER ALGO SI ESTAN CERRADAS
                     if(submod!="REP_COTIZACIONES" && submod!="REP_PLAN" && ref!="FORM_COT_SUB_ALL" && ref!="FORM_COT_SUB_TALLER" && ref!="FORM_COT_SUB_CEO"){ jQuery(".preloader").fadeOut(); }
                     if(typeof conn !== undefined){
-                        conn.send(1);
+                        if(conn.readyState==1){ conn.send(1); }
                     }
                 });
             }
@@ -381,7 +391,14 @@ function SendForm(menu,mod,ref,subref,form=false,id=false){
             success: function(data){
                 if(data.title=="SUCCESS"){
                     dialog(data.content,data.title);
-                    GetModule(menu,mod,"NONE",subref,"SAVE",id);
+                    let act = "SAVE";
+                    if(subref=="CRUD_ODS_SUB"){
+                        act = jQuery("#accion").val();
+                    }
+                    if(act=="canc"){
+                        subref = "NONE";
+                    }
+                    GetModule(menu,mod,"NONE",subref,act,id);
                 }else if(data.content==-1){
                     jQuery(".preloader").fadeOut();
                     document.location.href="./?error=1";
@@ -1112,7 +1129,13 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                             tr_det=`<tr>
                             <td>
                                 <input name="codc[]" id="codc[`+count+`]" type="hidden" value="0">
-                                <input name="codc_det[]" id="codc_det[`+count+`]" type="hidden" value="0">
+                            `;
+                            if(submod=="FRM_INV_DNT"){
+                                tr_det+=`<input name="codc_det[]" id="codc_det[`+count+`]" type="hidden" value=`+value.corden_det+`">`;
+                            }else{
+                                tr_det+=`<input name="codc_det[]" id="codc_det[`+count+`]" type="hidden" value="0">`;
+                            }
+                            tr_det+=`
                                 <input name="carticulo[]" id="carticulo[`+count+`]" type="hidden" value="`+value.codigo_articulo+`">
                                 <input name="cmov_det[]" id="cmov_det[`+count+`]" type="hidden" value="0">
                                 <input name="cnte[]" id="cnte[`+count+`]" type="hidden" value="`+value.codigo_cabecera+`">
@@ -1175,7 +1198,13 @@ jQuery(document).on("hidden.bs.modal", "#Modal_", function (e){
                             tr_det=`<tr>
                             <td>
                                 <input name="codc[]" id="codc[`+count+`]" type="hidden" value="0">
-                                <input name="codc_det[]" id="codc_det[`+count+`]" type="hidden" value="0">
+                            `;
+                            if(submod=="FRM_INV_DCO"){
+                                tr_det+=`<input name="codc_det[]" id="codc_det[`+count+`]" type="hidden" value=`+value.corden_det+`">`;
+                            }else{
+                                tr_det+=`<input name="codc_det[]" id="codc_det[`+count+`]" type="hidden" value="0">`;
+                            }
+                            tr_det+=`
                                 <input name="carticulo[]" id="carticulo[`+count+`]" type="hidden" value="`+value.codigo_articulo+`">
                                 <input name="cmov_det[]" id="cmov_det[`+count+`]" type="hidden" value="0">
                                 <input name="cnte[]" id="cnte[`+count+`]" type="hidden" value="`+value.codigo_cabecera+`">
@@ -1787,9 +1816,7 @@ function calculos(){
             valor_rep       =   parseFloat(sum_rep);
             valor_stt       =   parseFloat(sum_stt);
             valor_subtotal  =   parseFloat(valor_serv+valor_rep+valor_ins+valor_stt+tras+misc);
-            if(desc_t.match(vRegExp)){
-                desc        =   parseFloat(((desc_t*valor_subtotal)/100)*-1);
-            }
+            desc            =   parseFloat(((desc_t*valor_subtotal)/100)*-1);
 
         }
 

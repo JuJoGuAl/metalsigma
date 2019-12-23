@@ -34,337 +34,345 @@
                 <p style="margin: .5rem 0;">SERIAL: <strong>{serial}</strong></p>
               </h6>
               <div class="d-flex no-block align-items-center pb-3">
-                <div>{form_title}<strong>{id_tittle}</strong></div>
+                <div>{form_title}<strong>COT-{id_tittle}</strong></div>
                 <div class="ml-auto">ESTATUS: <span class="badge badge-pill ml-auto mr-3 font-medium px-2 py-1 {status_color}">{stats_nom}<input type="hidden" id="stats" name="stats" value="{stats_code}"></span></div>
               </div>
               <h6 class="card-subtitle"></h6>
               <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab"><span class="hidden-xs-down">COTIZACION</span></a> </li>
-                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">ARTICULOS</span></a> </li>
-                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_3" role="tab"><span class="hidden-xs-down">SERVICIOS TERC</span></a> </li>
-                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_4" role="tab"><span class="hidden-xs-down">RESUMEN</span></a> </li>
+                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab"><span class="hidden-xs-down">SERVICIO</span></a> </li>
+                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab"><span class="hidden-xs-down">RESUMEN</span></a> </li>
               </ul>
               <div class="tab-content tabcontent-border">
                 <div class="tab-pane p-4 active" id="tab_1" role="tabpanel">
-                  <div class="card border-dark">
-                    <div class="card-header bg-secondary"><h4 class="mb-0 text-white">DETALLE DE COTIZACION</h4></div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <div class="form-group">
-                            <label for="cotizat" class="control-label col-form-label">TIPO DE COTIZACION</label>
-                            <select class="form-control validar list ctrl" id="cotizat" name="cotizat">
-                              <option value="-1">SELECCIONE...</option>
-                              <!-- START BLOCK : tipo_det -->
-                              <option value="{codigo}" {selected}>{tipo}</option>
-                              <!-- END BLOCK : tipo_det -->
-                            </select>
+                  <div class="tarjetas material-card card" id="card_cot_det">
+                    <a href="javascript:void(0);" id="link_card_cot_det" class="card-header bg-secondary text-white" data-toggle="collapse" data-target="#tarjeta_cot_det" aria-expanded="true" aria-controls="tarjeta_cot_det">DETALLE DEL SERVICIO</a>
+                    <div id="tarjeta_cot_det" class="collapse show" aria-labelledby="link_card_cot_det">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label for="cotizat" class="control-label col-form-label">TIPO DE SERVICIO</label>
+                              <select class="form-control validar list ctrl" id="cotizat" name="cotizat">
+                                <option value="-1">SELECCIONE...</option>
+                                <!-- START BLOCK : tipo_det -->
+                                <option value="{codigo}" {selected}>{tipo}</option>
+                                <!-- END BLOCK : tipo_det -->
+                              </select>
+                            </div>
                           </div>
-                        </div>
-                        <div id="garantias" class="col-sm-6" {hide1}>
-                          <div class="form-group">
-                            <label for="ods_gar" class="control-label col-form-label">ODS</label>
-                            <div class="input-group">
-                              <input type="text" class="form-control {hide3}" id="ods_gar" name="ods_gar" placeholder="SELECCIONE UNA ODS" value="{ods_gar_full}" readonly> 
-                              <input type="hidden" id="cods_gar" name="cods_gar" value="{cot_gar_full}">
-                              <div class="input-group-append"><button class="btn btn-outline-secondary ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_ods_gar"><span class="fa fa-search"></span></button></div>
+                          <div id="garantias" class="col-sm-6" {hide1}>
+                            <div class="form-group">
+                              <label for="ods_gar" class="control-label col-form-label">ODS</label>
+                              <div class="input-group">
+                                <input type="text" class="form-control {hide3}" id="ods_gar" name="ods_gar" placeholder="SELECCIONE UNA ODS" value="{ods_gar_full}" readonly> 
+                                <input type="hidden" id="cods_gar" name="cods_gar" value="{cot_gar_full}">
+                                <div class="input-group-append"><button class="btn btn-outline-secondary ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_ods_gar"><span class="fa fa-search"></span></button></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label for="lugar" class="control-label col-form-label">LUGAR</label>
+                              <select class="form-control validar list ctrl" id="lugar" name="lugar">
+                                <!-- START BLOCK : lugar_det -->
+                                <option value="{codigo}" {selected}>{lugar}</option>
+                                <!-- END BLOCK : lugar_det -->
+                              </select>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-6">
-                          <div class="form-group">
-                            <label for="lugar" class="control-label col-form-label">LUGAR</label>
-                            <select class="form-control validar list ctrl" id="lugar" name="lugar">
-                              <!-- START BLOCK : lugar_det -->
-                              <option value="{codigo}" {selected}>{lugar}</option>
-                              <!-- END BLOCK : lugar_det -->
-                            </select>
+                        <div id="terreno" class="row" {hide}>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="vehiculo" class="control-label col-form-label">VEHICULO</label>
+                              <select class="form-control validar list ctrl" id="vehiculo" name="vehiculo">
+                                <!-- START BLOCK : veh_det -->
+                                <option value="{codigo}" {selected}>{vehiculo}</option>
+                                <!-- END BLOCK : veh_det -->
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="dist" class="control-label col-form-label">DIST A TALLER</label>
+                              <input type="text" id="dist" name="dist" class="form-control numeric ctrl" value="{dist}">
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="viajes" class="control-label col-form-label">VIAJES</label>
+                              <input type="text" id="viajes" name="viajes" class="form-control numeric ctrl" value="{viajes}">
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div id="terreno" class="row" {hide}>
-                        <div class="col-sm-4">
-                          <div class="form-group">
-                            <label for="vehiculo" class="control-label col-form-label">VEHICULO</label>
-                            <select class="form-control validar list ctrl" id="vehiculo" name="vehiculo">
-                              <!-- START BLOCK : veh_det -->
-                              <option value="{codigo}" {selected}>{vehiculo}</option>
-                              <!-- END BLOCK : veh_det -->
-                            </select>
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label for="coteq" class="control-label col-form-label">PARTE</label>
+                              <select class="form-control validar list ctrl" id="coteq" name="coteq">
+                                <!-- START BLOCK : cot_equipo -->
+                                <option value="{code}" {selected}>{valor}</option>
+                                <!-- END BLOCK : cot_equipo -->
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label for="equipot" class="control-label col-form-label">EQUIPO DE TRABAJO</label>
+                              <select class="form-control validar list ctrl" id="equipot" name="equipot">
+                                <!-- START BLOCK : equipo_det -->
+                                <option value="{codigo}" {selected}>{equipo}</option>
+                                <!-- END BLOCK : equipo_det -->
+                              </select>
+                            </div>
                           </div>
                         </div>
-                        <div class="col-sm-4">
-                          <div class="form-group">
-                            <label for="dist" class="control-label col-form-label">DIST A TALLER</label>
-                            <input type="text" id="dist" name="dist" class="form-control numeric ctrl" value="{dist}">
-                          </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div class="form-group">
-                            <label for="viajes" class="control-label col-form-label">VIAJES</label>
-                            <input type="text" id="viajes" name="viajes" class="form-control numeric ctrl" value="{viajes}">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <div class="form-group">
-                            <label for="coteq" class="control-label col-form-label">PARTE</label>
-                            <select class="form-control validar list ctrl" id="coteq" name="coteq">
-                              <!-- START BLOCK : cot_equipo -->
-                              <option value="{code}" {selected}>{valor}</option>
-                              <!-- END BLOCK : cot_equipo -->
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-sm-6">
-                          <div class="form-group">
-                            <label for="equipot" class="control-label col-form-label">EQUIPO DE TRAB</label>
-                            <select class="form-control validar list ctrl" id="equipot" name="equipot">
-                              <!-- START BLOCK : equipo_det -->
-                              <option value="{codigo}" {selected}>{equipo}</option>
-                              <!-- END BLOCK : equipo_det -->
-                            </select>
-                          </div>
-                        </div>                        
                       </div>
                     </div>
                   </div>
-                  <div class="card border-dark">
-                    <div class="card-header bg-secondary"><h4 class="mb-0 text-white">COMPONENTES / SERVICIOS A COTIZAR</h4></div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-lg-12">
-                          <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-m" id="table_det_cot">
-                              <thead>
-                                  <tr>
-                                    <th rowspan="2" style="width: 26px;">#</th>
-                                    <th rowspan="2">SISTEMA</th>
-                                    <th rowspan="2">COMPONENTE</th>
-                                    <th rowspan="2">SERVICIO</th>
-                                    <th colspan="2" class="text-center">HORAS</th>
-                                    <th class="text-center">DIAS</th>
-                                    <th rowspan="2" class="text-center" style="width: 120px;">INICIO</th>
-                                    <th rowspan="2" class="text-center" style="width: 120px;">FIN</th>
-                                    <th rowspan="2" style="width: 60px;">OBS</th>
-                                  </tr>
-                                  <tr class="text-center">
-                                    <th rowspan="2" style="width: 90px;">TALLER</th>
-                                    <th rowspan="2" style="width: 90px;">TERRENO</th>
-                                    <th style="width: 60px;">TALLER</th>
-                                  </tr>
-                                </thead>
-                              <tbody>
-                                <!-- START BLOCK : co_det -->
-                                <tr class="datas">
-                                  <td>{count}</td>
-                                  <td>{parte}</td>
-                                  <td>{pieza}</td>
-                                  <td>{articulo}</td>
-                                  <td>{hh_taller}</td>
-                                  <td>{hh_terreno}</td>
-                                  <td>{dias_taller}</td>
-                                  <td>{finicio}</td>
-                                  <td>{ffin}</td>
-                                  <td>{actions}</td>
-                                </tr>
-                                <!-- END BLOCK : co_det -->
-                                <tr id="sumary">
-                                  <td colspan="4"><strong>TOTALES</strong></td>
-                                  <td>0</td>
-                                  <td>0</td>
-                                  <td>0</td>
-                                  <td></td>
-                                  <td></td>
-                                  <td>-</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <p style="text-align:left;">
-                              <button class="btn btn-outline-secondary waves-effect waves-light ctrl" {hide2} type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_sistema" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
-                            </p>
+                  <div class="tarjetas material-card card" id="card_servicios">
+                      <a href="javascript:void(0);" id="link_card_servicios" class="card-header bg-secondary text-white" data-toggle="collapse" data-target="#tarjeta_servicios" aria-expanded="true" aria-controls="tarjeta_servicios">SERVICIOS A REALIZAR</a>
+                      <div id="tarjeta_servicios" class="collapse show" aria-labelledby="link_card_servicios">
+                          <div class="card-body">
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-m" id="table_det_cot">
+                                      <thead>
+                                          <tr>
+                                            <th rowspan="2" style="width: 26px;">#</th>
+                                            <th rowspan="2">SISTEMA</th>
+                                            <th rowspan="2">COMPONENTE</th>
+                                            <th rowspan="2">SERVICIO</th>
+                                            <th colspan="2" class="text-center">HORAS</th>
+                                            <th class="text-center">DIAS</th>
+                                            <th rowspan="2" class="text-center" style="width: 120px;">INICIO</th>
+                                            <th rowspan="2" class="text-center" style="width: 120px;">FIN</th>
+                                            <th rowspan="2" style="width: 60px;">OBS</th>
+                                          </tr>
+                                          <tr class="text-center">
+                                            <th rowspan="2" style="width: 90px;">TALLER</th>
+                                            <th rowspan="2" style="width: 90px;">TERRENO</th>
+                                            <th style="width: 60px;">TALLER</th>
+                                          </tr>
+                                        </thead>
+                                      <tbody>
+                                        <!-- START BLOCK : co_det -->
+                                        <tr class="datas">
+                                          <td>{count}</td>
+                                          <td>{parte}</td>
+                                          <td>{pieza}</td>
+                                          <td>{articulo}</td>
+                                          <td>{hh_taller}</td>
+                                          <td>{hh_terreno}</td>
+                                          <td>{dias_taller}</td>
+                                          <td>{finicio}</td>
+                                          <td>{ffin}</td>
+                                          <td>{actions}</td>
+                                        </tr>
+                                        <!-- END BLOCK : co_det -->
+                                        <tr id="sumary">
+                                          <td colspan="4"><strong>TOTALES</strong></td>
+                                          <td>0</td>
+                                          <td>0</td>
+                                          <td>0</td>
+                                          <td></td>
+                                          <td></td>
+                                          <td>-</td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <p style="text-align:left;">
+                                      <button class="btn btn-outline-secondary waves-effect waves-light ctrl" {hide2} type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="search_sistema" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
                           </div>
-                          <div class="col-sm-12">
-                            <div class="form-group">
-                              <label for="notas" class="control-label col-form-label">NOTAS</label>
-                              <textarea class="form-control ctrl" rows="3" id="notas" name="notas" placeholder="DESCRIBA LAS OBSERVACIONES">{notas}</textarea>
+                      </div>
+                  </div>
+                  <div class="tarjetas material-card card" id="card_ins">
+                      <a href="javascript:void(0);" id="link_card_ins" class="card-header bg-secondary text-white collapsed" data-toggle="collapse" data-target="#tarjeta_ins" aria-expanded="false" aria-controls="tarjeta_ins">INSUMOS</a>
+                      <div id="tarjeta_ins" class="collapse" aria-labelledby="link_card_ins">
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-lg-12">
+                                <div class="table-responsive">
+                                  <table class="table table-bordered table-hover" id="table_add_ins">
+                                    <thead>
+                                      <tr>
+                                        <th>CODIGO</th>
+                                        <th>COD. INT</th>
+                                        <th>ARTICULO</th>
+                                        <th width="100px;">CANT</th>
+                                        <th>PRECIO</th>
+                                        <th>OPCION</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <!-- START BLOCK : co_det_ins -->
+                                      <tr>
+                                        <td>{codigo}</td>
+                                        <td>{codigo2}</td>
+                                        <td>{nombre}</td>
+                                        <td width="100px;">{cant}</td>
+                                        <td class="{classe}">{precio}</td>
+                                        <td>{actions}</td>
+                                      </tr>
+                                      <!-- END BLOCK : co_det_ins -->
+                                    </tbody>
+                                  </table>
+                                  <p style="text-align:left;">
+                                    <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="add_ins" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="tarjetas material-card card" id="card_rep">
+                      <a href="javascript:void(0);" id="link_card_rep" class="card-header bg-secondary text-white collapsed" data-toggle="collapse" data-target="#tarjeta_rep" aria-expanded="false" aria-controls="tarjeta_rep">REPUESTOS</a>
+                      <div id="tarjeta_rep" class="collapse" aria-labelledby="link_card_rep">
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-lg-12">
+                                <div class="table-responsive">
+                                  <table class="table table-bordered table-hover" id="table_add_rep">
+                                    <thead>
+                                      <tr>
+                                        <th>CODIGO</th>
+                                        <th>COD. INT</th>
+                                        <th>ARTICULO</th>
+                                        <th width="100px;">CANT</th>
+                                        <th>PRECIO</th>
+                                        <th>OPCION</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <!-- START BLOCK : co_det_rep -->
+                                      <tr>
+                                        <td>{codigo}</td>
+                                        <td>{codigo2}</td>
+                                        <td>{nombre}</td>
+                                        <td>{cant}</td>
+                                        <td class="{classe}">{precio}</td>
+                                        <td>{actions}</td>
+                                      </tr>
+                                      <!-- END BLOCK : co_det_rep -->
+                                    </tbody>
+                                  </table>
+                                  <p style="text-align:left;">
+                                    <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="add_rep" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="tarjetas material-card card" id="card_serv_terc">
+                      <a href="javascript:void(0);" id="link_card_serv_terc" class="card-header bg-secondary text-white collapsed" data-toggle="collapse" data-target="#tarjeta_serv_terc" aria-expanded="false" aria-controls="tarjeta_serv_terc">COTIZACIONES DE SERVICIOS</a>
+                      <div id="tarjeta_serv_terc" class="collapse" aria-labelledby="link_card_serv_terc">
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-lg-12">
+                                <div class="table-responsive">
+                                  <table class="table table-bordered table-hover" id="table_add_ser">
+                                    <thead>
+                                      <tr>
+                                        <th>CODIGO</th>
+                                        <th>PROVEEDOR</th>
+                                        <th>FECHA</th>
+                                        <th>CANT SERV.</th>
+                                        <th>OPCION</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <!-- START BLOCK : co_det_stt -->
+                                      <tr>
+                                        <td><input name="ccotizacion[]" id="ccotizacion[{count}]" type="hidden" value="{codigo}">{codigo}</td>
+                                        <td>{data}</td>
+                                        <td>{fecha}</td>
+                                        <td>{servicios}</td>
+                                        <td>{actions}</td>
+                                      </tr>
+                                      <!-- END BLOCK : co_det_stt -->
+                                    </tbody>
+                                  </table>
+                                  <p style="text-align:left;">
+                                    <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="add_ser_cot" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="tarjetas material-card card" id="card_serv_terc_det">
+                    <a href="javascript:void(0);" id="link_card_serv_terc_det" class="card-header bg-secondary text-white collapsed" data-toggle="collapse" data-target="#tarjeta_serv_terc_det" aria-expanded="false" aria-controls="tarjeta_serv_terc_det">SERVICIOS TERCERIZADOS</a>
+                    <div id="tarjeta_serv_terc_det" class="collapse" aria-labelledby="link_card_serv_terc_det">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="table_ser_ter">
+                                  <thead>
+                                    <tr>
+                                      <th>CODIGO</th>
+                                      <th>COD. INT</th>
+                                      <th>SERVICIO</th>
+                                      <th width="100px;">CANT</th>
+                                      <th>PRECIO</th>
+                                      <th>ORIGEN</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <!-- START BLOCK : det_ser_ter -->
+                                    <tr>
+                                      <td>
+                                        <input name="corigen[]" id="corigen[{count}]" type="hidden" value="{origen}">
+                                        {codigo_art}
+                                      </td>
+                                      <td>{codigo2}</td>
+                                      <td>{articulo}</td>
+                                      <td width="100px;"><input name="cant[]" id="cant[{count}]" type="hidden" value="{cant}">{cant}</td>
+                                      <td class="add_ser"><span class="number_cal">{precio}</span><input name="precio[]" id="precio[{count}]" type="hidden" value="{precio}"><input name="tipo_art[]" id="tipo_art[{count}]" type="hidden" value="stt"></td>
+                                      <td>{origen}</td>
+                                    </tr>
+                                    <!-- END BLOCK : det_ser_ter -->
+                                  </tbody>
+                                </table>
+                              </div>
                             </div>
                           </div>
                         </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="notas" class="control-label col-form-label">NOTAS</label>
+                        <textarea class="form-control ctrl" rows="3" id="notas" name="notas" placeholder="DESCRIBA LAS OBSERVACIONES">{notas}</textarea>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="tab-pane p-4" id="tab_2" role="tabpanel">
-                  <div class="card border-dark">
-                    <div class="card-header bg-secondary"><h4 class="mb-0 text-white">INSUMOS</h4></div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-lg-12">
-                          <div class="table-responsive">
-                            <table class="table table-bordered table-hover" id="table_add_ins">
-                              <thead>
-                                <tr>
-                                  <th>CODIGO</th>
-                                  <th>COD. INT</th>
-                                  <th>ARTICULO</th>
-                                  <th width="100px;">CANT</th>
-                                  <th>PRECIO</th>
-                                  <th>OPCION</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <!-- START BLOCK : co_det_ins -->
-                                <tr>
-                                  <td>{codigo}</td>
-                                  <td>{codigo2}</td>
-                                  <td>{nombre}</td>
-                                  <td width="100px;">{cant}</td>
-                                  <td class="{classe}">{precio}</td>
-                                  <td>{actions}</td>
-                                </tr>
-                                <!-- END BLOCK : co_det_ins -->
-                              </tbody>
-                            </table>
-                            <p style="text-align:left;">
-                              <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="add_ins" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card border-dark">
-                    <div class="card-header bg-secondary"><h4 class="mb-0 text-white">REPUESTOS</h4></div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-lg-12">
-                          <div class="table-responsive">
-                            <table class="table table-bordered table-hover" id="table_add_rep">
-                              <thead>
-                                <tr>
-                                  <th>CODIGO</th>
-                                  <th>COD. INT</th>
-                                  <th>ARTICULO</th>
-                                  <th width="100px;">CANT</th>
-                                  <th>PRECIO</th>
-                                  <th>OPCION</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <!-- START BLOCK : co_det_rep -->
-                                <tr>
-                                  <td>{codigo}</td>
-                                  <td>{codigo2}</td>
-                                  <td>{nombre}</td>
-                                  <td>{cant}</td>
-                                  <td class="{classe}">{precio}</td>
-                                  <td>{actions}</td>
-                                </tr>
-                                <!-- END BLOCK : co_det_rep -->
-                              </tbody>
-                            </table>
-                            <p style="text-align:left;">
-                              <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="add_rep" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card border-dark">
-                    <div class="card-header bg-secondary"><h4 class="mb-0 text-white">COTIZACIONES DE SERVICIOS</h4></div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-lg-12">
-                          <div class="table-responsive">
-                            <table class="table table-bordered table-hover" id="table_add_ser">
-                              <thead>
-                                <tr>
-                                  <th>CODIGO</th>
-                                  <th>PROVEEDOR</th>
-                                  <th>FECHA</th>
-                                  <th>CANT SERV.</th>
-                                  <th>OPCION</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <!-- START BLOCK : co_det_stt -->
-                                <tr>
-                                  <td><input name="ccotizacion[]" id="ccotizacion[{count}]" type="hidden" value="{codigo}">{codigo}</td>
-                                  <td>{data}</td>
-                                  <td>{fecha}</td>
-                                  <td>{servicios}</td>
-                                  <td>{actions}</td>
-                                </tr>
-                                <!-- END BLOCK : co_det_stt -->
-                              </tbody>
-                            </table>
-                            <p style="text-align:left;">
-                              <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="add_ser_cot" data-id="0"><span class="btn-label"><i class="fas fa-plus"></i></span> AGREGAR</button>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="tab-pane p-4" id="tab_3" role="tabpanel">
-                  <div class="card border-dark">
-                    <div class="card-header bg-secondary"><h4 class="mb-0 text-white">SERVICIOS TERCERIZADOS</h4></div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-lg-12">
-                          <div class="table-responsive">
-                            <table class="table table-bordered table-hover" id="table_ser_ter">
-                              <thead>
-                                <tr>
-                                  <th>CODIGO</th>
-                                  <th>COD. INT</th>
-                                  <th>SERVICIO</th>
-                                  <th width="100px;">CANT</th>
-                                  <th>PRECIO</th>
-                                  <th>ORIGEN</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <!-- START BLOCK : det_ser_ter -->
-                                <tr>
-                                  <td>
-                                    <input name="corigen[]" id="corigen[{count}]" type="hidden" value="{origen}">
-                                    {codigo_art}
-                                  </td>
-                                  <td>{codigo2}</td>
-                                  <td>{articulo}</td>
-                                  <td width="100px;"><input name="cant[]" id="cant[{count}]" type="hidden" value="{cant}">{cant}</td>
-                                  <td class="add_ser"><span class="number_cal">{precio}</span><input name="precio[]" id="precio[{count}]" type="hidden" value="{precio}"><input name="tipo_art[]" id="tipo_art[{count}]" type="hidden" value="stt"></td>
-                                  <td>{origen}</td>
-                                </tr>
-                                <!-- END BLOCK : det_ser_ter -->
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="tab-pane p-4" id="tab_4" role="tabpanel">
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="table-responsive">
-                        <table class="table table-bordered table-hover" id="table_resumen">
+                        <table class="table table-bordered table-hover table-striped" id="table_resumen">
                           <thead>
                             <tr>
                               <th>DESCRIPCION</th>
-                              <th colspan="2">VALOR</th>
+                              <th>VALOR</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
                               <th>SERVICIO TECNICO</th>
-                              <td colspan="2" class="text-right">
+                              <td class="text-right">
                                 <div class="input-group pull-right" style="width: auto;">
                                   <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_serv}</div>
                                   <span class="number_cal" id="_serv">{m_serv}</span>
@@ -373,7 +381,7 @@
                             </tr>
                             <tr>
                               <th>REPUESTOS</th>
-                              <td colspan="2" class="text-right">
+                              <td class="text-right">
                                 <div class="input-group pull-right" style="width: auto;">
                                   <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_rep}</div>
                                   <span class="number_cal" id="_rep">{m_rep}</span>
@@ -382,7 +390,7 @@
                             </tr>
                             <tr>
                               <th>INSUMOS</th>
-                              <td colspan="2" class="text-right">
+                              <td class="text-right">
                                 <div class="input-group pull-right" style="width: auto;">
                                   <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_ins}</div>
                                   <span class="number_cal" id="_ins">{m_ins}</span>
@@ -391,7 +399,7 @@
                             </tr>
                             <tr>
                               <th>SERVICIOS TERCERIZADOS</th>
-                              <td colspan="2" class="text-right">
+                              <td class="text-right">
                                 <div class="input-group pull-right" style="width: auto;">
                                   <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_stt}</div>
                                   <span class="number_cal" id="_stt">{m_stt}</span>
@@ -400,7 +408,7 @@
                             </tr>
                             <tr>
                               <th>TRASLADOS</th>
-                              <td colspan="2" class="text-right">
+                              <td class="text-right">
                                 <div class="input-group pull-right" style="width: auto;">
                                   <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_tra}</div>
                                   <span class="number_cal" id="_tras">{m_tra}</span>
@@ -409,16 +417,18 @@
                             </tr>
                             <tr>
                               <th>MISCELANEOS</th>
-                              <td colspan="2" class="text-right">
+                              <td class="text-right">
                                 <div class="input-group pull-right" style="width: auto;">
                                   <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_misc}</div>
                                   <span class="number_cal" id="_misc">{m_misc}</span>
                                 </div>
                               </td>
                             </tr>
+                          </tbody>
+                          <tfoot>
                             <tr>
-                              <th>SUB TOTAL</th>
-                              <td colspan="2" class="text-right">
+                              <td class="text-right">SUB TOTAL</td>
+                              <td class="text-right">
                                 <div class="input-group pull-right" style="width: auto;">
                                   <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_subt}</div>
                                   <span class="number_cal" id="_subt">{m_subt}</span>
@@ -426,18 +436,21 @@
                               </td>
                             </tr>
                             <tr>
-                              <th>DESC (%) </th>
-                              <td width="150px" class="text-right" style="padding: .55rem;">
+                              <td class="text-right">
+                                DESC 
+                                <input type="text" id="desc" name="desc" maxlength="6" class="form-control numeric ctrl" style="display: inline-block; width: 60px; height: 30px; padding: .375rem .3rem;" value="{m_descp}">
+                                <span> %</span>
+                              </td>
+                              <td width="150px" class="text-right">
                                 <div class="input-group pull-right" style="width: auto;">
                                   <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_descp}</div>
-                                  <input type="text" id="desc" name="desc" maxlength="6" class="form-control numeric ctrl" style="height: '30px'" value="{m_descp}">
+                                  <span class="number_cal" id="_desc">{m_desc}</span>
                                 </div>
                               </td>
-                              <td width="150px" class="text-right"><span class="number_cal" id="_desc">{m_desc}</span></td>
                             </tr>
                             <tr>
-                              <th>VALOR NETO</th>
-                              <td colspan="2" class="text-right">
+                              <td class="text-right">VALOR NETO</td>
+                              <td class="text-right">
                                 <div class="input-group pull-right" style="width: auto;">
                                   <div class="input-group-addon" style="padding: 0; background-color: transparent; border: none; margin-right: 10px;">{hist_m_neto}</div>
                                   <span class="number_cal" id="_neto">{m_neto}</span>
@@ -445,15 +458,17 @@
                               </td>
                             </tr>
                             <tr>
-                              <th>IMPUESTOS (%) </th>
-                              <td width="150px" class="text-right"><span id="imp_show">{m_impp}</span></td>
+                              <td class="text-right">
+                                IMPUESTOS
+                                (<span id="imp_show">{m_impp}</span>)
+                              </td>
                               <td width="150px" class="text-right"><span class="number_cal" id="_imp">{m_imp}</span></td>
                             </tr>
                             <tr>
-                              <th>VALOR BRUTO</th>
-                              <td colspan="2" class="text-right"><span class="number_cal" id="_bruto">{m_bruto}</span></td>
+                              <td class="text-right">VALOR BRUTO</td>
+                              <td class="text-right"><span class="number_cal" id="_bruto">{m_bruto}</span></td>
                             </tr>
-                          </tbody>
+                          </tfoot>
                         </table>
                       </div>
                     </div>                  
@@ -479,9 +494,8 @@
                   <input type="hidden" id="accion" name="accion" value="{accion}">
                   <input type="hidden" id="id" name="id" value="{id}">
                   <!-- START BLOCK : data_save -->
-                  <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="PROC" data-id="{codigo}"><span class="btn-label"><i class="fas fa-cogs"></i></span> PROCESAR</button>
+                  <button class="btn btn-outline-secondary waves-effect waves-light ctrl" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="SEND" data-id="{codigo}"><span class="btn-label"><i class="fas fa-cogs"></i></span> APROBAR</button>
                   <!-- END BLOCK : data_save -->
-                  <button class="btn btn-outline-secondary waves-effect waves-light" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="IMP" data-id="0"><span class="btn-label"><i class="fas fa-print"></i></span> IMPRIMIR</button>
                   <button class="btn btn-outline-secondary waves-effect waves-light menu" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="CLOSE" data-id="0"><span class="btn-label"><i class="fas fa-sign-out-alt"></i></span> CERRAR</button>
                   
                   <input type="hidden" id="hh_taller" name="hh_taller" value="{hh_taller_}">
@@ -507,6 +521,7 @@
   </div>
 <script>
   var submod='{submod}';
+  var accion ='{accion}'
   jQuery("#imp_show").text(jQuery("#imp").val()+" %");
   setTimeout(function(){
     jQuery('#lugar').trigger("change");
@@ -517,13 +532,19 @@
         jQuery(this).append('<span class="badge badge-pill count badge-info"><i class="fas fa-star"></i></span>');
       }
     });
+    jQuery('a.card-header').each(function(){
+      let alert = jQuery("#"+jQuery(this).attr("aria-controls")+" span.badge").length;
+      if(alert>0){
+        jQuery(this).append('<span class="badge badge-pill count badge-info"><i class="fas fa-star"></i></span>');
+      }
+    });
   },200);
   jQuery('#form_ button').click(function(){
     submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc"), assoc_id = jQuery(this).attr("data-id");
-    if(acc=="PROC"){
+    if(acc=="SAVE" || acc=="PROC" || acc=="SEND"){
       if(count_row("table_det_cot","COMPONENTE")){
         if(check_datas_cot()){
-          if(acc=="PROC"){ jQuery("#accion").val("proc"); }
+          if(acc=="SEND"){ jQuery("#accion").val("send"); }
           SendForm(mod,submod,ref,subref,"#form_",assoc_id);
         }
       }else{ jQuery('.nav-tabs li:nth-child(1) > a').trigger('click'); }
@@ -637,7 +658,9 @@
   <!-- START BLOCK : val -->
   block_controls(true);
   setTimeout(function(){ jQuery(".dates").datepicker("destroy"); },100);
-  jQuery(".preloader").fadeOut();
+  if(jQuery.inArray(jQuery("#stats").val(),array_status_calc_odc)==-1){
+    jQuery(".preloader").fadeOut();
+  }
   <!-- END BLOCK : val -->
 </script>
 <!-- END BLOCK : module -->

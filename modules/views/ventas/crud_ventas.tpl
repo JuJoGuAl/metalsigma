@@ -82,20 +82,20 @@
             <table class="table table-bordered table-hover datatables" data-dt_order='[[0,"desc"]]'>
               <thead>
                 <tr>
-                  <th>ODS</th>
-                  <th>FACTURA</th>
-                  <th>FECHA FAC</th>
-                  <th>RUT</th>
+                  <th width="100px">ODS</th>
+                  <th width="70px">FACTURA</th>
+                  <th width="80px">FECHA FACT</th>
+                  <th width="90px">RUT</th>
                   <th>CLIENTE</th>
                   <th>NETO</th>
-                  <th>ESTATUS</th>
-                  <th>OPCS</th>
+                  <th width="90px">ESTATUS</th>
+                  <th width="60px">OPC</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- START BLOCK : data -->
                 <tr class="{estatus}">
-                  <td>{ods_full}</td>
+                  <td>OS-ST{ods_full}</td>
                   <td>{cfactura}</td>
                   <td>{fecha_fac}</td>
                   <td>{code}</td>
@@ -144,7 +144,7 @@
               let valor_ = value.m_neto+' $';
               let status_ = value.status_+'<br>'+value.gar;
               var rowNode = table.row.add([
-                value.ods_full,
+                "OS-ST"+value.ods_full,
                 value.cfactura,
                 value.fecha_fac,
                 value.code,

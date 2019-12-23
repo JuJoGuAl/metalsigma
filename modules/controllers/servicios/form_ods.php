@@ -1,6 +1,6 @@
 <?php
 $action=(isset($_GET['accion'])?strtolower($_GET['accion']):'');
-if($action=="save_new" || $action=="save_edit" || $action=="proc"){
+if($action=="save_new" || $action=="save_edit" || $action=="proc" || $action=="canc"){
 	include_once("../../../class/functions.php");
 	include_once("../../../class/class.cotizaciones.php");
 	$data_class = new cotizaciones;
@@ -14,26 +14,43 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 		}else{
 			$ins=$perm_val["content"][0]["ins"];
 			$upt=$perm_val["content"][0]["upt"];
+			extract($_GET, EXTR_PREFIX_ALL, "");
 			if($action=="proc"){
-				extract($_GET, EXTR_PREFIX_ALL, "");
-				if($action=="proc"){
-					if($upt!=1){
-						$resultado['title']="ERROR";
-						$resultado["content"]="ACCESO DENEGADO: <strong>NO POSEE PERMISO PARA LA ACCION</strong>";
-					}else{
-						$resultado=$data_class->set_ods($_id,$_origen);
-					}
-				}
-				$mensaje="ORDEN DE SERVICIO APLICADA";
-				if($resultado["title"]=="SUCCESS"){
-					$response['title']=$resultado["title"];
-					$response["content"]=$mensaje;
+				if($upt!=1){
+					$resultado['title']="ERROR";
+					$resultado["content"]="ACCESO DENEGADO: <strong>NO POSEE PERMISO PARA LA ACCION</strong>";
 				}else{
-					$response['title']=$resultado["title"];
-					$response["content"]=$resultado["content"];
+					$resultado=$data_class->set_ods($_id,$_origen);
+				}
+			}else if($action=="canc"){
+				$datos = array();
+				array_push($datos, "CAN");
+				array_push($datos, null);
+				array_push($datos, null);
+				if($upt!=1){
+					$resultado['title']="ERROR";
+					$resultado["content"]="ACCESO DENEGADO: <strong>NO POSEE PERMISO PARA LA ACCION</strong>";
+				}else{
+					$resultado=$data_class->pro_co_sub($_id,$datos);
 				}
 			}
-		}		
+			$mensaje="SIN MENSAJE";
+			switch ($action) {
+				case "proc":
+					$mensaje="ORDEN DE SERVICIO APLICADA";
+				break;
+				case "canc":
+					$mensaje="COTIZACION ANULADA";
+				break;
+			}
+			if($resultado["title"]=="SUCCESS"){
+				$response['title']=$resultado["title"];
+				$response["content"]=$mensaje;
+			}else{
+				$response['title']=$resultado["title"];
+				$response["content"]=$resultado["content"];
+			}
+		}
 	}else{
 		$response['title']="INFO";
 		$response["content"]=-1;
@@ -79,7 +96,6 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 				$tpl->assign("accion",'save_edit');
 				$tpl->assign("id",$_GET["id"]);
 				$cotiza=$data_class->get_sub($_GET["id"],true);
-				//print_r($cotiza);
 				$cab=$cotiza["cab"];
 				$cab_cli=$cotiza["datos"];
 				$det=$cotiza["det"];
@@ -189,6 +205,13 @@ if($action=="save_new" || $action=="save_edit" || $action=="proc"){
 					$tpl->assign($key_,$value_);
 				}
 				$tpl->assign("codigo",$codigo_origen);
+				if($cab["ocupado"]<=0){
+					$tpl->newBlock("cot_anul");
+					foreach ($var_array_nav as $key_ => $value_) {
+						$tpl->assign($key_,$value_);
+					}
+					$tpl->assign("codigo",$codigo_origen);
+				}
 			}else{ $tpl->assign("read",'readonly'); }
 		}
 	}

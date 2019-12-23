@@ -138,6 +138,11 @@ if($perm_val["title"]<>"SUCCESS"){
 					}
 				}
 			}
+			$tpl->newBlock("aud_data");
+			$tpl->assign("crea_user",$cab['crea_user']);
+			$tpl->assign("mod_user",$cab['mod_user']);
+			$tpl->assign("crea_date",$cab['crea_date']);
+			$tpl->assign("mod_date",$cab['mod_date']);
 		}
 	}
 }

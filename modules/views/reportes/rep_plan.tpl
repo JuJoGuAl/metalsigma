@@ -32,13 +32,13 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label for="finicio" class="control-label col-form-label">FECHA INICIO</label>
-                      <input type="text" class="form-control dates" id="finicio" name="finicio" autocomplete="off" value="{fecha}">
+                      <input type="text" class="form-control dates" id="finicio" name="finicio" autocomplete="off" readonly value="{fecha}">
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label for="ffin" class="control-label col-form-label">FECHA FIN</label>
-                      <input type="text" class="form-control dates" id="ffin" name="ffin" autocomplete="off" value="{fecha}">
+                      <input type="text" class="form-control dates" id="ffin" name="ffin" autocomplete="off" readonly value="{fecha}">
                     </div>
                   </div>
                 </div>
@@ -85,7 +85,7 @@
                   <div class="col-sm-4">
                     <div class="form-group">
                       <label for="fecha" class="control-label col-form-label">FECHA</label>
-                      <input type="text" class="form-control dates" id="fecha" name="fecha" autocomplete="off" value="{fecha}">
+                      <input type="text" class="form-control dates" id="fecha" name="fecha" autocomplete="off" readonly value="{fecha}">
                     </div>
                   </div>
                 </div>

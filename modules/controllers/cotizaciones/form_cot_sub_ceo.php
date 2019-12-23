@@ -1,6 +1,6 @@
 <?php
 $action=(isset($_GET['accion'])?strtolower($_GET['accion']):'');
-if($action=="proc"){
+if($action=="send"){
 	include_once("../../../class/functions.php");
 	include_once("../../../class/class.cotizaciones.php");
 	include_once("../../../class/class.par_admin.php");
@@ -18,7 +18,7 @@ if($action=="proc"){
 		}else{
 			$ins=$perm_val["content"][0]["ins"];
 			$upt=$perm_val["content"][0]["upt"];
-			if($action=="proc"){
+			if($action=="send"){
 				extract($_GET, EXTR_PREFIX_ALL, "");
 				$datos = $detalles = $articulos = $cotizaciones = $det_det = $det_det_art = $det_sist = $det_comp = $det_serv = $det_servp = $det_hhta = $det_hhte = $det_day = $det_ini = $det_fin = $det_art = $det_precio = $det_cant = array();
 				//VARIABLES PARA CALCULOS
@@ -183,7 +183,7 @@ if($action=="proc"){
 												array_push($cotizaciones, $_ccotizacion[$i]);
 											}
 										}
-										if($action=="proc"){
+										if($action=="send"){
 											if($upt!=1){
 												$resultado['title']="ERROR";
 												$resultado["content"]="ACCESO DENEGADO: <strong>NO POSEE PERMISO PARA LA ACCION</strong>";
@@ -194,7 +194,7 @@ if($action=="proc"){
 						
 										$mensaje="SIN MENSAJE";
 										switch ($action) {
-											case "proc":
+											case "send":
 												$mensaje="COTIZACION ENVIADA A APROBACION DE CLIENTE!";
 											break;
 										}

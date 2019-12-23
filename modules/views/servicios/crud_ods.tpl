@@ -49,22 +49,22 @@
             <table id="ods_all" class="table table-bordered table-hover datatables">
               <thead>
                 <tr>
-                  <th>COTIZACION</th>
-                  <th>ODS</th>
+                  <th width="80px">COTIZACION</th>
+                  <th width="80px">ODS</th>
                   <th width="75px">RUT</th>
                   <th>CLIENTE</th>
                   <th>EQUIPO</th>
                   <th>SEGMENTO</th>
-                  <th>FECHA</th>
-                  <th>SUB-COT</th>
-                  <th>OPC</th>
+                  <th width="80px">FECHA</th>
+                  <th width="40px">SERV</th>
+                  <th width="40px">OPC</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- START BLOCK : data -->
                 <tr class="{class}">
-                  <td>{codigo}</td>
-                  <td>{codigo_ods}</td>
+                  <td>COT-{codigo}</td>
+                  <td>OS-ST{codigo_ods}</td>
                   <td>{code}</td>
                   <td>{data}</td>
                   <td>{equipo} {marca} {modelo}<br><span style="font-size: 11px">S/N: {serial}</span></td>
@@ -147,8 +147,8 @@
             let equi_ = value.equipo+' '+value.marca+' '+value.modelo+'<br><span style="font-size: 11px">S/N: '+value.serial+'</span>';
             let stat_ = '<h3><span class="badge badge-secondary" data-count="'+value.cuentas+'" data-id="'+value.codigo+'">'+value.cuentas+'</span></h3>';
             var rowNode = table.row.add([
-              value.codigo,
-              value.codigo_ods,
+              "COT-"+value.codigo,
+              "OS-ST"+value.codigo_ods,
               value.code,
               value.data,
               equi_,
