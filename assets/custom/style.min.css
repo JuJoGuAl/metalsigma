@@ -38218,7 +38218,12 @@ body .jqstooltip {
 /**
 CUSTOM CSS
 */
-
+@media (max-width:767px) {
+    .page-wrapper>div>.page-content{
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
 /*Para animar el Inicio*/
 #status {
   width:300px;

@@ -225,7 +225,7 @@
         });
         
         jQuery(function () {
-            conn = new WebSocket('ws://190.171.166.251:26');
+            conn = new WebSocket('ws://190.171.166.251:3669');
             conn.onmessage = function(e) {
                 setAlerts(JSON.parse(e.data));
             };

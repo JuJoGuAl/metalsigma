@@ -40,17 +40,20 @@
               </div>
               <div class="col-sm-12">
                 <div class="form-group mb-0 text-center">
+                  <br>
                   <button class="btn btn-outline-secondary waves-effect waves-light" type="button" data-menu="{mod}" data-mod="{submod}" data-ref="{ref}" data-subref="{subref}" data-acc="GET_ODS_PLAN" data-id="0"><span class="btn-label"><i class="fas fa-cogs"></i></span> GENERAR</button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-12"><div id="calendar"></div></div>
-            </div>
-          </div>
         </form>
+      </div>
+      <div id="calendar_card" class="material-card card" style="display: none;">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12"><div id="calendar"></div></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -58,9 +61,50 @@
 <script>
   var events_ = events_padre = new Array(), date_ = "";
   var CalendarApp = function() {
-      this.jQuerycalendar = jQuery('#calendar'),
-      this.jQuerycalendarObj = null
-    };
+    this.jQuerycalendar = jQuery('#calendar'),
+    this.jQuerycalendarObj = null
+  };
+  CalendarApp.prototype.init = function(){
+    var jQuerythis = this;
+    jQuerythis.jQuerycalendarObj = jQuerythis.jQuerycalendar.fullCalendar({
+      slotDuration: '00:30:00',
+      minTime: '{inicio}',
+      maxTime:  moment('2010-10-01 {fin}').add(2,'hours').format('HH:mm'),
+      defaultView: 'month',
+      defaultDate: date_,
+      handleWindowResize: true,
+      header:{
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
+      locale: 'es',
+      events: events_,
+      editable: false,
+      droppable: false,
+      eventLimit: false,
+      selectable: false,
+      eventRender: function(event, element, view){
+        let cuerpo = `<div style="font-size: 12px;">`;
+        if ( typeof event["trabajador_1"] !== 'undefined' ) {
+          cuerpo += `<strong>PRINCIPAL: </strong>`+event.trabajador_1+` (`+event.cargo_1+`)<br>`;
+        }
+        if ( typeof event["trabajador_2"] !== 'undefined' ) {
+          cuerpo += `<strong>AYUDANTE 1: </strong>`+event.trabajador_2+` (`+event.cargo_2+`)<br>`;
+        }
+        cuerpo += `<strong>VEHICULO: </strong>`+event.transporte+`<br>`;
+        cuerpo += `</div>`;
+        element.popover({
+          title: '<div style="font-size: 12px;"><strong>'+event.title+'</strong></div>',
+          content: cuerpo,
+          trigger: 'hover',
+          placement: 'top',
+          container: 'body',
+          html: true
+        });
+      }
+    });
+  };
   jQuery('button').click(function(){
     submod = jQuery(this).attr("data-mod"), mod = jQuery(this).attr("data-menu"), ref = jQuery(this).attr("data-ref"), subref = jQuery(this).attr("data-subref"), acc = jQuery(this).attr("data-acc"), assoc_id = jQuery(this).attr("data-id");
     if(acc=="search_ods"){
@@ -69,6 +113,8 @@
       if(validate("ods")){
         jQuery(".preloader").fadeIn();
         clear_log();
+        jQuery("#calendar_card").fadeOut();
+        jQuery('#calendar').fullCalendar('destroy');
         axios({
             method: "post",
             url: "./modules/controllers/ajax.php",
@@ -76,11 +122,8 @@
           }).then(data_response => {
             let repuesta = data_response.data
             if(repuesta.title=="SUCCESS"){
-              jQuery('#calendar').fullCalendar('destroy');
               jQuery(repuesta.content).each(function(index,value){
-                if(index==0){
-                  date_ = value.start;
-                }
+                if(index==0){ date_ = value.start;}
                 events_padre =
                 {
                   ["id"]: value.id,
@@ -100,55 +143,20 @@
                 });
                 events_[index]=events_padre;
               });
-
-              CalendarApp.prototype.init = function(){
-                var jQuerythis = this;
-                jQuerythis.jQuerycalendarObj = jQuerythis.jQuerycalendar.fullCalendar({
-                  slotDuration: '00:30:00',
-                  minTime: '{inicio}',
-                  maxTime:  moment('2010-10-01 {fin}').add(2,'hours').format('HH:mm'),
-                  defaultView: 'month',
-                  defaultDate: date_,
-                  handleWindowResize: true,
-                  header:{
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                  },
-                  locale: 'es',
-                  events: events_,
-                  editable: false,
-                  droppable: false,
-                  eventLimit: false,
-                  selectable: false,
-                  eventRender: function(event, element, view){
-                    let cuerpo = `<div style="font-size: 12px;">`;
-                    if ( typeof event["trabajador_1"] !== 'undefined' ) {
-                      cuerpo += `<strong>PRINCIPAL: </strong>`+event.trabajador_1+` (`+event.cargo_1+`)<br>`;
-                    }
-                    if ( typeof event["trabajador_2"] !== 'undefined' ) {
-                      cuerpo += `<strong>AYUDANTE 1: </strong>`+event.trabajador_2+` (`+event.cargo_2+`)<br>`;
-                    }
-                    cuerpo += `<strong>VEHICULO: </strong>`+event.transporte+`<br>`;
-                    cuerpo += `</div>`;
-                    element.popover({
-                      title: '<div style="font-size: 12px;"><strong>'+event.title+'</strong></div>',
-                      content: cuerpo,
-                      trigger: 'hover',
-                      placement: 'top',
-                      container: 'body',
-                      html: true
-                    });
-                  }
-                });
-              },
-              jQuery.CalendarApp = new CalendarApp, jQuery.CalendarApp.Constructor = CalendarApp
-              $.CalendarApp.init();
+              jQuery.CalendarApp = new CalendarApp;
+              jQuery.CalendarApp.Constructor = CalendarApp;
+              jQuery.CalendarApp.init();
+              jQuery("#calendar_card").fadeIn();
+              jQuery('#calendar').fullCalendar('render');
               jQuery(".preloader").fadeOut();
+              let fecha = date_.split(" ");
+              var $anchor = jQuery('td.fc-widget-content[data-date="'+fecha[0]+'"]');
+              jQuery('html, body').stop().animate({scrollTop : ($anchor.offset().top)-(jQuery(".topbar").height())-10}, 1200, 'easeInOutExpo');
             }else{
-                dialog(repuesta.content,repuesta.title);
+              jQuery(".preloader").fadeOut();
+              dialog(repuesta.content,repuesta.title);
             }
-          }).catch(error => { axios_Error(error); });
+          }).catch(error => { jQuery(".preloader").fadeOut(); axios_Error(error); });
       }
     }
   });
